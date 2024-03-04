@@ -1,0 +1,83 @@
+info:
+  version: 1.0.0
+  title: CMS后台管理系统
+  contact: { }
+paths:
+  /users:
+    get:
+      consumes:
+        - application/json
+      description: 获取系统中所有用户的列表
+      parameters:
+        - description: 页码，默认为1
+          in: query
+          name: page
+          type: integer
+        - description: 每页显示的用户数量，默认为10
+          in: query
+          name: limit
+          type: integer
+      produces:
+        - application/json
+      responses: { }
+      summary: 获取用户列表
+      tags:
+        - 用户管理
+    post:
+      consumes:
+        - application/json
+      description: 创建新用户并将其添加到系统中
+      produces:
+        - application/json
+      responses: { }
+      summary: 创建新用户
+      tags:
+        - 用户管理
+  /users/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: 根据用户ID删除用户
+      parameters:
+        - description: 用户ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses: { }
+      summary: 删除用户
+      tags:
+        - 用户管理
+    get:
+      consumes:
+        - application/json
+      description: 根据ID获取用户信息
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 根据ID获取用户信息
+      tags:
+        - 用户管理
+    put:
+      consumes:
+        - application/json
+      description: 更新现有用户的信息
+      parameters:
+        - description: 用户ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses: { }
+      summary: 更新用户信息
+      tags:
+        - 用户管理
+swagger: "2.0"
