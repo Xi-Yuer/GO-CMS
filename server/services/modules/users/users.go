@@ -16,8 +16,8 @@ func (u *userService) GetUsers() (*[]responsies.UsersSingleResponse, error) {
 	return nil, nil
 }
 
-func (u *userService) CreateUser() {
-
+func (u *userService) CreateUser(user *responsies.CreateSingleUserRequest) error {
+	return repositories.UserRepositorysModules.CreateUser(user)
 }
 
 func (u *userService) UpdateUser() {

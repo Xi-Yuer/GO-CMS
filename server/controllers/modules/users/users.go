@@ -1,6 +1,7 @@
 package userControllersModules
 
 import (
+	"github.com/Xi-Yuer/cms/responsies"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -35,7 +36,20 @@ func (u *userController) GetUser(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Router /users [post]
-func (u *userController) CreateUser(context *gin.Context) {}
+func (u *userController) CreateUser(context *gin.Context) {
+	var user responsies.CreateSingleUserRequest
+	err := context.ShouldBind(&user)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err)
+		return
+	}
+	err = services.UserService.CreateUser(&user)
+	if err != nil {
+		utils.Response.ServerError(context, err)
+		return
+	}
+	utils.Response.Success(context, nil)
+}
 
 // UpdateUser 更新用户
 // @Summary 更新用户信息

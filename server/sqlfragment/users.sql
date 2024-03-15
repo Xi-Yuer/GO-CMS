@@ -28,8 +28,6 @@ CREATE TABLE `users`
     `password`    varchar(255) NOT NULL,
     `nickname`    varchar(255) NOT NULL,
     `avatar`      varchar(255)      DEFAULT NULL,
-    `gender`      int               DEFAULT 0,
-    `role`        varchar(255)      DEFAULT NULL,
     `create_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `update_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `delete_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
