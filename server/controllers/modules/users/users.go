@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 var UserController = &userController{}
@@ -22,11 +23,38 @@ type userController struct{}
 // @Router /users/{id} [get]
 func (u *userController) GetUser(context *gin.Context) {
 	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
 	user, err := services.UserService.GetUser(id)
 	if err != nil {
 		utils.Log.Error(err)
 	}
 	utils.Response.Success(context, user)
+}
+
+// FindUserByParams 查询用户
+// @Summary 查询用户
+// @Description 根据查询参数查询用户信息
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Body
+// @Router /users [get]
+func (u *userController) FindUserByParams(content *gin.Context) {
+	var params responsies.QueryUsersParams
+	err := content.ShouldBind(&params)
+	if err != nil {
+		utils.Response.ParameterTypeError(content, err.(validator.ValidationErrors).Translate(utils.Trans))
+		return
+	}
+	users, err := services.UserService.FindUserByParams(&params)
+	if err != nil {
+		utils.Response.ServerError(content, err.Error())
+		return
+	}
+	utils.Response.Success(content, users)
 }
 
 // CreateUser 创建用户
@@ -40,12 +68,12 @@ func (u *userController) CreateUser(context *gin.Context) {
 	var user responsies.CreateSingleUserRequest
 	err := context.ShouldBind(&user)
 	if err != nil {
-		utils.Response.ParameterTypeError(context, err)
+		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
 		return
 	}
 	err = services.UserService.CreateUser(&user)
 	if err != nil {
-		utils.Response.ServerError(context, err)
+		utils.Response.ServerError(context, err.Error())
 		return
 	}
 	utils.Response.Success(context, nil)
@@ -60,7 +88,23 @@ func (u *userController) CreateUser(context *gin.Context) {
 // @Param id path int true "用户ID"
 // @Router /users/{id} [put]
 func (u *userController) UpdateUser(context *gin.Context) {
-
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
+	var user responsies.UpdateUserRequest
+	err := context.ShouldBind(&user)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
+		return
+	}
+	err = services.UserService.UpdateUser(&user, id)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
 }
 
 // DeleteUser 删除用户
@@ -72,7 +116,17 @@ func (u *userController) UpdateUser(context *gin.Context) {
 // @Param id path int true "用户ID"
 // @Router /users/{id} [delete]
 func (u *userController) DeleteUser(context *gin.Context) {
-
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
+	err := services.UserService.DeleteUser(id)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
 }
 
 // GetUsers 获取用户列表
@@ -85,5 +139,16 @@ func (u *userController) DeleteUser(context *gin.Context) {
 // @Param limit query int false "每页显示的用户数量，默认为10"
 // @Router /users [get]
 func (u *userController) GetUsers(context *gin.Context) {
-
+	var Page responsies.Page
+	err := context.ShouldBind(&Page)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
+		return
+	}
+	users, err := services.UserService.GetUsers(Page)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, users)
 }

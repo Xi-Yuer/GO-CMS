@@ -4,6 +4,7 @@ import (
 	"github.com/Xi-Yuer/cms/docs"
 	"github.com/Xi-Yuer/cms/middlewares"
 	routers "github.com/Xi-Yuer/cms/routers/modules"
+	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -14,6 +15,10 @@ func SetUpRouters() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 
 	r := gin.New()
+	err := utils.Translator("zh")
+	if err != nil {
+		panic(err.Error())
+	}
 
 	v1 := r.Group("/api/v1", middlewares.RequestMiddlewareModule.RequestLoggerMiddleware)
 

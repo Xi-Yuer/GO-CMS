@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`
 (
-    `id`          varchar(36)  NOT NULL,
+    `id`     varchar(36) NOT NULL UNIQUE,
     `account`     varchar(255) NOT NULL,
     `password`    varchar(255) NOT NULL,
     `nickname`    varchar(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE `users`
     `create_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `update_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     `delete_time` timestamp    NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-    `status`      int               DEFAULT NULL,
+    `status` int DEFAULT 1,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

@@ -1,6 +1,4 @@
 info:
-  version: 1.0.0
-  title: CMS后台管理系统
   contact: { }
 paths:
   /users:

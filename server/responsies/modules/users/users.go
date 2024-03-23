@@ -2,28 +2,19 @@ package usersResponsiesModules
 
 import "time"
 
-type SingleUserResponse struct {
-	ID         string     `json:"id"`
-	Account    string     `json:"account"` // 账号
-	Nickname   string     `json:"nickname"`
-	Avatar     string     `json:"avatar"`
-	Gender     string     `json:"gender"`
-	Role       string     `json:"role"`
-	CreateTime *time.Time `json:"createTime"`
-	UpdateTime *time.Time `json:"updateTime"`
-	DeleteTime *time.Time `json:"deleteTime"`
-	Status     string     `json:"status"`
-}
-
 type QueryUsersParams struct {
-	Limit      string `json:"limit" binding:"required"`
-	Offset     string `json:"offset" binding:"required"`
-	Nickname   string `json:"nickname"`
-	Role       string `json:"role"`
-	Gender     string `json:"gender"`
-	Status     string `json:"status"`
-	CreateTime string `json:"createTime"`
-	UpdateTime string `json:"updateTime"`
+	Limit      *string `form:"limit" binding:"required"`
+	Offset     *string `form:"offset" binding:"required"`
+	ID         string  `form:"id"`
+	Nickname   string  `form:"nickname"`
+	Account    string  `form:"account"`
+	Role       string  `form:"role"`
+	Gender     string  `form:"gender"`
+	Status     string  `form:"status"`
+	CreateTime string  `form:"createTime"`
+	UpdateTime string  `form:"updateTime"`
+	StartTime  string  `form:"startTime"`
+	EndTime    string  `form:"endTime"`
 }
 
 type CreateUserParams struct {
@@ -33,12 +24,24 @@ type CreateUserParams struct {
 }
 
 type UpdateUserParams struct {
-	ID         string `json:"id" binding:"required"`
-	Nickname   string `json:"nickname"`
-	Avatar     string `json:"avatar"`
-	Gender     string `json:"gender"`
-	Role       string `json:"role"`
-	Status     string `json:"status"`
-	CreateTime string `json:"createTime"`
-	UpdateTime string `json:"updateTime"`
+	Nickname string `form:"nickname"`
+	Avatar   string `form:"avatar"`
+	Password string `form:"password"`
+	Status   string `form:"status"`
+}
+
+type Page struct {
+	Limit  *int `form:"limit" binding:"required"`
+	Offset *int `form:"offset" binding:"required"`
+}
+
+type SingleUserResponse struct {
+	ID         string     `json:"id"`
+	Account    string     `json:"account"` // 账号
+	Nickname   string     `json:"nickname"`
+	Avatar     *string    `json:"avatar"`
+	CreateTime *time.Time `json:"createTime"`
+	UpdateTime *time.Time `json:"updateTime"`
+	DeleteTime *time.Time `json:"deleteTime"`
+	Status     *string    `json:"status"`
 }
