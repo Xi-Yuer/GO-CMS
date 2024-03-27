@@ -16,6 +16,7 @@ func main() {
 	err := db.InitDB()
 	if err != nil {
 		utils.Log.Panic(err)
+		return
 	}
 
 	r := routers.SetUpRouters()

@@ -2,6 +2,7 @@ package responsies
 
 import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/auth"
+	rolesResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/roles"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/users"
 )
 
@@ -29,3 +30,12 @@ type LoginRequestParams = authResponsiesModules.LoginRequestParams
 
 // JWTPayload 生成JWT
 type JWTPayload = usersResponsiesModules.JWTPayload
+
+// CreateRoleParams 创建角色
+type CreateRoleParams = rolesResponsiesModules.CreateRoleParams
+
+// UpdateRoleParams 更新角色
+type UpdateRoleParams = rolesResponsiesModules.UpdateRoleParams
+
+// QueryRolesParams 查询角色
+type QueryRolesParams = rolesResponsiesModules.QueryRoleListParams

@@ -270,18 +270,6 @@ func (r *userRepository) UpdateUser(params *responsies.UpdateUserRequest, id str
 		hasSet = true
 	}
 
-	if params.Status != "" {
-		queryParams = append(queryParams, params.Status)
-		query += "status = ?, "
-		hasSet = true
-	}
-
-	if params.Avatar != "" {
-		queryParams = append(queryParams, params.Avatar)
-		query += "avatar = ?, "
-		hasSet = true
-	}
-
 	if params.Password != "" {
 		// 密码加密
 		password, err := utils.Bcrypt.HashPassword(params.Password)

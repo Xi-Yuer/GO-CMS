@@ -28,9 +28,7 @@ type CreateUserParams struct {
 
 type UpdateUserParams struct {
 	Nickname string `form:"nickname"`
-	Avatar   string `form:"avatar"`
 	Password string `form:"password"`
-	Status   string `form:"status"`
 }
 
 type Page struct {

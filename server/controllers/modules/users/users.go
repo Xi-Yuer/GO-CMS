@@ -1,6 +1,7 @@
 package userControllersModules
 
 import (
+	"github.com/Xi-Yuer/cms/constant"
 	"github.com/Xi-Yuer/cms/responsies"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
@@ -99,6 +100,12 @@ func (u *userController) UpdateUser(context *gin.Context) {
 		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
+	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
+	if !exist || jwtPayload.(*responsies.JWTPayload).ID != id {
+		utils.Response.NoPermission(context, "暂无权限")
+		return
+	}
+
 	err = services.UserService.UpdateUser(&user, id)
 	if err != nil {
 		utils.Response.ServerError(context, err.Error())

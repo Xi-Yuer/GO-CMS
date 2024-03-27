@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/docs"
 	"github.com/Xi-Yuer/cms/middlewares"
 	authRouterModules "github.com/Xi-Yuer/cms/routers/modules/auth"
+	rolesRouterModules "github.com/Xi-Yuer/cms/routers/modules/roles"
 	usersRouterModules "github.com/Xi-Yuer/cms/routers/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,7 @@ func SetUpRouters() *gin.Engine {
 	{
 		usersRouterModules.UseUserRoutes(v1)
 		authRouterModules.UseAuthRoutes(v1)
+		rolesRouterModules.UseRolesRoutes(v1)
 	}
 
 	return r
