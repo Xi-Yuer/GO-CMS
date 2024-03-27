@@ -5,7 +5,6 @@ import (
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 )
 
 var UserController = &userController{}
@@ -29,7 +28,8 @@ func (u *userController) GetUser(context *gin.Context) {
 	}
 	user, err := services.UserService.GetUser(id)
 	if err != nil {
-		utils.Log.Error(err)
+		utils.Response.NotFound(context, nil)
+		return
 	}
 	utils.Response.Success(context, user)
 }
@@ -46,7 +46,7 @@ func (u *userController) FindUserByParams(content *gin.Context) {
 	var params responsies.QueryUsersParams
 	err := content.ShouldBind(&params)
 	if err != nil {
-		utils.Response.ParameterTypeError(content, err.(validator.ValidationErrors).Translate(utils.Trans))
+		utils.Response.ParameterTypeError(content, err.Error())
 		return
 	}
 	users, err := services.UserService.FindUserByParams(&params)
@@ -68,7 +68,7 @@ func (u *userController) CreateUser(context *gin.Context) {
 	var user responsies.CreateSingleUserRequest
 	err := context.ShouldBind(&user)
 	if err != nil {
-		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
+		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
 	err = services.UserService.CreateUser(&user)
@@ -96,7 +96,7 @@ func (u *userController) UpdateUser(context *gin.Context) {
 	var user responsies.UpdateUserRequest
 	err := context.ShouldBind(&user)
 	if err != nil {
-		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
+		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
 	err = services.UserService.UpdateUser(&user, id)
@@ -142,7 +142,7 @@ func (u *userController) GetUsers(context *gin.Context) {
 	var Page responsies.Page
 	err := context.ShouldBind(&Page)
 	if err != nil {
-		utils.Response.ParameterTypeError(context, err.(validator.ValidationErrors).Translate(utils.Trans))
+		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
 	users, err := services.UserService.GetUsers(Page)

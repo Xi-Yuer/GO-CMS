@@ -24,7 +24,7 @@ func (u *userService) CreateUser(user *responsies.CreateSingleUserRequest) error
 	if exist {
 		return errors.New("用户名已存在")
 	}
-	password, err := utils.Bcrypt.HasPassword(user.Password)
+	password, err := utils.Bcrypt.HashPassword(user.Password)
 	if err != nil {
 		return err
 	}
@@ -33,7 +33,7 @@ func (u *userService) CreateUser(user *responsies.CreateSingleUserRequest) error
 }
 
 func (u *userService) FindUsersByAccount(account string) bool {
-	return repositories.UserRepositorysModules.FindUsersByAccount(account)
+	return repositories.UserRepositorysModules.SelectUsersByAccount(account)
 }
 
 func (u *userService) FindUserById(id string) (*responsies.UsersSingleResponse, bool) {
@@ -57,4 +57,8 @@ func (u *userService) DeleteUser(id string) error {
 		return errors.New("用户不存在")
 	}
 	return repositories.UserRepositorysModules.DeleteUser(id)
+}
+
+func (u *userService) FindUserByAccount(account string) (*responsies.SingleUserResponseHasPassword, bool) {
+	return repositories.UserRepositorysModules.FindUserByAccount(account)
 }

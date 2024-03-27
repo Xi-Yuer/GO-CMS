@@ -2,6 +2,8 @@ package utils
 
 import (
 	"github.com/Xi-Yuer/cms/utils/modules/bcrypt"
+	"github.com/Xi-Yuer/cms/utils/modules/captcha"
+	"github.com/Xi-Yuer/cms/utils/modules/jwt"
 	"github.com/Xi-Yuer/cms/utils/modules/logs"
 	"github.com/Xi-Yuer/cms/utils/modules/response"
 	"github.com/Xi-Yuer/cms/utils/modules/snowflake"
@@ -14,3 +16,5 @@ var GenID = snowflake.GenID
 var Bcrypt = &bcrypt.Bcrypt{}
 var Translator = translator.ValidatorTrans
 var Trans = translator.Trans
+var Captcha = &captcha.Captcha{}
+var Jsonwebtoken = &jwt.Jsonwebtoken{}

@@ -24,66 +24,66 @@ func (r *response) Success(context *gin.Context, v any) {
 	})
 }
 
-func (r *response) NoPermission(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) NoPermission(context *gin.Context, v string) {
+	context.JSON(http.StatusForbidden, responseStruct{
 		Code: http.StatusForbidden,
-		Data: v,
-		Msg:  "暂无权限",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
-func (r *response) ServerError(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) ServerError(context *gin.Context, v string) {
+	context.JSON(http.StatusInternalServerError, responseStruct{
 		Code: http.StatusInternalServerError,
-		Data: v,
-		Msg:  "服务器错误",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
 func (r *response) NotFound(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+	context.JSON(http.StatusNotFound, responseStruct{
 		Code: http.StatusNotFound,
 		Data: v,
 		Msg:  "资源未找到",
 	})
 }
 
-func (r *response) ParameterError(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) ParameterError(context *gin.Context, v string) {
+	context.JSON(http.StatusBadRequest, responseStruct{
 		Code: http.StatusBadRequest,
-		Data: v,
-		Msg:  "参数错误",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
-func (r *response) ParameterMissing(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) ParameterMissing(context *gin.Context, v string) {
+	context.JSON(http.StatusBadRequest, responseStruct{
 		Code: http.StatusBadRequest,
-		Data: v,
-		Msg:  "参数缺失",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
-func (r *response) ParameterTypeError(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) ParameterTypeError(context *gin.Context, v string) {
+	context.JSON(http.StatusBadRequest, responseStruct{
 		Code: http.StatusBadRequest,
-		Data: v,
-		Msg:  "参数类型错误",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
-func (r *response) Conflict(context *gin.Context, v any) {
-	context.JSON(http.StatusOK, responseStruct{
+func (r *response) Conflict(context *gin.Context, v string) {
+	context.JSON(http.StatusConflict, responseStruct{
 		Code: http.StatusConflict,
-		Data: v,
-		Msg:  "资源冲突",
+		Data: nil,
+		Msg:  v,
 	})
 }
 
-func (r *response) NoAuth(context *gin.Context, v any) {
+func (r *response) NoAuth(context *gin.Context, v string) {
 	context.JSON(http.StatusOK, responseStruct{
 		Code: http.StatusUnauthorized,
-		Data: v,
-		Msg:  "未登录",
+		Data: nil,
+		Msg:  v,
 	})
 }

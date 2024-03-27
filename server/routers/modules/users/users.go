@@ -1,4 +1,4 @@
-package routers
+package usersRouterModules
 
 import (
 	"github.com/Xi-Yuer/cms/controllers"

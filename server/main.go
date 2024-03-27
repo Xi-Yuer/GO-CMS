@@ -17,8 +17,8 @@ func main() {
 	if err != nil {
 		utils.Log.Panic(err)
 	}
-	r := routers.SetUpRouters()
 
+	r := routers.SetUpRouters()
 	go func() {
 		err := r.Run(config.Config.APP.PORT)
 		if err != nil {

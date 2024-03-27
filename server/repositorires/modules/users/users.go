@@ -28,10 +28,8 @@ func (r *userRepository) GetUser(id string) (*responsies.UsersSingleResponse, er
 	}(rows)
 
 	user := &responsies.UsersSingleResponse{}
-	found := false
 	var password string
 	for rows.Next() {
-		found = true
 		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
 		if err != nil {
 			return nil, err
@@ -42,8 +40,8 @@ func (r *userRepository) GetUser(id string) (*responsies.UsersSingleResponse, er
 		return nil, err
 	}
 
-	if !found {
-		return nil, nil
+	if user.ID == "" {
+		return nil, errors.New("用户不存在")
 	}
 	return user, nil
 }
@@ -95,7 +93,7 @@ func (r *userRepository) CreateUser(user *responsies.CreateSingleUserRequest) er
 	return nil
 }
 
-func (r *userRepository) FindUsersByAccount(account string) bool {
+func (r *userRepository) SelectUsersByAccount(account string) bool {
 	exec, err := db.DB.Query("SELECT count(account) FROM users WHERE account = ?", account)
 	if err != nil {
 		return false
@@ -206,6 +204,28 @@ func (r *userRepository) FindUserByParams(params *responsies.QueryUsersParams) (
 	return users, nil
 }
 
+func (r *userRepository) FindUserByAccount(account string) (*responsies.SingleUserResponseHasPassword, bool) {
+	if account == "" {
+		return nil, false
+	}
+	user := &responsies.SingleUserResponseHasPassword{}
+	query := "SELECT id, account, nickname, password, status, create_time, update_time, delete_time, status FROM users WHERE account = ?"
+	rows, err := db.DB.Query(query, account)
+	if err != nil {
+		return nil, false
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
+		if err != nil {
+			return nil, false
+		}
+		return user, true
+	}
+	return nil, false
+}
 func (r *userRepository) FindUserById(id string) (*responsies.UsersSingleResponse, bool) {
 	user, err := r.GetUser(id)
 	if err != nil {
@@ -264,7 +284,7 @@ func (r *userRepository) UpdateUser(params *responsies.UpdateUserRequest, id str
 
 	if params.Password != "" {
 		// 密码加密
-		password, err := utils.Bcrypt.HasPassword(params.Password)
+		password, err := utils.Bcrypt.HashPassword(params.Password)
 		if err != nil {
 			return err
 		}

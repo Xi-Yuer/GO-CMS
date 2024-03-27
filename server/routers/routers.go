@@ -1,9 +1,11 @@
 package routers
 
 import (
+	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/docs"
 	"github.com/Xi-Yuer/cms/middlewares"
-	routers "github.com/Xi-Yuer/cms/routers/modules"
+	authRouterModules "github.com/Xi-Yuer/cms/routers/modules/auth"
+	usersRouterModules "github.com/Xi-Yuer/cms/routers/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -20,7 +22,7 @@ func SetUpRouters() *gin.Engine {
 		panic(err.Error())
 	}
 
-	v1 := r.Group("/api/v1", middlewares.RequestMiddlewareModule.RequestLoggerMiddleware)
+	v1 := r.Group("/api/v1", gin.Logger(), middlewares.AuthMiddleWareModule, middlewares.SessionMiddleWareModule(config.Config.APP.SESSIONSECRET))
 
 	// swagger
 	docs.SwaggerInfo.Title = "CMS API"
@@ -29,7 +31,8 @@ func SetUpRouters() *gin.Engine {
 	v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	{
-		routers.UseUserRoutes(v1)
+		usersRouterModules.UseUserRoutes(v1)
+		authRouterModules.UseAuthRoutes(v1)
 	}
 
 	return r

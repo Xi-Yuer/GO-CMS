@@ -1,6 +1,9 @@
 package usersResponsiesModules
 
-import "time"
+import (
+	"github.com/golang-jwt/jwt/v5"
+	"time"
+)
 
 type QueryUsersParams struct {
 	Limit      *string `form:"limit" binding:"required"`
@@ -44,4 +47,18 @@ type SingleUserResponse struct {
 	UpdateTime *time.Time `json:"updateTime"`
 	DeleteTime *time.Time `json:"deleteTime"`
 	Status     *string    `json:"status"`
+}
+
+type SingleUserResponseHasPassword struct {
+	SingleUserResponse
+	Password string `json:"password"`
+}
+
+type JWTPayload struct {
+	ID               string   `json:"id"`
+	NickName         string   `json:"nickName"`
+	Role             string   `json:"role"`
+	PagePermission   []string `json:"pagePermission"`
+	ButtonPermission []string `json:"buttonPermission"`
+	jwt.RegisteredClaims
 }

@@ -2,7 +2,9 @@ package config
 
 var Config = config{
 	APP: APP{
-		PORT: ":8080",
+		PORT:          ":8080",
+		SESSIONSECRET: "1234567890",
+		JWT:           "1234567890",
 	},
 	DB: DB{
 		NAME:     "root",
@@ -19,7 +21,9 @@ type config struct {
 }
 
 type APP struct {
-	PORT string
+	PORT          string
+	SESSIONSECRET string
+	JWT           string
 }
 type DB struct {
 	NAME     string
