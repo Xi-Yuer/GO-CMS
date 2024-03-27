@@ -6,7 +6,7 @@ import (
 )
 
 func UseRolesRoutes(r *gin.RouterGroup) {
-	group := r.Group("/role")
+	group := r.Group("/roles")
 	{
 		group.POST("/", controllers.RoleController.CreateRole)
 	}

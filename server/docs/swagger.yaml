@@ -31,6 +31,21 @@ paths:
       summary: 登录
       tags:
         - 权限
+  /roles:
+    post:
+      consumes:
+        - application/json
+      description: 创建角色
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 创建角色
+      tags:
+        - 角色
   /users:
     get:
       consumes:

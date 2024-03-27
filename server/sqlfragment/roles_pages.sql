@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `roles_pages`;
 CREATE TABLE `roles_pages`
 (
-    `role_id` int NOT NULL,
-    `page_id` int NOT NULL,
+    `role_id` VARCHAR(36) NOT NULL,
+    `page_id` VARCHAR(36) NOT NULL,
     PRIMARY KEY (`page_id`, `role_id`),
     KEY `role_id` (`role_id`),
     CONSTRAINT `roles_pages_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`page_id`),

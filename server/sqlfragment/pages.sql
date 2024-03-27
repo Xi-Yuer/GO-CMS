@@ -23,12 +23,12 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `pages`;
 CREATE TABLE `pages`
 (
-    `page_id`        int          NOT NULL AUTO_INCREMENT,
+    `page_id`     varchar(36) NOT NULL,
     `page_name`      varchar(255) NOT NULL,
     `page_path`      varchar(255) NOT NULL,
     `page_icon`      varchar(255)      DEFAULT NULL,
     `page_component` varchar(255) NOT NULL,
-    `parent_page`    int               DEFAULT NULL,
+    `parent_page` varchar(36) DEFAULT NULL,
     `all_delete`     tinyint(1)        DEFAULT '1',
     `create_time`    timestamp    NULL DEFAULT CURRENT_TIMESTAMP,
     `update_time`    timestamp    NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
