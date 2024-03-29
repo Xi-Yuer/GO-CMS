@@ -6,7 +6,6 @@ type CreateRoleParams struct {
 }
 
 type UpdateRoleParams struct {
-	ID          string `json:"id" form:"id" binding:"required"`
 	RoleName    string `json:"roleName" form:"roleName"`
 	Description string `json:"description" form:"description"`
 }

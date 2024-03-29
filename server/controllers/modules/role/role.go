@@ -68,15 +68,20 @@ func (r *roleController) DeleteRole(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /roles [update]
+// @Router /roles/{id} [put]
 func (r *roleController) UpdateRole(context *gin.Context) {
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
 	var role responsies.UpdateRoleParams
 	err := context.ShouldBind(&role)
 	if err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
-	if err = services.RoleService.UpdateRole(&role); err != nil {
+	if err = services.RoleService.UpdateRole(&role, id); err != nil {
 		utils.Response.ServerError(context, err.Error())
 		return
 	}

@@ -32,6 +32,20 @@ paths:
       tags:
         - 权限
   /roles:
+    get:
+      consumes:
+        - application/json
+      description: 获取角色
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取角色
+      tags:
+        - 角色
     post:
       consumes:
         - application/json
@@ -44,6 +58,35 @@ paths:
           schema:
             type: string
       summary: 创建角色
+      tags:
+        - 角色
+  /roles/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: 删除角色
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 删除角色
+      tags:
+        - 角色
+    put:
+      consumes:
+        - application/json
+      description: 更新角色
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 更新角色
       tags:
         - 角色
   /users:

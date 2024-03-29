@@ -31,7 +31,7 @@ func (r *rolesRepository) DeleteRole(id string) error {
 	return nil
 }
 
-func (r *rolesRepository) UpdateRole(role *responsies.UpdateRoleParams) error {
+func (r *rolesRepository) UpdateRole(role *responsies.UpdateRoleParams, id string) error {
 	query := "UPDATE roles SET "
 	var (
 		queryParams []any
@@ -56,7 +56,7 @@ func (r *rolesRepository) UpdateRole(role *responsies.UpdateRoleParams) error {
 	query = query[:len(query)-2]
 
 	query += " WHERE role_id = ?"
-	queryParams = append(queryParams, role.ID)
+	queryParams = append(queryParams, id)
 	fmt.Println(query)
 	fmt.Println(queryParams)
 

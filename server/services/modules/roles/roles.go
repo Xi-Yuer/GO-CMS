@@ -22,12 +22,12 @@ func (r *rolesService) DeleteRole(id string) error {
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
 
-func (r *rolesService) UpdateRole(role *responsies.UpdateRoleParams) error {
-	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(role.ID)
+func (r *rolesService) UpdateRole(role *responsies.UpdateRoleParams, id string) error {
+	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse.ID == "" {
 		return errors.New("角色不存在")
 	}
-	return repositories.RoleRepositorysModules.UpdateRole(role)
+	return repositories.RoleRepositorysModules.UpdateRole(role, id)
 
 }
 func (r *rolesService) GetRoles() ([]*responsies.SingleRoleResponse, error) {
