@@ -2,7 +2,7 @@ package userControllersModules
 
 import (
 	"github.com/Xi-Yuer/cms/constant"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -11,6 +11,28 @@ import (
 var UserController = &userController{}
 
 type userController struct{}
+
+// CreateUser 创建用户
+// @Summary 创建新用户
+// @Description 创建新用户并将其添加到系统中
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Router /users [post]
+func (u *userController) CreateUser(context *gin.Context) {
+	var user dto.CreateSingleUserRequest
+	err := context.ShouldBind(&user)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	err = services.UserService.CreateUser(&user)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
+}
 
 // GetUser 获取用户
 // @Summary 根据ID获取用户信息
@@ -29,7 +51,7 @@ func (u *userController) GetUser(context *gin.Context) {
 	}
 	user, err := services.UserService.GetUser(id)
 	if err != nil {
-		utils.Response.NotFound(context, nil)
+		utils.Response.NotFound(context, "用户不存在")
 		return
 	}
 	utils.Response.Success(context, user)
@@ -42,9 +64,9 @@ func (u *userController) GetUser(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Body
-// @Router /users [get]
+// @Router /users/search [get]
 func (u *userController) FindUserByParams(content *gin.Context) {
-	var params responsies.QueryUsersParams
+	var params dto.QueryUsersParams
 	err := content.ShouldBind(&params)
 	if err != nil {
 		utils.Response.ParameterTypeError(content, err.Error())
@@ -56,28 +78,6 @@ func (u *userController) FindUserByParams(content *gin.Context) {
 		return
 	}
 	utils.Response.Success(content, users)
-}
-
-// CreateUser 创建用户
-// @Summary 创建新用户
-// @Description 创建新用户并将其添加到系统中
-// @Tags 用户管理
-// @Accept json
-// @Produce json
-// @Router /users [post]
-func (u *userController) CreateUser(context *gin.Context) {
-	var user responsies.CreateSingleUserRequest
-	err := context.ShouldBind(&user)
-	if err != nil {
-		utils.Response.ParameterTypeError(context, err.Error())
-		return
-	}
-	err = services.UserService.CreateUser(&user)
-	if err != nil {
-		utils.Response.ServerError(context, err.Error())
-		return
-	}
-	utils.Response.Success(context, nil)
 }
 
 // UpdateUser 更新用户
@@ -94,14 +94,14 @@ func (u *userController) UpdateUser(context *gin.Context) {
 		utils.Response.ParameterTypeError(context, "id不能为空")
 		return
 	}
-	var user responsies.UpdateUserRequest
+	var user dto.UpdateUserRequest
 	err := context.ShouldBind(&user)
 	if err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
 	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
-	if !exist || jwtPayload.(*responsies.JWTPayload).ID != id {
+	if !exist || jwtPayload.(*dto.JWTPayload).ID != id {
 		utils.Response.NoPermission(context, "暂无权限")
 		return
 	}
@@ -146,7 +146,7 @@ func (u *userController) DeleteUser(context *gin.Context) {
 // @Param limit query int false "每页显示的用户数量，默认为10"
 // @Router /users [get]
 func (u *userController) GetUsers(context *gin.Context) {
-	var Page responsies.Page
+	var Page dto.Page
 	err := context.ShouldBind(&Page)
 	if err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())

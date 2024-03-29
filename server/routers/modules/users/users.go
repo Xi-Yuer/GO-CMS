@@ -10,9 +10,10 @@ func UseUserRoutes(r *gin.RouterGroup) {
 	userRouters := r.Group("/users")
 
 	{
-		userRouters.GET("/:id", controllers.UserController.GetUser)
-		userRouters.GET("", controllers.UserController.FindUserByParams)
 		userRouters.POST("", controllers.UserController.CreateUser)
+		userRouters.GET("/:id", controllers.UserController.GetUser)
+		userRouters.GET("", controllers.UserController.GetUsers)
+		userRouters.GET("/search", controllers.UserController.FindUserByParams)
 		userRouters.PUT("/:id", controllers.UserController.UpdateUser)
 		userRouters.DELETE("/:id", controllers.UserController.DeleteUser)
 	}

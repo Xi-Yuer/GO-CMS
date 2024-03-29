@@ -3,7 +3,7 @@ package jwt
 import (
 	"errors"
 	"github.com/Xi-Yuer/cms/config"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -11,8 +11,8 @@ import (
 type Jsonwebtoken struct {
 }
 
-func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *responsies.JWTPayload) (string, error) {
-	claim := responsies.JWTPayload{
+func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *dto.JWTPayload) (string, error) {
+	claim := dto.JWTPayload{
 		ID:               jwtPayload.ID,
 		NickName:         jwtPayload.NickName,
 		Role:             jwtPayload.Role,
@@ -31,8 +31,8 @@ func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *responsies.JWTPayload
 	return token, err
 }
 
-func (j *Jsonwebtoken) ParseTokenHs256(tokenStr string) (*responsies.JWTPayload, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &responsies.JWTPayload{}, func(token *jwt.Token) (interface{}, error) {
+func (j *Jsonwebtoken) ParseTokenHs256(tokenStr string) (*dto.JWTPayload, error) {
+	token, err := jwt.ParseWithClaims(tokenStr, &dto.JWTPayload{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(config.Config.APP.JWT), nil //返回签名密钥
 	})
 	if err != nil {
@@ -43,7 +43,7 @@ func (j *Jsonwebtoken) ParseTokenHs256(tokenStr string) (*responsies.JWTPayload,
 		return nil, errors.New("claim invalid")
 	}
 
-	claims, ok := token.Claims.(*responsies.JWTPayload)
+	claims, ok := token.Claims.(*dto.JWTPayload)
 	if !ok {
 		return nil, errors.New("invalid claim type")
 	}

@@ -40,11 +40,11 @@ func (r *response) ServerError(context *gin.Context, v string) {
 	})
 }
 
-func (r *response) NotFound(context *gin.Context, v any) {
+func (r *response) NotFound(context *gin.Context, v string) {
 	context.JSON(http.StatusNotFound, responseStruct{
 		Code: http.StatusNotFound,
-		Data: v,
-		Msg:  "资源未找到",
+		Msg:  v,
+		Data: nil,
 	})
 }
 

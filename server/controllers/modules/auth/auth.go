@@ -1,7 +1,7 @@
 package authControllersModules
 
 import (
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ type authController struct{}
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /auth/login [post]
 func (a *authController) Login(context *gin.Context) {
-	var loginParams responsies.LoginRequestParams
+	var loginParams dto.LoginRequestParams
 	if err := context.ShouldBind(&loginParams); err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())
 		return

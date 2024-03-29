@@ -2,15 +2,15 @@ package rolesServiceModules
 
 import (
 	"errors"
-	repositories "github.com/Xi-Yuer/cms/repositorires/modules"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
+	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 )
 
 var RolesService = &rolesService{}
 
 type rolesService struct{}
 
-func (r *rolesService) CreateRole(role *responsies.CreateRoleParams) error {
+func (r *rolesService) CreateRole(role *dto.CreateRoleParams) error {
 	return repositories.RoleRepositorysModules.CreateRole(role)
 }
 
@@ -22,7 +22,7 @@ func (r *rolesService) DeleteRole(id string) error {
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
 
-func (r *rolesService) UpdateRole(role *responsies.UpdateRoleParams, id string) error {
+func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse.ID == "" {
 		return errors.New("角色不存在")
@@ -30,6 +30,6 @@ func (r *rolesService) UpdateRole(role *responsies.UpdateRoleParams, id string) 
 	return repositories.RoleRepositorysModules.UpdateRole(role, id)
 
 }
-func (r *rolesService) GetRoles() ([]*responsies.SingleRoleResponse, error) {
+func (r *rolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	return repositories.RoleRepositorysModules.GetRoles()
 }

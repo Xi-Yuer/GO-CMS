@@ -1,13 +1,14 @@
-package responsies
+package dto
 
 import (
-	authResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/auth"
-	rolesResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/roles"
-	usersResponsiesModules "github.com/Xi-Yuer/cms/responsies/modules/users"
+	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
+	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
+	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 )
 
 // UsersSingleResponse 查询单个用户
 type UsersSingleResponse usersResponsiesModules.SingleUserResponse
+
 type SingleUserResponseHasPassword usersResponsiesModules.SingleUserResponseHasPassword
 
 // CreateSingleUserRequest 创建用户

@@ -43,7 +43,6 @@ type SingleUserResponse struct {
 	Avatar     *string    `json:"avatar"`
 	CreateTime *time.Time `json:"createTime"`
 	UpdateTime *time.Time `json:"updateTime"`
-	DeleteTime *time.Time `json:"deleteTime"`
 	Status     *string    `json:"status"`
 }
 

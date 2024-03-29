@@ -4,15 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/Xi-Yuer/cms/db"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"time"
 )
 
 var RolesRepository = &rolesRepository{}
 
 type rolesRepository struct{}
 
-func (r *rolesRepository) CreateRole(role *responsies.CreateRoleParams) error {
+func (r *rolesRepository) CreateRole(role *dto.CreateRoleParams) error {
 	query := "INSERT INTO roles (role_id, role_name, description) VALUES (?, ?, ?)"
 	roleID := utils.GenID()
 	_, err := db.DB.Exec(query, roleID, role.RoleName, role.Description)
@@ -23,15 +24,15 @@ func (r *rolesRepository) CreateRole(role *responsies.CreateRoleParams) error {
 }
 
 func (r *rolesRepository) DeleteRole(id string) error {
-	query := "DELETE FROM roles WHERE role_id = ?"
-	_, err := db.DB.Exec(query, id)
+	query := "UPDATE roles SET delete_time = ? WHERE role_id = ?"
+	_, err := db.DB.Exec(query, time.Now(), id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *rolesRepository) UpdateRole(role *responsies.UpdateRoleParams, id string) error {
+func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	query := "UPDATE roles SET "
 	var (
 		queryParams []any
@@ -69,7 +70,7 @@ func (r *rolesRepository) UpdateRole(role *responsies.UpdateRoleParams, id strin
 	return nil
 
 }
-func (r *rolesRepository) GetRoles() ([]*responsies.SingleRoleResponse, error) {
+func (r *rolesRepository) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE delete_time IS NULL "
 
 	rows, err := db.DB.Query(query)
@@ -84,9 +85,9 @@ func (r *rolesRepository) GetRoles() ([]*responsies.SingleRoleResponse, error) {
 		}
 	}(rows)
 
-	roles := make([]*responsies.SingleRoleResponse, 0)
+	roles := make([]*dto.SingleRoleResponse, 0)
 	for rows.Next() {
-		role := &responsies.SingleRoleResponse{}
+		role := &dto.SingleRoleResponse{}
 		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CreateTime, &role.UpdateTime)
 		if err != nil {
 			return nil, err
@@ -97,7 +98,7 @@ func (r *rolesRepository) GetRoles() ([]*responsies.SingleRoleResponse, error) {
 	return roles, nil
 }
 
-func (r *rolesRepository) FindRoleById(id string) *responsies.SingleRoleResponse {
+func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {
 	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE role_id = ? AND delete_time IS NULL"
 	rows, err := db.DB.Query(query, id)
 	if err != nil {
@@ -109,7 +110,7 @@ func (r *rolesRepository) FindRoleById(id string) *responsies.SingleRoleResponse
 			utils.Log.Error(err)
 		}
 	}(rows)
-	role := &responsies.SingleRoleResponse{}
+	role := &dto.SingleRoleResponse{}
 	for rows.Next() {
 		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CreateTime, &role.UpdateTime)
 		if err != nil {

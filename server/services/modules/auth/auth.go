@@ -2,7 +2,7 @@ package authServiceModules
 
 import (
 	"errors"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
 )
@@ -12,7 +12,7 @@ var AuthService = &authService{}
 type authService struct {
 }
 
-func (a *authService) Login(params *responsies.LoginRequestParams) (error, string) {
+func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 	user, exist := userServiceModules.UserService.FindUserByAccount(params.Account)
 	if !exist {
 		return errors.New("账号不存在"), ""
@@ -25,7 +25,7 @@ func (a *authService) Login(params *responsies.LoginRequestParams) (error, strin
 
 	// TODO 查找用户页面和按钮权限并赋值
 	// 生成token
-	jwtPayload := &responsies.JWTPayload{
+	jwtPayload := &dto.JWTPayload{
 		ID:               user.ID,
 		NickName:         user.Nickname,
 		Role:             "",

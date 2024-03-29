@@ -5,16 +5,17 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Xi-Yuer/cms/db"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"time"
 )
 
 var UserRepository = &userRepository{}
 
 type userRepository struct{}
 
-func (r *userRepository) GetUser(id string) (*responsies.UsersSingleResponse, error) {
-	rows, err := db.DB.Query("SELECT * FROM users WHERE id = ?", id)
+func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
+	rows, err := db.DB.Query("SELECT id, account, password, nickname, avatar, create_time, update_time, status FROM users WHERE id = ? AND delete_time IS NULL", id)
 
 	if err != nil {
 		return nil, err
@@ -27,10 +28,10 @@ func (r *userRepository) GetUser(id string) (*responsies.UsersSingleResponse, er
 		}
 	}(rows)
 
-	user := &responsies.UsersSingleResponse{}
+	user := &dto.UsersSingleResponse{}
 	var password string
 	for rows.Next() {
-		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
+		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -46,8 +47,8 @@ func (r *userRepository) GetUser(id string) (*responsies.UsersSingleResponse, er
 	return user, nil
 }
 
-func (r *userRepository) GetUsers(page responsies.Page) ([]responsies.UsersSingleResponse, error) {
-	rows, err := db.DB.Query("SELECT * FROM users LIMIT ?, ?", page.Offset, page.Limit)
+func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
+	rows, err := db.DB.Query("SELECT id, account, password, nickname, avatar, create_time, update_time, status FROM users WHERE delete_time IS NULL LIMIT ?, ?", page.Offset, page.Limit)
 	if err != nil {
 		return nil, err
 	}
@@ -59,11 +60,11 @@ func (r *userRepository) GetUsers(page responsies.Page) ([]responsies.UsersSingl
 		}
 	}(rows)
 
-	users := make([]responsies.UsersSingleResponse, 10)
+	users := make([]dto.UsersSingleResponse, 0)
 	var password string
 	for rows.Next() {
-		user := &responsies.UsersSingleResponse{}
-		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
+		user := &dto.UsersSingleResponse{}
+		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -76,7 +77,7 @@ func (r *userRepository) GetUsers(page responsies.Page) ([]responsies.UsersSingl
 	return users, nil
 }
 
-func (r *userRepository) CreateUser(user *responsies.CreateSingleUserRequest) error {
+func (r *userRepository) CreateUser(user *dto.CreateSingleUserRequest) error {
 	id := utils.GenID()
 	exec, err := db.DB.Exec("INSERT INTO users (id,account,nickname,password) VALUES (?, ?, ?, ?)", id, user.Account, user.Nickname, user.Password)
 	if err != nil {
@@ -94,7 +95,7 @@ func (r *userRepository) CreateUser(user *responsies.CreateSingleUserRequest) er
 }
 
 func (r *userRepository) SelectUsersByAccount(account string) bool {
-	exec, err := db.DB.Query("SELECT count(account) FROM users WHERE account = ?", account)
+	exec, err := db.DB.Query("SELECT count(account) FROM users WHERE account = ? AND delete_time IS NULL", account)
 	if err != nil {
 		return false
 	}
@@ -117,10 +118,10 @@ func (r *userRepository) SelectUsersByAccount(account string) bool {
 	return count > 0
 }
 
-func (r *userRepository) FindUserByParams(params *responsies.QueryUsersParams) ([]responsies.UsersSingleResponse, error) {
+func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
 	query := `
 		SELECT 
-			id, account, nickname, status, create_time, update_time, delete_time, status 
+			id, account, nickname, status, create_time, update_time, status 
 		FROM 
 			users 
 		WHERE 
@@ -188,10 +189,10 @@ func (r *userRepository) FindUserByParams(params *responsies.QueryUsersParams) (
 	}(rows)
 
 	// 解析查询结果
-	var users []responsies.UsersSingleResponse
+	var users []dto.UsersSingleResponse
 	for rows.Next() {
-		var user responsies.UsersSingleResponse
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
+		var user dto.UsersSingleResponse
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, err
 		}
@@ -204,12 +205,12 @@ func (r *userRepository) FindUserByParams(params *responsies.QueryUsersParams) (
 	return users, nil
 }
 
-func (r *userRepository) FindUserByAccount(account string) (*responsies.SingleUserResponseHasPassword, bool) {
+func (r *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
 	if account == "" {
 		return nil, false
 	}
-	user := &responsies.SingleUserResponseHasPassword{}
-	query := "SELECT id, account, nickname, password, status, create_time, update_time, delete_time, status FROM users WHERE account = ?"
+	user := &dto.SingleUserResponseHasPassword{}
+	query := "SELECT id, account, nickname, password, status, create_time, update_time, status FROM users WHERE account = ? AND delete_time IS NULL"
 	rows, err := db.DB.Query(query, account)
 	if err != nil {
 		return nil, false
@@ -218,7 +219,7 @@ func (r *userRepository) FindUserByAccount(account string) (*responsies.SingleUs
 		_ = rows.Close()
 	}(rows)
 	if rows.Next() {
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.CreateTime, &user.UpdateTime, &user.DeleteTime, &user.Status)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, false
 		}
@@ -226,7 +227,8 @@ func (r *userRepository) FindUserByAccount(account string) (*responsies.SingleUs
 	}
 	return nil, false
 }
-func (r *userRepository) FindUserById(id string) (*responsies.UsersSingleResponse, bool) {
+
+func (r *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
 	user, err := r.GetUser(id)
 	if err != nil {
 		return nil, false
@@ -239,7 +241,8 @@ func (r *userRepository) FindUserById(id string) (*responsies.UsersSingleRespons
 }
 
 func (r *userRepository) DeleteUser(id string) error {
-	stmt, err := db.DB.Prepare("DELETE FROM users WHERE id = ?")
+	now := time.Now()
+	stmt, err := db.DB.Prepare(`UPDATE users SET delete_time = ? WHERE id = ?`)
 	if err != nil {
 		return err
 	}
@@ -249,14 +252,14 @@ func (r *userRepository) DeleteUser(id string) error {
 
 		}
 	}(stmt)
-	_, err = stmt.Exec(id)
+	_, err = stmt.Exec(now, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *userRepository) UpdateUser(params *responsies.UpdateUserRequest, id string) error {
+func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) error {
 
 	query := "UPDATE cms.users SET "
 	var (

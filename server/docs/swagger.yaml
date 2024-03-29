@@ -166,4 +166,15 @@ paths:
       summary: 更新用户信息
       tags:
         - 用户管理
+  /users/search:
+    get:
+      consumes:
+        - application/json
+      description: 根据查询参数查询用户信息
+      produces:
+        - application/json
+      responses: { }
+      summary: 查询用户
+      tags:
+        - 用户管理
 swagger: "2.0"

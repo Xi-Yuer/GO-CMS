@@ -1,7 +1,7 @@
 package roleControllersModules
 
 import (
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -22,7 +22,7 @@ type roleController struct {
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /roles [post]
 func (r *roleController) CreateRole(context *gin.Context) {
-	var role responsies.CreateRoleParams
+	var role dto.CreateRoleParams
 	err := context.ShouldBind(&role)
 	if err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())
@@ -75,7 +75,7 @@ func (r *roleController) UpdateRole(context *gin.Context) {
 		utils.Response.ParameterTypeError(context, "id不能为空")
 		return
 	}
-	var role responsies.UpdateRoleParams
+	var role dto.UpdateRoleParams
 	err := context.ShouldBind(&role)
 	if err != nil {
 		utils.Response.ParameterTypeError(context, err.Error())

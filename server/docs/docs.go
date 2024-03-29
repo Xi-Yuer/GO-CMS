@@ -193,6 +193,22 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/users/search": {
+            "get": {
+                "description": "根据查询参数查询用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "查询用户",
+                "responses": {}
+            }
+        },
         "/users/{id}": {
             "get": {
                 "description": "根据ID获取用户信息",

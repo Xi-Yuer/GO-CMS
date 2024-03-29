@@ -2,8 +2,8 @@ package userServiceModules
 
 import (
 	"errors"
-	repositories "github.com/Xi-Yuer/cms/repositorires/modules"
-	"github.com/Xi-Yuer/cms/responsies"
+	"github.com/Xi-Yuer/cms/dto"
+	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
 )
 
@@ -11,15 +11,15 @@ var UserService = &userService{}
 
 type userService struct{}
 
-func (u *userService) GetUser(id string) (*responsies.UsersSingleResponse, error) {
+func (u *userService) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	return repositories.UserRepositorysModules.GetUser(id)
 }
 
-func (u *userService) GetUsers(page responsies.Page) ([]responsies.UsersSingleResponse, error) {
+func (u *userService) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
 	return repositories.UserRepositorysModules.GetUsers(page)
 }
 
-func (u *userService) CreateUser(user *responsies.CreateSingleUserRequest) error {
+func (u *userService) CreateUser(user *dto.CreateSingleUserRequest) error {
 	exist := u.FindUsersByAccount(user.Account)
 	if exist {
 		return errors.New("用户名已存在")
@@ -36,15 +36,15 @@ func (u *userService) FindUsersByAccount(account string) bool {
 	return repositories.UserRepositorysModules.SelectUsersByAccount(account)
 }
 
-func (u *userService) FindUserById(id string) (*responsies.UsersSingleResponse, bool) {
+func (u *userService) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
 	return repositories.UserRepositorysModules.FindUserById(id)
 }
 
-func (u *userService) FindUserByParams(params *responsies.QueryUsersParams) ([]responsies.UsersSingleResponse, error) {
+func (u *userService) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
 	return repositories.UserRepositorysModules.FindUserByParams(params)
 }
 
-func (u *userService) UpdateUser(params *responsies.UpdateUserRequest, id string) error {
+func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error {
 	_, exist := u.FindUserById(id)
 	if !exist {
 		return errors.New("用户不存在")
@@ -59,6 +59,6 @@ func (u *userService) DeleteUser(id string) error {
 	return repositories.UserRepositorysModules.DeleteUser(id)
 }
 
-func (u *userService) FindUserByAccount(account string) (*responsies.SingleUserResponseHasPassword, bool) {
+func (u *userService) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
 	return repositories.UserRepositorysModules.FindUserByAccount(account)
 }
