@@ -39,3 +39,6 @@ type UpdateRoleParams = rolesResponsiesModules.UpdateRoleParams
 
 // QueryRolesParams 查询角色
 type QueryRolesParams = rolesResponsiesModules.QueryRoleListParams
+
+// SingleRoleResponse 查询单个角色
+type SingleRoleResponse = rolesResponsiesModules.SingleRoleResponse

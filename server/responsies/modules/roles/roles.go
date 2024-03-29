@@ -11,8 +11,12 @@ type UpdateRoleParams struct {
 	Description string `json:"description" form:"description"`
 }
 
-type QueryRoleListParams struct {
-	Offset   *string `json:"offset" form:"offset" binding:"required"`
-	Limit    *string `json:"limit" form:"limit" binding:"required"`
-	RoleName string  `json:"roleName" form:"roleName"`
+type QueryRoleListParams struct{}
+
+type SingleRoleResponse struct {
+	ID          string `json:"id"`
+	RoleName    string `json:"roleName"`
+	Description string `json:"description"`
+	CreateTime  string `json:"createTime"`
+	UpdateTime  string `json:"updateTime"`
 }
