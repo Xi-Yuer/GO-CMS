@@ -1,6 +1,7 @@
 package authControllersModules
 
 import (
+	"github.com/Xi-Yuer/cms/constant"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
@@ -53,4 +54,32 @@ func (a *authController) Login(context *gin.Context) {
 // @Router /auth/captcha [get]
 func (a *authController) Captcha(context *gin.Context) {
 	utils.Captcha.GenerateCaptcha(context, 4)
+}
+
+// AuthorizationManagementController 给用户分配角色
+// @Summary 给用户分配角色
+// @Schemes
+// @Description 给用户分配角色
+// @Tags 权限
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /auth/authorization [post]
+func (a *authController) AuthorizationManagementController(context *gin.Context) {
+	var authorizationManagementParams dto.AuthorizationManagementParams
+	err := context.ShouldBind(&authorizationManagementParams)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	user, exists := context.Get(constant.JWTPAYLOAD)
+	if !exists {
+		utils.Response.NoPermission(context, "暂无权限")
+	}
+	err = services.AuthService.AuthorizationManagement(user.(*dto.JWTPayload).ID, &authorizationManagementParams)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
 }

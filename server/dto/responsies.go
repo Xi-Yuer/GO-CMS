@@ -43,3 +43,6 @@ type QueryRolesParams = rolesResponsiesModules.QueryRoleListParams
 
 // SingleRoleResponse 查询单个角色
 type SingleRoleResponse = rolesResponsiesModules.SingleRoleResponse
+
+// AuthorizationManagementParams 给用户分配角色
+type AuthorizationManagementParams = authResponsiesModules.AuthorizationManagementParams

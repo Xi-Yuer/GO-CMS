@@ -16,7 +16,7 @@ func (r *rolesService) CreateRole(role *dto.CreateRoleParams) error {
 
 func (r *rolesService) DeleteRole(id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
-	if singleRoleResponse.ID == "" {
+	if singleRoleResponse == nil {
 		return errors.New("角色不存在")
 	}
 	return repositories.RoleRepositorysModules.DeleteRole(id)
@@ -24,7 +24,7 @@ func (r *rolesService) DeleteRole(id string) error {
 
 func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
-	if singleRoleResponse.ID == "" {
+	if singleRoleResponse == nil {
 		return errors.New("角色不存在")
 	}
 	return repositories.RoleRepositorysModules.UpdateRole(role, id)

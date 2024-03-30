@@ -51,6 +51,7 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 	}
 	return repositories.UserRepositorysModules.UpdateUser(params, id)
 }
+
 func (u *userService) DeleteUser(id string) error {
 	_, exist := u.FindUserById(id)
 	if !exist {

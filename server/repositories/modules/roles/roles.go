@@ -2,10 +2,12 @@ package rolesRepositorysModules
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"strings"
 	"time"
 )
 
@@ -70,6 +72,7 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 	return nil
 
 }
+
 func (r *rolesRepository) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE delete_time IS NULL "
 
@@ -117,5 +120,35 @@ func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {
 			utils.Log.Error(err)
 		}
 	}
+	if role.ID == "" {
+		return nil
+	}
 	return role
+}
+
+// CheckRolesExistence 检查角色是否都存在
+func (r *rolesRepository) CheckRolesExistence(roleIDs []string) error {
+	// 构建 IN 子句
+	var placeholders []string
+	var args []interface{}
+	for _, id := range roleIDs {
+		placeholders = append(placeholders, "?")
+		args = append(args, id)
+	}
+	query := "SELECT COUNT(*) FROM roles WHERE delete_time IS NULL AND role_id IN (" + strings.Join(placeholders, ",") + ") "
+
+	// 执行查询
+	fmt.Println(query)
+	row := db.DB.QueryRow(query, args...)
+	var count int
+	err := row.Scan(&count)
+	if err != nil {
+		return err
+	}
+	// 判断是否所有角色都存在
+	if count != len(roleIDs) {
+		return errors.New("角色不存在")
+	}
+
+	return nil
 }

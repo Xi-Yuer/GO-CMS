@@ -5,3 +5,7 @@ type LoginRequestParams struct {
 	Password string `form:"password" binding:"required"`
 	Captcha  string `form:"captcha" binding:"required"`
 }
+
+type AuthorizationManagementParams struct {
+	RoleID []string `form:"roleID" json:"roleID"`
+}

@@ -41,6 +41,7 @@ type SingleUserResponse struct {
 	Account    string     `json:"account"` // 账号
 	Nickname   string     `json:"nickname"`
 	Avatar     *string    `json:"avatar"`
+	RolesID    []string   `json:"rolesID"`
 	CreateTime *time.Time `json:"createTime"`
 	UpdateTime *time.Time `json:"updateTime"`
 	Status     *string    `json:"status"`

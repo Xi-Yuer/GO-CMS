@@ -7,6 +7,7 @@ import (
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"strings"
 	"time"
 )
 
@@ -15,40 +16,53 @@ var UserRepository = &userRepository{}
 type userRepository struct{}
 
 func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
-	rows, err := db.DB.Query("SELECT id, account, password, nickname, avatar, create_time, update_time, status FROM users WHERE id = ? AND delete_time IS NULL", id)
+	rows, err := db.DB.Query(`
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status, u.create_time, u.update_time
+	FROM users u
+	LEFT JOIN users_roles ur ON u.id = ur.user_id
+	WHERE u.id = ? AND u.delete_time IS NULL
+	GROUP BY u.id, u.account, u.nickname, u.avatar, u.create_time, u.update_time, u.status
+	`, id)
 
 	if err != nil {
+		fmt.Println('1', err)
 		return nil, err
 	}
-
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {
-			utils.Log.Warn(err)
+			utils.Log.Error(err)
 		}
 	}(rows)
 
 	user := &dto.UsersSingleResponse{}
-	var password string
+	var rolesID []uint8
+
 	for rows.Next() {
-		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.Status)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
 	if user.ID == "" {
 		return nil, errors.New("用户不存在")
+	}
+	if rolesID != nil {
+		user.RolesID = strings.Split(string(rolesID), ",")
 	}
 	return user, nil
 }
 
 func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
-	rows, err := db.DB.Query("SELECT id, account, password, nickname, avatar, create_time, update_time, status FROM users WHERE delete_time IS NULL LIMIT ?, ?", page.Offset, page.Limit)
+	rows, err := db.DB.Query(`
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status, u.create_time, u.update_time
+	FROM users u
+	LEFT JOIN users_roles ur ON u.id = ur.user_id
+	WHERE u.delete_time IS NULL
+	GROUP BY u.id, u.account, u.nickname, u.avatar, u.create_time, u.update_time, u.status
+	LIMIT ?, ?
+`, page.Offset, page.Limit)
 	if err != nil {
 		return nil, err
 	}
@@ -61,12 +75,15 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	}(rows)
 
 	users := make([]dto.UsersSingleResponse, 0)
-	var password string
 	for rows.Next() {
 		user := &dto.UsersSingleResponse{}
-		err = rows.Scan(&user.ID, &user.Account, &password, &user.Nickname, &user.Avatar, &user.CreateTime, &user.UpdateTime, &user.Status)
+		var rolesID []uint8
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
-			return nil, err
+			continue
+		}
+		if rolesID != nil {
+			user.RolesID = strings.Split(string(rolesID), ",")
 		}
 		users = append(users, *user)
 	}
@@ -260,7 +277,6 @@ func (r *userRepository) DeleteUser(id string) error {
 }
 
 func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) error {
-
 	query := "UPDATE cms.users SET "
 	var (
 		queryParams []any

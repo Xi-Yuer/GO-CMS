@@ -3,6 +3,7 @@ package authServiceModules
 import (
 	"errors"
 	"github.com/Xi-Yuer/cms/dto"
+	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
 )
@@ -37,4 +38,16 @@ func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 		return err, ""
 	}
 	return nil, tokenUsingHs256
+}
+
+func (a *authService) AuthorizationManagement(id string, params *dto.AuthorizationManagementParams) error {
+	err := repositories.RoleRepositorysModules.CheckRolesExistence(params.RoleID)
+	if err != nil {
+		return err
+	}
+
+	if err = repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID); err != nil {
+		return err
+	}
+	return nil
 }
