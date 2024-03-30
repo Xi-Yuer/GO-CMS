@@ -4,6 +4,29 @@
     "contact": {}
   },
   "paths": {
+    "/auth/bindRoles": {
+      "post": {
+        "description": "给用户分配角色",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "权限"
+        ],
+        "summary": "给用户分配角色",
+        "responses": {
+          "200": {
+            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/auth/captcha": {
       "get": {
         "description": "获取验证码",

@@ -137,8 +137,6 @@ func (r *rolesRepository) CheckRolesExistence(roleIDs []string) error {
 	}
 	query := "SELECT COUNT(*) FROM roles WHERE delete_time IS NULL AND role_id IN (" + strings.Join(placeholders, ",") + ") "
 
-	// 执行查询
-	fmt.Println(query)
 	row := db.DB.QueryRow(query, args...)
 	var count int
 	err := row.Scan(&count)

@@ -1,6 +1,21 @@
 info:
   contact: { }
 paths:
+  /auth/bindRoles:
+    post:
+      consumes:
+        - application/json
+      description: 给用户分配角色
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 给用户分配角色
+      tags:
+        - 权限
   /auth/captcha:
     get:
       consumes:

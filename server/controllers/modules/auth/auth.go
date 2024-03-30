@@ -64,7 +64,7 @@ func (a *authController) Captcha(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /auth/authorization [post]
+// @Router /auth/bindRoles [post]
 func (a *authController) AuthorizationManagementController(context *gin.Context) {
 	var authorizationManagementParams dto.AuthorizationManagementParams
 	err := context.ShouldBind(&authorizationManagementParams)
