@@ -13,6 +13,7 @@ var AuthService = &authService{}
 type authService struct {
 }
 
+// Login 登录
 func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 	user, exist := userServiceModules.UserService.FindUserByAccount(params.Account)
 	if !exist {
@@ -40,6 +41,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 	return nil, tokenUsingHs256
 }
 
+// AuthorizationManagement 给用户分配角色信息
 func (a *authService) AuthorizationManagement(id string, params *dto.AuthorizationManagementParams) error {
 	err := repositories.RoleRepositorysModules.CheckRolesExistence(params.RoleID)
 	if err != nil {

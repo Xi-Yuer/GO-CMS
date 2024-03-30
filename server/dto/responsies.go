@@ -2,6 +2,7 @@ package dto
 
 import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
+	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 )
@@ -46,3 +47,6 @@ type SingleRoleResponse = rolesResponsiesModules.SingleRoleResponse
 
 // AuthorizationManagementParams 给用户分配角色
 type AuthorizationManagementParams = authResponsiesModules.AuthorizationManagementParams
+
+// CreatePageParams 创建页面
+type CreatePageParams = pagesResponsiesModules.CreatePageParams

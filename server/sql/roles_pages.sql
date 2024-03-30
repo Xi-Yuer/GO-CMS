@@ -11,7 +11,7 @@
  Target Server Version : 80300
  File Encoding         : 65001
 
- Date: 08/03/2024 09:20:26
+ Date: 31/03/2024 21:12:38
 */
 
 SET NAMES utf8mb4;
@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `roles_pages`;
 CREATE TABLE `roles_pages`
 (
-    `role_id` VARCHAR(36) NOT NULL,
-    `page_id` VARCHAR(36) NOT NULL,
+    `role_id` varchar(36) NOT NULL,
+    `page_id` varchar(36) NOT NULL,
     PRIMARY KEY (`page_id`, `role_id`),
     KEY `role_id` (`role_id`),
     CONSTRAINT `roles_pages_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`page_id`),
