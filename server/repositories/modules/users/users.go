@@ -21,7 +21,7 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.id = ? AND u.delete_time IS NULL
-	GROUP BY u.id, u.account, u.nickname, u.avatar, u.create_time, u.update_time, u.status
+	GROUP BY u.id
 	`, id)
 
 	if err != nil {

@@ -15,13 +15,34 @@ type usersAndRolesRepositorys struct {
 
 // CreateRecords 插入记录
 func (u *usersAndRolesRepositorys) CreateRecords(userID string, roleID []string) error {
+	// 创建用户角色之前需要先将之前的记录全部删除，并且要保证事务的一致性
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return err
+	}
+	_, err = db.DB.Exec("DELETE FROM users_roles WHERE user_id = ?", userID)
+	if err != nil {
+		err := tx.Rollback()
+		if err != nil {
+			return err
+		}
+		return err
+	}
 	query := "INSERT INTO users_roles (user_id, role_id) VALUES "
 	for _, roleID := range roleID {
 		query += fmt.Sprintf("('%s', '%s'),", userID, roleID)
 	}
 	query = query[:len(query)-1] // Remove the last comma and space
 
-	_, err := db.DB.Exec(query)
+	_, err = db.DB.Exec(query)
+	if err != nil {
+		err := tx.Rollback()
+		if err != nil {
+			return err
+		}
+		return err
+	}
+	err = tx.Commit()
 	if err != nil {
 		return err
 	}
