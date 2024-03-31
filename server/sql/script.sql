@@ -9,23 +9,23 @@ create table if not exists crud_permission
 
 create table if not exists pages
 (
-    page_id        varchar(36)                          not null
+    page_id        varchar(36)                         not null
         primary key,
-    page_name      varchar(255)                         not null,
-    page_path      varchar(255)                         not null,
-    page_icon      varchar(255)                         null,
-    page_component varchar(255)                         not null,
-    parent_page    varchar(36)                          null,
-    all_delete     tinyint(1) default 1                 null,
-    create_time    timestamp  default CURRENT_TIMESTAMP null,
-    update_time    timestamp  default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
-    delete_time    timestamp                            null on update CURRENT_TIMESTAMP,
-    constraint pages_ibfk_1
+    page_name      varchar(255)                        not null,
+    page_path      varchar(255)                        not null,
+    page_icon      varchar(255)                        null,
+    page_component varchar(255)                        not null,
+    parent_page    varchar(36)                         null,
+    create_time    timestamp default CURRENT_TIMESTAMP null,
+    update_time    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    delete_time    timestamp                           null on update CURRENT_TIMESTAMP,
+    can_edit       int       default 1                 null,
+    constraint pages_pk_2
+        unique (page_id),
+    constraint pages_parent_page_fk
         foreign key (parent_page) references pages (page_id)
+            on delete cascade
 );
-
-create index parent_page
-    on pages (parent_page);
 
 create table if not exists roles
 (
@@ -44,17 +44,15 @@ create table if not exists roles
 
 create table if not exists roles_pages
 (
-    role_id varchar(36) not null,
-    page_id varchar(36) not null,
-    primary key (page_id, role_id),
-    constraint roles_pages_ibfk_1
-        foreign key (page_id) references pages (page_id),
-    constraint roles_pages_ibfk_2
+    role_id varchar(36) null,
+    page_id varchar(36) null,
+    constraint roles_pages_pages_page_id_fk
+        foreign key (page_id) references pages (page_id)
+            on delete cascade,
+    constraint roles_pages_roles_role_id_fk
         foreign key (role_id) references roles (role_id)
+            on delete cascade
 );
-
-create index role_id
-    on roles_pages (role_id);
 
 create table if not exists users
 (
