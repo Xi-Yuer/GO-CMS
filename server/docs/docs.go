@@ -98,7 +98,9 @@ const docTemplate = `{
                 ],
                 "summary": "创建页面",
                 "responses": {}
-            },
+            }
+        },
+        "/pages/{id}": {
             "delete": {
                 "description": "删除页面",
                 "consumes": [

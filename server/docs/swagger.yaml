@@ -47,16 +47,6 @@ paths:
       tags:
         - 权限
   /pages:
-    delete:
-      consumes:
-        - application/json
-      description: 删除页面
-      produces:
-        - application/json
-      responses: { }
-      summary: 删除页面
-      tags:
-        - 页面管理
     post:
       consumes:
         - application/json
@@ -65,6 +55,17 @@ paths:
         - application/json
       responses: { }
       summary: 创建页面
+      tags:
+        - 页面管理
+  /pages/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: 删除页面
+      produces:
+        - application/json
+      responses: { }
+      summary: 删除页面
       tags:
         - 页面管理
   /roles:

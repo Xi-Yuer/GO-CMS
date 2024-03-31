@@ -38,7 +38,7 @@ func (p *pagesController) CreatePage(context *gin.Context) {
 // @Tags 页面管理
 // @Accept json
 // @Produce json
-// @Router /pages [delete]
+// @Router /pages/{id} [delete]
 func (p *pagesController) DeletePage(context *gin.Context) {
 	param := context.Param("id")
 	if param == "" {
