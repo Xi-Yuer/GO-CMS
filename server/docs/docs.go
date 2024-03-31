@@ -84,6 +84,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/pages": {
+            "post": {
+                "description": "创建页面",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "页面管理"
+                ],
+                "summary": "创建页面",
+                "responses": {}
+            },
+            "delete": {
+                "description": "删除页面",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "页面管理"
+                ],
+                "summary": "删除页面",
+                "responses": {}
+            }
+        },
         "/roles": {
             "get": {
                 "description": "获取角色",

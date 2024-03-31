@@ -46,6 +46,27 @@ paths:
       summary: 登录
       tags:
         - 权限
+  /pages:
+    delete:
+      consumes:
+        - application/json
+      description: 删除页面
+      produces:
+        - application/json
+      responses: { }
+      summary: 删除页面
+      tags:
+        - 页面管理
+    post:
+      consumes:
+        - application/json
+      description: 创建页面
+      produces:
+        - application/json
+      responses: { }
+      summary: 创建页面
+      tags:
+        - 页面管理
   /roles:
     get:
       consumes:
