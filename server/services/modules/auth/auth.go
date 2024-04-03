@@ -26,11 +26,13 @@ func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 	}
 
 	// TODO 查找用户页面和按钮权限并赋值
+	// 查找用户角色ID
+	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(user.ID)
 	// 生成token
 	jwtPayload := &dto.JWTPayload{
 		ID:               user.ID,
 		NickName:         user.Nickname,
-		Role:             "",
+		RoleID:           rolesID,
 		PagePermission:   nil,
 		ButtonPermission: nil,
 	}

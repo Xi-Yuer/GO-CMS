@@ -15,7 +15,7 @@ func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *dto.JWTPayload) (stri
 	claim := dto.JWTPayload{
 		ID:               jwtPayload.ID,
 		NickName:         jwtPayload.NickName,
-		Role:             jwtPayload.Role,
+		RoleID:           jwtPayload.RoleID,
 		PagePermission:   jwtPayload.PagePermission,
 		ButtonPermission: jwtPayload.ButtonPermission,
 		RegisteredClaims: jwt.RegisteredClaims{
