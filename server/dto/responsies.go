@@ -50,3 +50,6 @@ type AuthorizationManagementParams = authResponsiesModules.AuthorizationManageme
 
 // CreatePageParams 创建页面
 type CreatePageParams = pagesResponsiesModules.CreatePageParams
+
+// SinglePageResponse 查询页面
+type SinglePageResponse = pagesResponsiesModules.SinglePageResponse
