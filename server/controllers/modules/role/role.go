@@ -16,7 +16,7 @@ type roleController struct {
 // @Summary 创建角色
 // @Schemes
 // @Description 创建角色
-// @Tags 角色
+// @Tags 角色管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -39,7 +39,7 @@ func (r *roleController) CreateRole(context *gin.Context) {
 // @Summary 删除角色
 // @Schemes
 // @Description 删除角色
-// @Tags 角色
+// @Tags 角色管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -64,7 +64,7 @@ func (r *roleController) DeleteRole(context *gin.Context) {
 // @Summary 更新角色
 // @Schemes
 // @Description 更新角色
-// @Tags 角色
+// @Tags 角色管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -92,7 +92,7 @@ func (r *roleController) UpdateRole(context *gin.Context) {
 // @Summary 获取角色
 // @Schemes
 // @Description 获取角色
-// @Tags 角色
+// @Tags 角色管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"

@@ -1,6 +1,21 @@
 info:
   contact: { }
 paths:
+  /auth/bindPermissions:
+    post:
+      consumes:
+        - application/json
+      description: 给角色分配权限
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 给角色分配权限
+      tags:
+        - 权限管理
   /auth/bindRoles:
     post:
       consumes:
@@ -15,7 +30,7 @@ paths:
             type: string
       summary: 给用户分配角色
       tags:
-        - 权限
+        - 权限管理
   /auth/captcha:
     get:
       consumes:
@@ -30,7 +45,7 @@ paths:
             type: string
       summary: 获取验证码
       tags:
-        - 权限
+        - 权限管理
   /auth/login:
     post:
       consumes:
@@ -45,7 +60,7 @@ paths:
             type: string
       summary: 登录
       tags:
-        - 权限
+        - 权限管理
   /pages:
     post:
       consumes:
@@ -82,7 +97,7 @@ paths:
             type: string
       summary: 获取角色
       tags:
-        - 角色
+        - 角色管理
     post:
       consumes:
         - application/json
@@ -96,7 +111,7 @@ paths:
             type: string
       summary: 创建角色
       tags:
-        - 角色
+        - 角色管理
   /roles/{id}:
     delete:
       consumes:
@@ -111,7 +126,7 @@ paths:
             type: string
       summary: 删除角色
       tags:
-        - 角色
+        - 角色管理
     put:
       consumes:
         - application/json
@@ -125,7 +140,7 @@ paths:
             type: string
       summary: 更新角色
       tags:
-        - 角色
+        - 角色管理
   /users:
     get:
       consumes:

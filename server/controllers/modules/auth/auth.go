@@ -16,7 +16,7 @@ type authController struct{}
 // @Summary 登录
 // @Schemes
 // @Description 登录
-// @Tags 权限
+// @Tags 权限管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -47,7 +47,7 @@ func (a *authController) Login(context *gin.Context) {
 // @Summary 获取验证码
 // @Schemes
 // @Description 获取验证码
-// @Tags 权限
+// @Tags 权限管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -60,7 +60,7 @@ func (a *authController) Captcha(context *gin.Context) {
 // @Summary 给用户分配角色
 // @Schemes
 // @Description 给用户分配角色
-// @Tags 权限
+// @Tags 权限管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -88,7 +88,7 @@ func (a *authController) CreateUserRoleRecordController(context *gin.Context) {
 // @Summary 给角色分配权限
 // @Schemes
 // @Description 给角色分配权限
-// @Tags 权限
+// @Tags 权限管理
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -110,7 +110,7 @@ func (a *authController) CreateRolePermissionRecordController(context *gin.Conte
 // GetUserMenus 获取用户菜单
 // @Summary 获取用户菜单
 // @Description 获取用户菜单
-// @Tags 权限
+// @Tags 权限管理
 // @Accept json
 // @Produce json
 // @Router /users [get]

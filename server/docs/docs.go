@@ -15,6 +15,29 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth/bindPermissions": {
+            "post": {
+                "description": "给角色分配权限",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "权限管理"
+                ],
+                "summary": "给角色分配权限",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/bindRoles": {
             "post": {
                 "description": "给用户分配角色",
@@ -25,7 +48,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "权限"
+                    "权限管理"
                 ],
                 "summary": "给用户分配角色",
                 "responses": {
@@ -48,7 +71,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "权限"
+                    "权限管理"
                 ],
                 "summary": "获取验证码",
                 "responses": {
@@ -71,7 +94,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "权限"
+                    "权限管理"
                 ],
                 "summary": "登录",
                 "responses": {
@@ -126,7 +149,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色"
+                    "角色管理"
                 ],
                 "summary": "获取角色",
                 "responses": {
@@ -147,7 +170,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色"
+                    "角色管理"
                 ],
                 "summary": "创建角色",
                 "responses": {
@@ -170,7 +193,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色"
+                    "角色管理"
                 ],
                 "summary": "更新角色",
                 "responses": {
@@ -191,7 +214,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "角色"
+                    "角色管理"
                 ],
                 "summary": "删除角色",
                 "responses": {
