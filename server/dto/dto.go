@@ -46,10 +46,13 @@ type QueryRolesParams = rolesResponsiesModules.QueryRoleListParams
 type SingleRoleResponse = rolesResponsiesModules.SingleRoleResponse
 
 // AuthorizationManagementParams 给用户分配角色
-type AuthorizationManagementParams = authResponsiesModules.AuthorizationManagementParams
+type AuthorizationManagementParams = authResponsiesModules.CreateUserRoleRecordParams
 
 // CreatePageParams 创建页面
 type CreatePageParams = pagesResponsiesModules.CreatePageParams
 
 // SinglePageResponse 查询页面
 type SinglePageResponse = pagesResponsiesModules.SinglePageResponse
+
+// CreateRolePermissionRecordParams 分配角色权限
+type CreateRolePermissionRecordParams = authResponsiesModules.CreateRolePermissionRecordParams

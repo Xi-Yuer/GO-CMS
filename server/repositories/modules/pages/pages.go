@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"strings"
 )
 
 var PageRepository = &pageRepository{}
@@ -49,4 +50,29 @@ func (p *pageRepository) FindPageByID(id string) (*dto.SinglePageResponse, error
 		return nil, err
 	}
 	return &Page, nil
+}
+
+// CheckPagesExistence 检查页面是否都存在
+func (p *pageRepository) CheckPagesExistence(pagesIDs []string) error {
+	// 构建 IN 子句
+	var placeholders []string
+	var args []interface{}
+	for _, id := range pagesIDs {
+		placeholders = append(placeholders, "?")
+		args = append(args, id)
+	}
+	query := "SELECT COUNT(*) FROM pages WHERE delete_time IS NULL AND pages.page_id IN (" + strings.Join(placeholders, ",") + ") "
+
+	row := db.DB.QueryRow(query, args...)
+	var count int
+	err := row.Scan(&count)
+	if err != nil {
+		return err
+	}
+	// 判断是否所有角色都存在
+	if count != len(pagesIDs) {
+		return errors.New("页面不存在")
+	}
+
+	return nil
 }

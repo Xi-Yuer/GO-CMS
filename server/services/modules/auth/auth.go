@@ -43,15 +43,26 @@ func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
 	return nil, tokenUsingHs256
 }
 
-// AuthorizationManagement 给用户分配角色信息
-func (a *authService) AuthorizationManagement(id string, params *dto.AuthorizationManagementParams) error {
-	err := repositories.RoleRepositorysModules.CheckRolesExistence(params.RoleID)
-	if err != nil {
+// CreateUserRoleRecord 给用户分配角色信息
+func (a *authService) CreateUserRoleRecord(id string, params *dto.AuthorizationManagementParams) error {
+	// 检查角色是否存在
+	if err := repositories.RoleRepositorysModules.CheckRolesExistence(params.RoleID); err != nil {
 		return err
 	}
+	// 插入数据
+	return repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID)
+}
 
-	if err = repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID); err != nil {
+// CreateRolePermissionsRecord 给角色分配权限
+func (a *authService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
+	// 检查角色是否存在
+	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {
 		return err
 	}
-	return nil
+	// 检查页面是否存在
+	if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
+		return err
+	}
+	// 插入数据
+	return repositories.RolesAndPagesRepository.CreateRecord(params)
 }

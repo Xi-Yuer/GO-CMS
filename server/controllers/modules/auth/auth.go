@@ -56,7 +56,7 @@ func (a *authController) Captcha(context *gin.Context) {
 	utils.Captcha.GenerateCaptcha(context, 4)
 }
 
-// AuthorizationManagementController 给用户分配角色
+// CreateUserRoleRecordController 给用户分配角色
 // @Summary 给用户分配角色
 // @Schemes
 // @Description 给用户分配角色
@@ -65,7 +65,7 @@ func (a *authController) Captcha(context *gin.Context) {
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /auth/bindRoles [post]
-func (a *authController) AuthorizationManagementController(context *gin.Context) {
+func (a *authController) CreateUserRoleRecordController(context *gin.Context) {
 	var authorizationManagementParams dto.AuthorizationManagementParams
 	err := context.ShouldBind(&authorizationManagementParams)
 	if err != nil {
@@ -76,8 +76,31 @@ func (a *authController) AuthorizationManagementController(context *gin.Context)
 	if !exists {
 		utils.Response.NoPermission(context, "暂无权限")
 	}
-	err = services.AuthService.AuthorizationManagement(user.(*dto.JWTPayload).ID, &authorizationManagementParams)
+	err = services.AuthService.CreateUserRoleRecord(user.(*dto.JWTPayload).ID, &authorizationManagementParams)
 	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
+}
+
+// CreateRolePermissionRecordController 给角色分配权限
+// @Summary 给角色分配权限
+// @Schemes
+// @Description 给角色分配权限
+// @Tags 权限
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /auth/bindPermissions [post]
+func (a *authController) CreateRolePermissionRecordController(context *gin.Context) {
+	var createRolePermissionRecordParams dto.CreateRolePermissionRecordParams
+	err := context.ShouldBind(&createRolePermissionRecordParams)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if err = services.AuthService.CreateRolePermissionsRecord(&createRolePermissionRecordParams); err != nil {
 		utils.Response.ServerError(context, err.Error())
 		return
 	}

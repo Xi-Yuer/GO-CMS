@@ -6,6 +6,11 @@ type LoginRequestParams struct {
 	Captcha  string `form:"captcha" binding:"required"`
 }
 
-type AuthorizationManagementParams struct {
+type CreateUserRoleRecordParams struct {
 	RoleID []string `form:"roleID" json:"roleID"`
+}
+
+type CreateRolePermissionRecordParams struct {
+	RoleID string   `form:"roleID" json:"roleID" binding:"required"`
+	PageID []string `form:"pageID" json:"pageID"`
 }
