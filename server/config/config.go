@@ -5,6 +5,7 @@ var Config = config{
 		PORT:          ":8080",
 		SESSIONSECRET: "1234567890",
 		JWT:           "1234567890",
+		SWAGPATH:      "http://localhost:8080/swagger/docs/index.html#/example",
 	},
 	DB: DB{
 		NAME:     "root",
@@ -24,6 +25,7 @@ type APP struct {
 	PORT          string
 	SESSIONSECRET string
 	JWT           string
+	SWAGPATH      string
 }
 type DB struct {
 	NAME     string

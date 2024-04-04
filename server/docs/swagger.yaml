@@ -61,6 +61,21 @@ paths:
       summary: 登录
       tags:
         - 权限管理
+  /menu:
+    get:
+      consumes:
+        - application/json
+      description: 获取用户菜单
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取用户菜单
+      tags:
+        - 权限管理
   /pages:
     post:
       consumes:

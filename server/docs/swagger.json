@@ -96,6 +96,29 @@
         }
       }
     },
+    "/menu": {
+      "get": {
+        "description": "获取用户菜单",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "权限管理"
+        ],
+        "summary": "获取用户菜单",
+        "responses": {
+          "200": {
+            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/pages": {
       "post": {
         "description": "创建页面",

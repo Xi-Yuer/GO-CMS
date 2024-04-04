@@ -28,6 +28,7 @@ func main() {
 	}()
 
 	utils.Log.Info("服务器启动成功，运行端口", config.Config.APP.PORT)
+	utils.Log.Info("接口文档地址", config.Config.APP.SWAGPATH)
 	// 优雅退出程序
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
