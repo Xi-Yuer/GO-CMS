@@ -53,10 +53,8 @@ type SingleUserResponseHasPassword struct {
 }
 
 type JWTPayload struct {
-	ID               string   `json:"id"`
-	NickName         string   `json:"nickName"`
-	RoleID           []string `json:"roleId"`
-	PagePermission   []string `json:"pagePermission"`
-	ButtonPermission []string `json:"buttonPermission"`
+	ID       string   `json:"id"`
+	NickName string   `json:"nickName"`
+	RoleID   []string `json:"roleId"`
 	jwt.RegisteredClaims
 }

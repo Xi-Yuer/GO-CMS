@@ -7,6 +7,9 @@ import (
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 )
 
+// LoginResponse 用户登录
+type LoginResponse authResponsiesModules.LoginResponse
+
 // UsersSingleResponse 查询单个用户
 type UsersSingleResponse usersResponsiesModules.SingleUserResponse
 

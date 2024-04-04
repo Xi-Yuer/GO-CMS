@@ -13,11 +13,9 @@ type Jsonwebtoken struct {
 
 func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *dto.JWTPayload) (string, error) {
 	claim := dto.JWTPayload{
-		ID:               jwtPayload.ID,
-		NickName:         jwtPayload.NickName,
-		RoleID:           jwtPayload.RoleID,
-		PagePermission:   jwtPayload.PagePermission,
-		ButtonPermission: jwtPayload.ButtonPermission,
+		ID:       jwtPayload.ID,
+		NickName: jwtPayload.NickName,
+		RoleID:   jwtPayload.RoleID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "Xi-Yuer",                                          // 签发者
 			Subject:   jwtPayload.NickName,                                // 签发对象

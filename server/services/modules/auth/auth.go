@@ -3,6 +3,7 @@ package authServiceModules
 import (
 	"errors"
 	"github.com/Xi-Yuer/cms/dto"
+	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
@@ -14,33 +15,28 @@ type authService struct {
 }
 
 // Login 登录
-func (a *authService) Login(params *dto.LoginRequestParams) (error, string) {
+func (a *authService) Login(params *dto.LoginRequestParams) (string, error) {
 	user, exist := userServiceModules.UserService.FindUserByAccount(params.Account)
 	if !exist {
-		return errors.New("账号不存在"), ""
+		return "", errors.New("账号不存在")
 	}
 	// 验证密码
-	err := utils.Bcrypt.VerifyPassword(params.Password, user.Password)
-	if err != nil {
-		return errors.New("密码错误"), ""
+	if err := utils.Bcrypt.VerifyPassword(params.Password, user.Password); err != nil {
+		return "", errors.New("密码错误")
 	}
-
-	// TODO 查找用户页面和按钮权限并赋值
 	// 查找用户角色ID
 	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(user.ID)
 	// 生成token
 	jwtPayload := &dto.JWTPayload{
-		ID:               user.ID,
-		NickName:         user.Nickname,
-		RoleID:           rolesID,
-		PagePermission:   nil,
-		ButtonPermission: nil,
+		ID:       user.ID,
+		NickName: user.Nickname,
+		RoleID:   rolesID,
 	}
 	tokenUsingHs256, err := utils.Jsonwebtoken.GenerateTokenUsingHs256(jwtPayload)
 	if err != nil {
-		return err, ""
+		return "", err
 	}
-	return nil, tokenUsingHs256
+	return tokenUsingHs256, nil
 }
 
 // CreateUserRoleRecord 给用户分配角色信息
@@ -65,4 +61,30 @@ func (a *authService) CreateRolePermissionsRecord(params *dto.CreateRolePermissi
 	}
 	// 插入数据
 	return repositories.RolesAndPagesRepository.CreateRecord(params)
+}
+
+func (a *authService) GetUserMenus(id string) ([]*pagesResponsiesModules.SinglePageResponse, error) {
+	// 查找用户角色ID
+	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(id)
+	// 查找用户页面权限
+	var pagesID []string
+	for _, roleID := range rolesID {
+		page, err := repositories.RolesAndPagesRepository.GetRecordsByRoleID(roleID)
+		if err != nil {
+			return nil, err
+		}
+		pagesID = append(pagesID, page...)
+	}
+	// pagesID 去重
+	ret := utils.Unique(pagesID)
+	var pagesDetail []*dto.SinglePageResponse
+	for _, pageID := range ret {
+		pageDetail, err := repositories.PageRepositorysModules.FindPageByID(pageID)
+		if err != nil {
+			return nil, err
+		}
+		pagesDetail = append(pagesDetail, pageDetail)
+	}
+
+	return pagesDetail, nil
 }

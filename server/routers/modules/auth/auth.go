@@ -12,5 +12,6 @@ func UseAuthRoutes(r *gin.RouterGroup) {
 		group.GET("/captcha", controllers.AuthController.Captcha)
 		group.POST("/bindRoles", controllers.AuthController.CreateUserRoleRecordController)
 		group.POST("/bindPermissions", controllers.AuthController.CreateRolePermissionRecordController)
+		group.GET("/menus", controllers.AuthController.GetUserMenus)
 	}
 }

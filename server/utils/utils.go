@@ -8,6 +8,7 @@ import (
 	"github.com/Xi-Yuer/cms/utils/modules/response"
 	"github.com/Xi-Yuer/cms/utils/modules/snowflake"
 	"github.com/Xi-Yuer/cms/utils/modules/translator"
+	"github.com/Xi-Yuer/cms/utils/modules/unique"
 )
 
 var Log = logsModules.Log
@@ -18,3 +19,4 @@ var Translator = translator.ValidatorTrans
 var Trans = translator.Trans
 var Captcha = &captcha.Captcha{}
 var Jsonwebtoken = &jwt.Jsonwebtoken{}
+var Unique = unique.RemoveDuplicatesAndEmpty

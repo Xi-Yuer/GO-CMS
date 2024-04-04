@@ -35,7 +35,7 @@ func (a *authController) Login(context *gin.Context) {
 	}
 
 	// 登录
-	err, s := services.AuthService.Login(&loginParams)
+	s, err := services.AuthService.Login(&loginParams)
 	if err != nil {
 		utils.Response.ServerError(context, err.Error())
 		return
@@ -105,4 +105,24 @@ func (a *authController) CreateRolePermissionRecordController(context *gin.Conte
 		return
 	}
 	utils.Response.Success(context, nil)
+}
+
+// GetUserMenus 获取用户菜单
+// @Summary 获取用户菜单
+// @Description 获取用户菜单
+// @Tags 权限
+// @Accept json
+// @Produce json
+// @Router /users [get]
+func (a *authController) GetUserMenus(context *gin.Context) {
+	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
+	if !exist {
+		utils.Response.ParameterMissing(context, "用户id不能为空")
+		return
+	}
+	menus, err := services.AuthService.GetUserMenus(jwtPayload.(*dto.JWTPayload).ID)
+	if err != nil {
+		return
+	}
+	utils.Response.Success(context, menus)
 }
