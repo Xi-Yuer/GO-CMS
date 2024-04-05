@@ -52,6 +52,24 @@ func (p *pageRepository) FindPageByID(id string) (*dto.SinglePageResponse, error
 	return &Page, nil
 }
 
+func (p *pageRepository) FindChildPagesByParentID(parentID string) ([]dto.SinglePageResponse, error) {
+	query := "SELECT page_id, page_name, page_order, page_path, page_icon, page_component, parent_page, can_edit, create_time, update_time FROM pages WHERE parent_page = ?"
+	var Page []dto.SinglePageResponse
+	exec, err := db.DB.Query(query, parentID)
+	if err != nil {
+		return nil, err
+	}
+	for exec.Next() {
+		var page dto.SinglePageResponse
+		err := exec.Scan(&page.PageID, &page.PageName, &page.PageOrder, &page.PagePath, &page.PageIcon, &page.PageComponent, &page.ParentPage, &page.CanEdit, &page.CreatedTime, &page.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		Page = append(Page, page)
+	}
+	return Page, nil
+}
+
 // CheckPagesExistence 检查页面是否都存在
 func (p *pageRepository) CheckPagesExistence(pagesIDs []string) error {
 	// 构建 IN 子句

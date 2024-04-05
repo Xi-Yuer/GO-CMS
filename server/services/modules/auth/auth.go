@@ -7,6 +7,7 @@ import (
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
+	"sort"
 )
 
 var AuthService = &authService{}
@@ -76,15 +77,57 @@ func (a *authService) GetUserMenus(id string) ([]*pagesResponsiesModules.SingleP
 		pagesID = append(pagesID, page...)
 	}
 	// pagesID 去重
-	ret := utils.Unique(pagesID)
+	pagesID = utils.Unique(pagesID)
+	// 获取页面详情
 	var pagesDetail []*dto.SinglePageResponse
-	for _, pageID := range ret {
+	for _, pageID := range pagesID {
 		pageDetail, err := repositories.PageRepositorysModules.FindPageByID(pageID)
 		if err != nil {
 			return nil, err
 		}
 		pagesDetail = append(pagesDetail, pageDetail)
 	}
+	menu := BuildMenu(pagesDetail)
+	return menu, nil
+}
 
-	return pagesDetail, nil
+// BuildMenu 构建菜单树
+func BuildMenu(pages []*dto.SinglePageResponse) []*dto.SinglePageResponse {
+	// 构建完整的树形结构
+	pageMap := make(map[string]*dto.SinglePageResponse)
+	for _, page := range pages {
+		pageMap[page.PageID] = page
+		if page.ParentPage != nil {
+			parent := pageMap[*page.ParentPage]
+			if parent != nil {
+				parent.Children = append(parent.Children, page)
+			}
+		}
+	}
+	// 找到所有根节点
+	var roots []*dto.SinglePageResponse
+	for _, page := range pages {
+		if page.ParentPage == nil {
+			roots = append(roots, page)
+		}
+	}
+	// 按照PageOrder排序子页面
+	for _, root := range roots {
+		sortSubmenu(root)
+	}
+	// 按照PageOrder排序根节点
+	sort.Slice(roots, func(i, j int) bool {
+		return roots[i].PageOrder < roots[j].PageOrder
+	})
+	return roots
+}
+
+// sortSubmenu 对子菜单按照PageOrder排序
+func sortSubmenu(page *dto.SinglePageResponse) {
+	sort.Slice(page.Children, func(i, j int) bool {
+		return page.Children[i].PageOrder < page.Children[j].PageOrder
+	})
+	for _, child := range page.Children {
+		sortSubmenu(child)
+	}
 }

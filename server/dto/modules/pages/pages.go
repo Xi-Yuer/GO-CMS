@@ -10,14 +10,15 @@ type CreatePageParams struct {
 }
 
 type SinglePageResponse struct {
-	PageID        string  `json:"pageID"`
-	PageName      string  `json:"pageName"`
-	PagePath      string  `json:"pagePath"`
-	PageIcon      string  `json:"pageIcon"`
-	PageComponent string  `json:"pageComponent"`
-	ParentPage    *string `json:"parentPage"`
-	PageOrder     *int    `json:"pageOrder"`
-	CanEdit       int     `json:"canEdit"`
-	CreatedTime   string  `json:"createdAt"`
-	UpdateTime    string  `json:"updateTime"`
+	PageID        string                `json:"pageID"`
+	PageName      string                `json:"pageName"`
+	PagePath      string                `json:"pagePath"`
+	PageIcon      string                `json:"pageIcon"`
+	PageComponent string                `json:"pageComponent"`
+	ParentPage    *string               `json:"parentPage"`
+	Children      []*SinglePageResponse `json:"children"`
+	PageOrder     int                   `json:"pageOrder"`
+	CanEdit       int                   `json:"canEdit"`
+	CreatedTime   string                `json:"createdAt"`
+	UpdateTime    string                `json:"updateTime"`
 }
