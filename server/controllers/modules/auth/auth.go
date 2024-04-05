@@ -114,7 +114,7 @@ func (a *authController) CreateRolePermissionRecordController(context *gin.Conte
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /menu [get]
+// @Router /auth/menu [get]
 func (a *authController) GetUserMenus(context *gin.Context) {
 	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
 	if !exist {

@@ -61,7 +61,7 @@ paths:
       summary: 登录
       tags:
         - 权限管理
-  /menu:
+  /auth/menu:
     get:
       consumes:
         - application/json

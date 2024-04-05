@@ -107,7 +107,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/menu": {
+        "/auth/menu": {
             "get": {
                 "description": "获取用户菜单",
                 "consumes": [
