@@ -308,6 +308,12 @@ func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 		hasSet = true
 	}
 
+	if params.Status != "" {
+		queryParams = append(queryParams, params.Status)
+		query += "status = ?, "
+		hasSet = true
+	}
+
 	if !hasSet {
 		// 如果没有任何条件需要更新
 		return nil

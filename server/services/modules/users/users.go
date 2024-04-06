@@ -69,9 +69,12 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 }
 
 func (u *userService) DeleteUser(id string) error {
-	_, exist := u.FindUserById(id)
+	user, exist := u.FindUserById(id)
 	if !exist {
 		return errors.New("用户不存在")
+	}
+	if *user.Status == "0" {
+		return errors.New("用户不允许删除")
 	}
 	return repositories.UserRepositorysModules.DeleteUser(id)
 }
