@@ -80,7 +80,7 @@ func (d *departmentController) GetDepartments(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /department [patch]
+// @Router /department/{id} [patch]
 func (d *departmentController) UpdateDepartment(context *gin.Context) {
 	id := context.Param("id")
 	if id == "" {

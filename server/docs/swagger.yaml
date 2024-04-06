@@ -91,20 +91,6 @@ paths:
       summary: 获取部门
       tags:
         - 部门管理
-    patch:
-      consumes:
-        - application/json
-      description: 修改部门
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: '{"code":200,"data":{},"msg":"ok"}'
-          schema:
-            type: string
-      summary: 修改部门
-      tags:
-        - 部门管理
     post:
       consumes:
         - application/json
@@ -132,6 +118,20 @@ paths:
           schema:
             type: string
       summary: 删除部门
+      tags:
+        - 部门管理
+    patch:
+      consumes:
+        - application/json
+      description: 修改部门
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 修改部门
       tags:
         - 部门管理
   /pages:
