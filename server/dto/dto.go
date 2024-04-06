@@ -66,3 +66,6 @@ type CreateDepartmentRequest = departmentResponsiesModules.CreateDepartmentReque
 
 // DepartmentResponse 查询部门
 type DepartmentResponse = departmentResponsiesModules.DepartmentResponse
+
+// UpdateDepartmentRequest 更新部门
+type UpdateDepartmentRequest = departmentResponsiesModules.UpdateDepartmentRequest

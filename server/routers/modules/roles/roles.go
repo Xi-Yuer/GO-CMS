@@ -10,7 +10,7 @@ func UseRolesRoutes(r *gin.RouterGroup) {
 	{
 		group.POST("/", controllers.RoleController.CreateRole)
 		group.DELETE("/:id", controllers.RoleController.DeleteRole)
-		group.PUT("/:id", controllers.RoleController.UpdateRole)
+		group.PATCH("/:id", controllers.RoleController.UpdateRole)
 		group.GET("/", controllers.RoleController.GetRoles)
 	}
 }

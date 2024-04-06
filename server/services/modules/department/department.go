@@ -1,6 +1,7 @@
 package departmentServiceModules
 
 import (
+	"errors"
 	"github.com/Xi-Yuer/cms/dto"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
@@ -15,6 +16,9 @@ func (d *departmentService) CreateDepartment(params *dto.CreateDepartmentRequest
 }
 
 func (d *departmentService) DeleteDepartment(id string) error {
+	if department := repositories.DepartmentRepository.GetDepartmentByID(id); department.ID == "" {
+		return errors.New("部门不存在")
+	}
 	return repositories.DepartmentRepository.DeleteDepartment(id)
 }
 
@@ -25,4 +29,11 @@ func (d *departmentService) GetDepartments() ([]*dto.DepartmentResponse, error) 
 	}
 	buildDepartment := utils.BuildDepartment(department)
 	return buildDepartment, nil
+}
+
+func (d *departmentService) UpdateDepartment(id string, params *dto.UpdateDepartmentRequest) error {
+	if department := repositories.DepartmentRepository.GetDepartmentByID(id); department.ID == "" {
+		return errors.New("部门不存在")
+	}
+	return repositories.DepartmentRepository.UpdateDepartment(id, params)
 }

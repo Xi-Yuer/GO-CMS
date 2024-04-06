@@ -87,7 +87,7 @@ func (u *userController) FindUserByParams(content *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "用户ID"
-// @Router /users/{id} [put]
+// @Router /users/{id} [patch]
 func (u *userController) UpdateUser(context *gin.Context) {
 	id := context.Param("id")
 	if id == "" {

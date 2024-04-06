@@ -68,7 +68,7 @@ func (r *roleController) DeleteRole(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /roles/{id} [put]
+// @Router /roles/{id} [patch]
 func (r *roleController) UpdateRole(context *gin.Context) {
 	id := context.Param("id")
 	if id == "" {

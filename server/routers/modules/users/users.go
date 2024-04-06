@@ -14,7 +14,7 @@ func UseUserRoutes(r *gin.RouterGroup) {
 		userRouters.GET("/:id", controllers.UserController.GetUser)
 		userRouters.GET("", controllers.UserController.GetUsers)
 		userRouters.GET("/search", controllers.UserController.FindUserByParams)
-		userRouters.PUT("/:id", controllers.UserController.UpdateUser)
+		userRouters.PATCH("/:id", controllers.UserController.UpdateUser)
 		userRouters.DELETE("/:id", controllers.UserController.DeleteUser)
 	}
 }

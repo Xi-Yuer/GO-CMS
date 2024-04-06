@@ -62,3 +62,57 @@ func (d *departmentRepository) GetDepartments() ([]*dto.DepartmentResponse, erro
 	}
 	return departments, nil
 }
+
+func (d *departmentRepository) UpdateDepartment(id string, params *dto.UpdateDepartmentRequest) error {
+	query := "UPDATE department SET "
+	var (
+		queryParams []any
+		hasSet      bool
+	)
+	if params.DepartmentName != "" {
+		query += "department_name = ?,"
+		queryParams = append(queryParams, params.DepartmentName)
+		hasSet = true
+	}
+	if params.ParentDepartment != "" {
+		query += "parent_department = ?,"
+		queryParams = append(queryParams, params.ParentDepartment)
+		hasSet = true
+	}
+	if params.DepartmentOrder != 0 {
+		query += "department_order = ?,"
+		queryParams = append(queryParams, params.DepartmentOrder)
+		hasSet = true
+	}
+	if !hasSet {
+		return nil
+	}
+	query = query[:len(query)-1] // remove the last comma
+	query += " WHERE id = ?"
+	queryParams = append(queryParams, id)
+	_, err := db.DB.Exec(query, queryParams...)
+	return err
+}
+
+func (d *departmentRepository) GetDepartmentByID(id string) *dto.DepartmentResponse {
+	query := "SELECT id, department_name, parent_department, create_time, update_time, department_order FROM department WHERE id = ? AND delete_time IS NULL"
+	rows, err := db.DB.Query(query, id)
+	if err != nil {
+		return nil
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			utils.Log.Error(err)
+		}
+	}(rows)
+	var department dto.DepartmentResponse
+	for rows.Next() {
+		err := rows.Scan(&department.ID, &department.DepartmentName, &department.ParentDepartment, &department.CreateTime, &department.UpdateTime, &department.DepartmentOrder)
+		if err != nil {
+			utils.Log.Error(err)
+			return nil
+		}
+	}
+	return &department
+}

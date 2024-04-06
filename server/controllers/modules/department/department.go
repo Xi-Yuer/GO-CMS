@@ -72,3 +72,32 @@ func (d *departmentController) GetDepartments(context *gin.Context) {
 	}
 	utils.Response.Success(context, department)
 }
+
+// UpdateDepartment 修改部门
+// @Summary 修改部门
+// @Description 修改部门
+// @Tags 部门管理
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /department [patch]
+func (d *departmentController) UpdateDepartment(context *gin.Context) {
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterMissing(context, "id不能为空")
+		return
+	}
+	var params dto.UpdateDepartmentRequest
+	err := context.ShouldBind(&params)
+	if err != nil {
+		utils.Response.ParameterError(context, err.Error())
+		return
+	}
+
+	if err := services.DepartmentService.UpdateDepartment(id, &params); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+
+	utils.Response.Success(context, nil)
+}

@@ -172,6 +172,27 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "patch": {
+                "description": "修改部门",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "修改部门",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/department/{id}": {
@@ -288,27 +309,6 @@ const docTemplate = `{
             }
         },
         "/roles/{id}": {
-            "put": {
-                "description": "更新角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "角色管理"
-                ],
-                "summary": "更新角色",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "description": "删除角色",
                 "consumes": [
@@ -321,6 +321,27 @@ const docTemplate = `{
                     "角色管理"
                 ],
                 "summary": "删除角色",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "更新角色",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "更新角色",
                 "responses": {
                     "200": {
                         "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
@@ -413,29 +434,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
-                "description": "更新现有用户的信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户管理"
-                ],
-                "summary": "更新用户信息",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "用户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {}
-            },
             "delete": {
                 "description": "根据用户ID删除用户",
                 "consumes": [
@@ -448,6 +446,29 @@ const docTemplate = `{
                     "用户管理"
                 ],
                 "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "patch": {
+                "description": "更新现有用户的信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "更新用户信息",
                 "parameters": [
                     {
                         "type": "integer",

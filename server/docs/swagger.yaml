@@ -91,6 +91,20 @@ paths:
       summary: 获取部门
       tags:
         - 部门管理
+    patch:
+      consumes:
+        - application/json
+      description: 修改部门
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 修改部门
+      tags:
+        - 部门管理
     post:
       consumes:
         - application/json
@@ -196,7 +210,7 @@ paths:
       summary: 删除角色
       tags:
         - 角色管理
-    put:
+    patch:
       consumes:
         - application/json
       description: 更新角色
@@ -271,7 +285,7 @@ paths:
       summary: 根据ID获取用户信息
       tags:
         - 用户管理
-    put:
+    patch:
       consumes:
         - application/json
       description: 更新现有用户的信息

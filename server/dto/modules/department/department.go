@@ -15,3 +15,9 @@ type DepartmentResponse struct {
 	CreateTime       string               `json:"createTime"`
 	UpdateTime       string               `json:"updateTime"`
 }
+
+type UpdateDepartmentRequest struct {
+	DepartmentName   string `form:"departmentName"`
+	ParentDepartment string `form:"parentDepartment"`
+	DepartmentOrder  int    `form:"departmentOrder"`
+}
