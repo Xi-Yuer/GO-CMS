@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/dto"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
+	"strconv"
 )
 
 var UserService = &userService{}
@@ -29,7 +30,15 @@ func (u *userService) CreateUser(user *dto.CreateSingleUserRequest) error {
 		return err
 	}
 	user.Password = password
-	return repositories.UserRepositorysModules.CreateUser(user)
+	id := repositories.UserRepositorysModules.CreateUser(user)
+	if id == 0 {
+		return errors.New("创建用户失败")
+	}
+	// 给用户分配角色信息
+	if err = repositories.UsersAndRolesRepositorys.CreateRecords(strconv.FormatInt(id, 10), user.RoleID); err != nil {
+		return err
+	}
+	return err
 }
 
 func (u *userService) FindUsersByAccount(account string) bool {
@@ -48,6 +57,13 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 	_, exist := u.FindUserById(id)
 	if !exist {
 		return errors.New("用户不存在")
+	}
+	if params.RoleID != nil {
+		// 给用户分配角色信息
+		err := repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID)
+		if err != nil {
+			return err
+		}
 	}
 	return repositories.UserRepositorysModules.UpdateUser(params, id)
 }

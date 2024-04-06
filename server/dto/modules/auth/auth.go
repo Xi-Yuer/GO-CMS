@@ -1,8 +1,6 @@
 package authResponsiesModules
 
-import (
-	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
-)
+import usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 
 type LoginRequestParams struct {
 	Account  string `form:"account" binding:"required"`
@@ -11,8 +9,8 @@ type LoginRequestParams struct {
 }
 
 type LoginResponse struct {
-	Token string                                       `json:"token"`
-	Menus []*pagesResponsiesModules.SinglePageResponse `json:"menus"`
+	Token string                                     `json:"token"`
+	User  *usersResponsiesModules.SingleUserResponse `json:"user"`
 }
 
 type CreateUserRoleRecordParams struct {

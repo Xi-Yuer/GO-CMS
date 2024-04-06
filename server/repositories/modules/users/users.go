@@ -17,7 +17,7 @@ type userRepository struct{}
 
 func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
-	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status, u.create_time, u.update_time
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.id = ? AND u.delete_time IS NULL
@@ -39,7 +39,7 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	var rolesID []uint8
 
 	for rows.Next() {
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.CreateTime, &user.UpdateTime)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
@@ -56,7 +56,7 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 
 func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
-	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status, u.create_time, u.update_time
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.delete_time IS NULL
@@ -78,7 +78,7 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	for rows.Next() {
 		user := &dto.UsersSingleResponse{}
 		var rolesID []uint8
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.CreateTime, &user.UpdateTime)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			continue
 		}
@@ -94,21 +94,20 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	return users, nil
 }
 
-func (r *userRepository) CreateUser(user *dto.CreateSingleUserRequest) error {
+func (r *userRepository) CreateUser(user *dto.CreateSingleUserRequest) int64 {
 	id := utils.GenID()
-	exec, err := db.DB.Exec("INSERT INTO users (id,account,nickname,password) VALUES (?, ?, ?, ?)", id, user.Account, user.Nickname, user.Password)
+	exec, err := db.DB.Exec("INSERT INTO users (id,account,nickname,password,department_id) VALUES (?, ?, ?, ?,?)", id, user.Account, user.Nickname, user.Password, user.DepartmentID)
 	if err != nil {
-		return err
+		return 0
 	}
-
 	rowsAffected, err := exec.RowsAffected()
 	if err != nil {
-		return err
+		return 0
 	}
 	if rowsAffected == 0 {
-		return errors.New("插入数据失败")
+		return 0
 	}
-	return nil
+	return id
 }
 
 func (r *userRepository) SelectUsersByAccount(account string) bool {
@@ -169,6 +168,11 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		queryParams = append(queryParams, params.EndTime)
 	}
 
+	if params.DepartmentID != "" {
+		query += " AND department_id = ?"
+		queryParams = append(queryParams, params.DepartmentID)
+	}
+
 	if params.Account != "" {
 		query += " AND account LIKE ?"
 		queryParams = append(queryParams, "%"+params.Account+"%")
@@ -227,7 +231,7 @@ func (r *userRepository) FindUserByAccount(account string) (*dto.SingleUserRespo
 		return nil, false
 	}
 	user := &dto.SingleUserResponseHasPassword{}
-	query := "SELECT id, account, nickname, password, status, create_time, update_time, status FROM users WHERE account = ? AND delete_time IS NULL"
+	query := "SELECT id, account, nickname, password, status,department_id, create_time, update_time, status FROM users WHERE account = ? AND delete_time IS NULL"
 	rows, err := db.DB.Query(query, account)
 	if err != nil {
 		return nil, false
@@ -236,7 +240,7 @@ func (r *userRepository) FindUserByAccount(account string) (*dto.SingleUserRespo
 		_ = rows.Close()
 	}(rows)
 	if rows.Next() {
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.CreateTime, &user.UpdateTime, &user.Status)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, false
 		}
@@ -297,6 +301,12 @@ func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 		}
 		queryParams = append(queryParams, password)
 		query += "password = ?, "
+		hasSet = true
+	}
+
+	if params.DepartmentID != "" {
+		queryParams = append(queryParams, params.DepartmentID)
+		query += "department_id = ?, "
 		hasSet = true
 	}
 

@@ -6,29 +6,35 @@ import (
 )
 
 type QueryUsersParams struct {
-	Limit      *string `form:"limit" binding:"required"`
-	Offset     *string `form:"offset" binding:"required"`
-	ID         string  `form:"id"`
-	Nickname   string  `form:"nickname"`
-	Account    string  `form:"account"`
-	Role       string  `form:"role"`
-	Gender     string  `form:"gender"`
-	Status     string  `form:"status"`
-	CreateTime string  `form:"createTime"`
-	UpdateTime string  `form:"updateTime"`
-	StartTime  string  `form:"startTime"`
-	EndTime    string  `form:"endTime"`
+	Limit        *string `form:"limit" binding:"required"`
+	Offset       *string `form:"offset" binding:"required"`
+	ID           string  `form:"id"`
+	Nickname     string  `form:"nickname"`
+	Account      string  `form:"account"`
+	Role         string  `form:"role"`
+	Gender       string  `form:"gender"`
+	DepartmentID string  `form:"departmentID"`
+	Status       string  `form:"status"`
+	CreateTime   string  `form:"createTime"`
+	UpdateTime   string  `form:"updateTime"`
+	StartTime    string  `form:"startTime"`
+	EndTime      string  `form:"endTime"`
 }
 
 type CreateUserParams struct {
-	Account  string `form:"account" json:"account" binding:"required"`
-	Nickname string `form:"nickname" json:"nickname" binding:"required"`
-	Password string `form:"password" json:"password" binding:"required"`
+	Account      string   `form:"account" json:"account" binding:"required"`
+	Nickname     string   `form:"nickname" json:"nickname" binding:"required"`
+	Password     string   `form:"password" json:"password" binding:"required"`
+	RoleID       []string `form:"roleID" json:"roleID" binding:"required"`
+	DepartmentID string   `form:"departmentID" json:"departmentID" binding:"required"`
 }
 
 type UpdateUserParams struct {
-	Nickname string `form:"nickname"`
-	Password string `form:"password"`
+	Nickname     string   `form:"nickname"`
+	Password     string   `form:"password"`
+	RoleID       []string `form:"roleID"`
+	Status       string   `form:"status"`
+	DepartmentID string   `form:"departmentID"`
 }
 
 type Page struct {
@@ -37,14 +43,15 @@ type Page struct {
 }
 
 type SingleUserResponse struct {
-	ID         string     `json:"id"`
-	Account    string     `json:"account"` // 账号
-	Nickname   string     `json:"nickname"`
-	Avatar     *string    `json:"avatar"`
-	RolesID    []string   `json:"rolesID"`
-	CreateTime *time.Time `json:"createTime"`
-	UpdateTime *time.Time `json:"updateTime"`
-	Status     *string    `json:"status"`
+	ID           string     `json:"id"`
+	Account      string     `json:"account"` // 账号
+	Nickname     string     `json:"nickname"`
+	Avatar       *string    `json:"avatar"`
+	RolesID      []string   `json:"rolesID"`
+	DepartmentID string     `json:"departmentID"`
+	CreateTime   *time.Time `json:"createTime"`
+	UpdateTime   *time.Time `json:"updateTime"`
+	Status       *string    `json:"status"`
 }
 
 type SingleUserResponseHasPassword struct {
@@ -53,8 +60,9 @@ type SingleUserResponseHasPassword struct {
 }
 
 type JWTPayload struct {
-	ID       string   `json:"id"`
-	NickName string   `json:"nickName"`
-	RoleID   []string `json:"roleId"`
+	ID           string   `json:"id"`
+	NickName     string   `json:"nickName"`
+	RoleID       []string `json:"roleId"`
+	DepartmentID string   `json:"departmentId"`
 	jwt.RegisteredClaims
 }
