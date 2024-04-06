@@ -2,6 +2,7 @@ package dto
 
 import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
+	departmentResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/department"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
@@ -59,3 +60,9 @@ type SinglePageResponse = pagesResponsiesModules.SinglePageResponse
 
 // CreateRolePermissionRecordParams 分配角色权限
 type CreateRolePermissionRecordParams = authResponsiesModules.CreateRolePermissionRecordParams
+
+// CreateDepartmentRequest 创建部门
+type CreateDepartmentRequest = departmentResponsiesModules.CreateDepartmentRequest
+
+// DepartmentResponse 查询部门
+type DepartmentResponse = departmentResponsiesModules.DepartmentResponse

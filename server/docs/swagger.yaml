@@ -76,6 +76,50 @@ paths:
       summary: 获取用户菜单
       tags:
         - 权限管理
+  /department:
+    get:
+      consumes:
+        - application/json
+      description: 获取部门
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取部门
+      tags:
+        - 部门管理
+    post:
+      consumes:
+        - application/json
+      description: 创建部门
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 创建部门
+      tags:
+        - 部门管理
+  /department/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: 删除部门
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 删除部门
+      tags:
+        - 部门管理
   /pages:
     get:
       consumes:

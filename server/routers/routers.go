@@ -4,6 +4,7 @@ import (
 	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/middlewares"
 	authRouterModules "github.com/Xi-Yuer/cms/routers/modules/auth"
+	departmentRouterModules "github.com/Xi-Yuer/cms/routers/modules/department"
 	pagesRouterModules "github.com/Xi-Yuer/cms/routers/modules/pages"
 	rolesRouterModules "github.com/Xi-Yuer/cms/routers/modules/roles"
 	swaggerRouterModules "github.com/Xi-Yuer/cms/routers/modules/swagger"
@@ -27,6 +28,7 @@ func SetUpRouters() *gin.Engine {
 		authRouterModules.UseAuthRoutes(v1)
 		rolesRouterModules.UseRolesRoutes(v1)
 		pagesRouterModules.UsePagesRoutes(v1)
+		departmentRouterModules.UseDepartmentRoutes(v1)
 		swaggerRouterModules.UseSwaggerRoutes(r)
 	}
 

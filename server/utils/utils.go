@@ -2,7 +2,7 @@ package utils
 
 import (
 	"github.com/Xi-Yuer/cms/utils/modules/bcrypt"
-	"github.com/Xi-Yuer/cms/utils/modules/buildPages"
+	"github.com/Xi-Yuer/cms/utils/modules/buildTree"
 	"github.com/Xi-Yuer/cms/utils/modules/captcha"
 	"github.com/Xi-Yuer/cms/utils/modules/jwt"
 	"github.com/Xi-Yuer/cms/utils/modules/logs"
@@ -21,4 +21,5 @@ var Trans = translator.Trans
 var Captcha = &captcha.Captcha{}
 var Jsonwebtoken = &jwt.Jsonwebtoken{}
 var Unique = unique.RemoveDuplicatesAndEmpty
-var BuildPages = buildPages.BuildMenu
+var BuildPages = buildTree.BuildMenu
+var BuildDepartment = buildTree.BuildDepartment
