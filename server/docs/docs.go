@@ -131,8 +131,8 @@ const docTemplate = `{
             }
         },
         "/pages": {
-            "post": {
-                "description": "创建页面",
+            "get": {
+                "description": "获取菜单",
                 "consumes": [
                     "application/json"
                 ],
@@ -140,15 +140,29 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "页面管理"
+                    "菜单管理"
                 ],
-                "summary": "创建页面",
+                "summary": "获取菜单",
+                "responses": {}
+            },
+            "post": {
+                "description": "创建菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "创建菜单",
                 "responses": {}
             }
         },
         "/pages/{id}": {
             "delete": {
-                "description": "删除页面",
+                "description": "删除菜单",
                 "consumes": [
                     "application/json"
                 ],
@@ -156,9 +170,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "页面管理"
+                    "菜单管理"
                 ],
-                "summary": "删除页面",
+                "summary": "删除菜单",
                 "responses": {}
             }
         },

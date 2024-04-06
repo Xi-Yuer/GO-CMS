@@ -12,10 +12,10 @@ var PagesController = &pagesController{}
 type pagesController struct {
 }
 
-// CreatePage 创建页面
-// @Summary 创建页面
-// @Description 创建页面
-// @Tags 页面管理
+// CreatePage 创建菜单
+// @Summary 创建菜单
+// @Description 创建菜单
+// @Tags 菜单管理
 // @Accept json
 // @Produce json
 // @Router /pages [post]
@@ -32,10 +32,10 @@ func (p *pagesController) CreatePage(context *gin.Context) {
 	utils.Response.Success(context, nil)
 }
 
-// DeletePage 删除页面
-// @Summary 删除页面
-// @Description 删除页面
-// @Tags 页面管理
+// DeletePage 删除菜单
+// @Summary 删除菜单
+// @Description 删除菜单
+// @Tags 菜单管理
 // @Accept json
 // @Produce json
 // @Router /pages/{id} [delete]
@@ -51,4 +51,20 @@ func (p *pagesController) DeletePage(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, nil)
+}
+
+// GetPages 获取菜单
+// @Summary 获取菜单
+// @Description 获取菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Router /pages [get]
+func (p *pagesController) GetPages(context *gin.Context) {
+	pages, err := services.PageService.GetPages()
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, pages)
 }

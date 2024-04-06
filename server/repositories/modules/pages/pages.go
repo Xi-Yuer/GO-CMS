@@ -1,6 +1,7 @@
 package pagesRepositoryModules
 
 import (
+	"database/sql"
 	"errors"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
@@ -70,7 +71,6 @@ func (p *pageRepository) FindChildPagesByParentID(parentID string) ([]dto.Single
 	return Page, nil
 }
 
-// CheckPagesExistence 检查页面是否都存在
 func (p *pageRepository) CheckPagesExistence(pagesIDs []string) error {
 	// 构建 IN 子句
 	var placeholders []string
@@ -93,4 +93,33 @@ func (p *pageRepository) CheckPagesExistence(pagesIDs []string) error {
 	}
 
 	return nil
+}
+
+func (p *pageRepository) GetPages() ([]*dto.SinglePageResponse, error) {
+	query := "SELECT page_id, page_name, page_order, page_path, page_icon, page_component, parent_page, can_edit, create_time, update_time FROM pages WHERE delete_time IS NULL"
+
+	exec, err := db.DB.Query(query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer func(exec *sql.Rows) {
+		err := exec.Close()
+		if err != nil {
+			utils.Log.Error(err)
+		}
+	}(exec)
+
+	var Pages []*dto.SinglePageResponse
+	for exec.Next() {
+		page := dto.SinglePageResponse{}
+		err := exec.Scan(&page.PageID, &page.PageName, &page.PageOrder, &page.PagePath, &page.PageIcon, &page.PageComponent, &page.ParentPage, &page.CanEdit, &page.CreatedTime, &page.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		Pages = append(Pages, &page)
+	}
+
+	return Pages, nil
 }

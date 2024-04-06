@@ -77,27 +77,37 @@ paths:
       tags:
         - 权限管理
   /pages:
-    post:
+    get:
       consumes:
         - application/json
-      description: 创建页面
+      description: 获取菜单
       produces:
         - application/json
       responses: { }
-      summary: 创建页面
+      summary: 获取菜单
       tags:
-        - 页面管理
+        - 菜单管理
+    post:
+      consumes:
+        - application/json
+      description: 创建菜单
+      produces:
+        - application/json
+      responses: { }
+      summary: 创建菜单
+      tags:
+        - 菜单管理
   /pages/{id}:
     delete:
       consumes:
         - application/json
-      description: 删除页面
+      description: 删除菜单
       produces:
         - application/json
       responses: { }
-      summary: 删除页面
+      summary: 删除菜单
       tags:
-        - 页面管理
+        - 菜单管理
   /roles:
     get:
       consumes:
