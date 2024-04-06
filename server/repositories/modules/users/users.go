@@ -60,7 +60,7 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.delete_time IS NULL
-	GROUP BY u.id, u.account, u.nickname, u.avatar, u.create_time, u.update_time, u.status
+	GROUP BY u.id, u.account, u.nickname, u.avatar,u.department_id, u.create_time, u.update_time, u.status
 	LIMIT ?, ?
 `, page.Offset, page.Limit)
 	if err != nil {
@@ -80,7 +80,7 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 		var rolesID []uint8
 		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
-			continue
+			return nil, err
 		}
 		if rolesID != nil {
 			user.RolesID = strings.Split(string(rolesID), ",")
@@ -137,15 +137,13 @@ func (r *userRepository) SelectUsersByAccount(account string) bool {
 func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
 	query := `
 		SELECT 
-			id, account, nickname, status, create_time, update_time, status 
+			id, account,nickname, status, department_id, status, create_time, update_time 
 		FROM 
 			users 
+		LEFT JOIN users_roles ur ON users.id = ur.user_id
 		WHERE 
-			true
-			# 过滤掉已被逻辑删除的用户
-			AND delete_time IS NULL
+			 delete_time IS NULL
 		`
-
 	var queryParams []interface{}
 	if params.ID != "" {
 		query += " AND id LIKE ?"
@@ -213,7 +211,7 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 	var users []dto.UsersSingleResponse
 	for rows.Next() {
 		var user dto.UsersSingleResponse
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &user.CreateTime, &user.UpdateTime, &user.Status)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
