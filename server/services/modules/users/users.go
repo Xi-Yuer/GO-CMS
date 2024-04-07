@@ -35,8 +35,10 @@ func (u *userService) CreateUser(user *dto.CreateSingleUserRequest) error {
 		return errors.New("创建用户失败")
 	}
 	// 给用户分配角色信息
-	if err = repositories.UsersAndRolesRepositorys.CreateRecords(strconv.FormatInt(id, 10), user.RoleID); err != nil {
-		return err
+	if user.RoleID != nil {
+		if err = repositories.UsersAndRolesRepositorys.CreateRecords(strconv.FormatInt(id, 10), user.RoleID); err != nil {
+			return err
+		}
 	}
 	return err
 }

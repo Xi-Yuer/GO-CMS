@@ -11,10 +11,6 @@ var UserAndRolesService = &userAndRolesService{}
 type userAndRolesService struct {
 }
 
-func (u *userAndRolesService) CreateRecords(role *dto.CreateRoleParams) error {
-	return repositories.RoleRepositorysModules.CreateRole(role)
-}
-
 func (u *userAndRolesService) FindRoleById(id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse == nil {

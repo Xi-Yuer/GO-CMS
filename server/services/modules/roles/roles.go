@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/Xi-Yuer/cms/dto"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
+	"strconv"
 )
 
 var RolesService = &rolesService{}
@@ -11,7 +12,11 @@ var RolesService = &rolesService{}
 type rolesService struct{}
 
 func (r *rolesService) CreateRole(role *dto.CreateRoleParams) error {
-	return repositories.RoleRepositorysModules.CreateRole(role)
+	roleID := repositories.RoleRepositorysModules.CreateRole(role)
+	if roleID == 0 {
+		return errors.New("角色创建失败")
+	}
+	return r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: strconv.FormatInt(roleID, 10), PageID: role.PageID})
 }
 
 func (r *rolesService) DeleteRole(id string) error {
@@ -35,14 +40,16 @@ func (r *rolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
 }
 
 // CreateRolePermissionsRecord 给角色分配权限
-func (a *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
+func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
 	// 检查角色是否存在
 	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {
-		return err
+		return errors.New("角色不存在")
 	}
 	// 检查页面是否存在
-	if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
-		return err
+	if params.PageID != nil {
+		if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
+			return errors.New("页面不存在")
+		}
 	}
 	// 插入数据
 	return repositories.RolesAndPagesRepository.CreateRecord(params)

@@ -15,14 +15,14 @@ var RolesRepository = &rolesRepository{}
 
 type rolesRepository struct{}
 
-func (r *rolesRepository) CreateRole(role *dto.CreateRoleParams) error {
+func (r *rolesRepository) CreateRole(role *dto.CreateRoleParams) int64 {
 	query := "INSERT INTO roles (role_id, role_name, description) VALUES (?, ?, ?)"
 	roleID := utils.GenID()
 	_, err := db.DB.Exec(query, roleID, role.RoleName, role.Description)
 	if err != nil {
-		return err
+		return 0
 	}
-	return nil
+	return roleID
 }
 
 func (r *rolesRepository) DeleteRole(id string) error {
@@ -126,7 +126,6 @@ func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {
 	return role
 }
 
-// CheckRolesExistence 检查角色是否都存在
 func (r *rolesRepository) CheckRolesExistence(roleIDs []string) error {
 	// 构建 IN 子句
 	var placeholders []string

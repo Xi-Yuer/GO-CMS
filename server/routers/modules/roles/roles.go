@@ -12,6 +12,5 @@ func UseRolesRoutes(r *gin.RouterGroup) {
 		group.DELETE("/:id", controllers.RoleController.DeleteRole)
 		group.PATCH("/:id", controllers.RoleController.UpdateRole)
 		group.GET("/", controllers.RoleController.GetRoles)
-		group.POST("/bind", controllers.RoleController.CreateRolePermissionRecordController)
 	}
 }

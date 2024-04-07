@@ -1,8 +1,9 @@
 package rolesResponsiesModules
 
 type CreateRoleParams struct {
-	RoleName    string `json:"roleName" form:"roleName" binding:"required"`
-	Description string `json:"description" form:"description" binding:"required"`
+	RoleName    string   `json:"roleName" form:"roleName" binding:"required"`
+	Description string   `json:"description" form:"description" binding:"required"`
+	PageID      []string `form:"pageID" json:"pageID"`
 }
 
 type UpdateRoleParams struct {
