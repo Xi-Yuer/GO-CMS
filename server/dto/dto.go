@@ -55,6 +55,9 @@ type AuthorizationManagementParams = authResponsiesModules.CreateUserRoleRecordP
 // CreatePageParams 创建页面
 type CreatePageParams = pagesResponsiesModules.CreatePageParams
 
+// UpdatePageRequest 更新页面
+type UpdatePageRequest = pagesResponsiesModules.UpdatePageRequest
+
 // SinglePageResponse 查询页面
 type SinglePageResponse = pagesResponsiesModules.SinglePageResponse
 

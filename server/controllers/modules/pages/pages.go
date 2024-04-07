@@ -78,7 +78,7 @@ func (p *pagesController) GetPages(context *gin.Context) {
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /pages/menu [get]
-func (a *pagesController) GetUserMenus(context *gin.Context) {
+func (p *pagesController) GetUserMenus(context *gin.Context) {
 	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
 	if !exist {
 		utils.Response.ParameterMissing(context, "用户id不能为空")
@@ -89,4 +89,31 @@ func (a *pagesController) GetUserMenus(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, menus)
+}
+
+// UpdatePage 更新菜单
+// @Summary 更新菜单
+// @Description 更新菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /pages/{id} [patch]
+func (p *pagesController) UpdatePage(context *gin.Context) {
+	var params *dto.UpdatePageRequest
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterMissing(context, "id不能为空")
+		return
+	}
+	err := context.ShouldBind(&params)
+	if err != nil {
+		utils.Response.ParameterError(context, err.Error())
+		return
+	}
+	if err := services.PageService.UpdatePage(id, params); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, "更新成功")
 }

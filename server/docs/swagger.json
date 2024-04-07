@@ -205,6 +205,27 @@
         ],
         "summary": "删除菜单",
         "responses": {}
+      },
+      "patch": {
+        "description": "更新菜单",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "菜单管理"
+        ],
+        "summary": "更新菜单",
+        "responses": {
+          "200": {
+            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "/roles": {

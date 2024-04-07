@@ -55,3 +55,7 @@ func (p *pageService) GetUserMenus(id string) ([]*pagesResponsiesModules.SingleP
 	menu := utils.BuildPages(pagesDetail)
 	return menu, nil
 }
+
+func (p *pageService) UpdatePage(id string, params *dto.UpdatePageRequest) error {
+	return repositories.PageRepositorysModules.UpdatePage(id, params)
+}

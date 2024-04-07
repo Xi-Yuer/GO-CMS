@@ -123,3 +123,14 @@ func (p *pageRepository) GetPages() ([]*dto.SinglePageResponse, error) {
 
 	return Pages, nil
 }
+
+func (p *pageRepository) UpdatePage(id string, params *dto.UpdatePageRequest) error {
+	err := p.CheckPagesExistence([]string{id})
+	if err != nil {
+		return errors.New("页面不存在")
+	}
+
+	query := "UPDATE pages SET page_name = ?, page_order = ?, page_path = ?, page_icon = ?, page_component = ?, can_edit = ? WHERE page_id = ?"
+	_, err = db.DB.Exec(query, params.PageName, params.PageOrder, params.PagePath, params.PageIcon, params.PageComponent, params.CanEdit, id)
+	return err
+}

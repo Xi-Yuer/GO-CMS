@@ -121,6 +121,20 @@ paths:
       summary: 删除菜单
       tags:
         - 菜单管理
+    patch:
+      consumes:
+        - application/json
+      description: 更新菜单
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 更新菜单
+      tags:
+        - 菜单管理
   /pages/menu:
     get:
       consumes:

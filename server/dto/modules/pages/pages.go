@@ -22,3 +22,12 @@ type SinglePageResponse struct {
 	CreatedTime   string                `json:"createdAt"`
 	UpdateTime    string                `json:"updateTime"`
 }
+
+type UpdatePageRequest struct {
+	PageName      string `form:"pageName" binding:"required"`
+	PagePath      string `form:"pagePath" binding:"required"`
+	PageIcon      string `form:"pageIcon" binding:"required"`
+	PageComponent string `form:"pageComponent" binding:"required"`
+	PageOrder     int    `form:"pageOrder" binding:"required"`
+	CanEdit       int    `form:"canEdit" binding:"required"`
+}
