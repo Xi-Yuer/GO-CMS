@@ -251,29 +251,6 @@
         }
       }
     },
-    "/roles/bind": {
-      "post": {
-        "description": "给角色分配权限",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "角色管理"
-        ],
-        "summary": "给角色分配权限",
-        "responses": {
-          "200": {
-            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
     "/roles/{id}": {
       "delete": {
         "description": "删除角色",

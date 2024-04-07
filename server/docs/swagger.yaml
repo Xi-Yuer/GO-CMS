@@ -194,21 +194,6 @@ paths:
       summary: 更新角色
       tags:
         - 角色管理
-  /roles/bind:
-    post:
-      consumes:
-        - application/json
-      description: 给角色分配权限
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: '{"code":200,"data":{},"msg":"ok"}'
-          schema:
-            type: string
-      summary: 给角色分配权限
-      tags:
-        - 角色管理
   /users:
     get:
       consumes:
