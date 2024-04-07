@@ -32,6 +32,13 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	if singleRoleResponse == nil {
 		return errors.New("角色不存在")
 	}
+	// 更新角色权限
+	if role.PageID != nil {
+		err := r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: id, PageID: role.PageID})
+		if err != nil {
+			return err
+		}
+	}
 	return repositories.RoleRepositorysModules.UpdateRole(role, id)
 
 }
@@ -39,7 +46,6 @@ func (r *rolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	return repositories.RoleRepositorysModules.GetRoles()
 }
 
-// CreateRolePermissionsRecord 给角色分配权限
 func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
 	// 检查角色是否存在
 	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {

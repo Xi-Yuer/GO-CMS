@@ -74,8 +74,13 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 }
 
 func (r *rolesRepository) GetRoles() ([]*dto.SingleRoleResponse, error) {
-	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE delete_time IS NULL "
-
+	query := `
+	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id), create_time, update_time
+	FROM roles
+	LEFT JOIN roles_pages ON roles.role_id = roles_pages.role_id
+	WHERE delete_time IS NULL
+	GROUP BY roles.role_id
+	`
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -91,9 +96,13 @@ func (r *rolesRepository) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	roles := make([]*dto.SingleRoleResponse, 0)
 	for rows.Next() {
 		role := &dto.SingleRoleResponse{}
-		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CreateTime, &role.UpdateTime)
+		var rolesID []uint8
+		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &rolesID, &role.CreateTime, &role.UpdateTime)
 		if err != nil {
 			return nil, err
+		}
+		if rolesID != nil {
+			role.PagesID = strings.Split(string(rolesID), ",")
 		}
 		roles = append(roles, role)
 	}
