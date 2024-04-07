@@ -11,5 +11,6 @@ func UsePagesRoutes(r *gin.RouterGroup) {
 		group.POST("", controllers.PagesController.CreatePage)
 		group.DELETE("/:id", controllers.PagesController.DeletePage)
 		group.GET("", controllers.PagesController.GetPages)
+		group.GET("/menus", controllers.PagesController.GetUserMenus)
 	}
 }

@@ -3,7 +3,6 @@ package authServiceModules
 import (
 	"errors"
 	"github.com/Xi-Yuer/cms/dto"
-	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
@@ -52,55 +51,4 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 			UpdateTime:   user.UpdateTime,
 		},
 	}, nil
-}
-
-// CreateUserRoleRecord 给用户分配角色信息
-func (a *authService) CreateUserRoleRecord(id string, params *dto.AuthorizationManagementParams) error {
-	// 检查角色是否存在
-	if err := repositories.RoleRepositorysModules.CheckRolesExistence(params.RoleID); err != nil {
-		return err
-	}
-	// 插入数据
-	return repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID)
-}
-
-// CreateRolePermissionsRecord 给角色分配权限
-func (a *authService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
-	// 检查角色是否存在
-	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {
-		return err
-	}
-	// 检查页面是否存在
-	if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
-		return err
-	}
-	// 插入数据
-	return repositories.RolesAndPagesRepository.CreateRecord(params)
-}
-
-func (a *authService) GetUserMenus(id string) ([]*pagesResponsiesModules.SinglePageResponse, error) {
-	// 查找用户角色ID
-	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(id)
-	// 查找用户页面权限
-	var pagesID []string
-	for _, roleID := range rolesID {
-		page, err := repositories.RolesAndPagesRepository.GetRecordsByRoleID(roleID)
-		if err != nil {
-			return nil, err
-		}
-		pagesID = append(pagesID, page...)
-	}
-	// pagesID 去重
-	pagesID = utils.Unique(pagesID)
-	// 获取页面详情
-	var pagesDetail []*dto.SinglePageResponse
-	for _, pageID := range pagesID {
-		pageDetail, err := repositories.PageRepositorysModules.FindPageByID(pageID)
-		if err != nil {
-			return nil, err
-		}
-		pagesDetail = append(pagesDetail, pageDetail)
-	}
-	menu := utils.BuildPages(pagesDetail)
-	return menu, nil
 }

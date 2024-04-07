@@ -57,15 +57,15 @@ func (u *userController) GetUser(context *gin.Context) {
 	utils.Response.Success(context, user)
 }
 
-// FindUserByParams 查询用户
+// GetUsers 查询用户
 // @Summary 查询用户
 // @Description 根据查询参数查询用户信息
 // @Tags 用户管理
 // @Accept json
 // @Produce json
 // @Body
-// @Router /users/search [get]
-func (u *userController) FindUserByParams(content *gin.Context) {
+// @Router /users [get]
+func (u *userController) GetUsers(content *gin.Context) {
 	var params dto.QueryUsersParams
 	err := content.ShouldBind(&params)
 	if err != nil {
@@ -134,28 +134,4 @@ func (u *userController) DeleteUser(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, nil)
-}
-
-// GetUsers 获取用户列表
-// @Summary 获取用户列表
-// @Description 获取系统中所有用户的列表
-// @Tags 用户管理
-// @Accept json
-// @Produce json
-// @Param page query int false "页码，默认为1"
-// @Param limit query int false "每页显示的用户数量，默认为10"
-// @Router /users [get]
-func (u *userController) GetUsers(context *gin.Context) {
-	var Page dto.Page
-	err := context.ShouldBind(&Page)
-	if err != nil {
-		utils.Response.ParameterTypeError(context, err.Error())
-		return
-	}
-	users, err := services.UserService.GetUsers(Page)
-	if err != nil {
-		utils.Response.ServerError(context, err.Error())
-		return
-	}
-	utils.Response.Success(context, users)
 }

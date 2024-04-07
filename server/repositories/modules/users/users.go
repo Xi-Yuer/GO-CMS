@@ -140,13 +140,12 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 			id, account,nickname, status, department_id, status, create_time, update_time 
 		FROM 
 			users 
-		LEFT JOIN users_roles ur ON users.id = ur.user_id
 		WHERE 
 			 delete_time IS NULL
 		`
 	var queryParams []interface{}
 	if params.ID != "" {
-		query += " AND id LIKE ?"
+		query += " AND id = ?"
 		queryParams = append(queryParams, params.ID)
 	}
 	if params.Nickname != "" {

@@ -105,3 +105,26 @@ func (r *roleController) GetRoles(context *gin.Context) {
 	}
 	utils.Response.Success(context, roles)
 }
+
+// CreateRolePermissionRecordController 给角色分配权限
+// @Summary 给角色分配权限
+// @Schemes
+// @Description 给角色分配权限
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /roles/bind [post]
+func (a *roleController) CreateRolePermissionRecordController(context *gin.Context) {
+	var createRolePermissionRecordParams dto.CreateRolePermissionRecordParams
+	err := context.ShouldBind(&createRolePermissionRecordParams)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if err = services.RoleService.CreateRolePermissionsRecord(&createRolePermissionRecordParams); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, nil)
+}

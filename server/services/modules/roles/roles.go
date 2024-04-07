@@ -33,3 +33,17 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 func (r *rolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
 	return repositories.RoleRepositorysModules.GetRoles()
 }
+
+// CreateRolePermissionsRecord 给角色分配权限
+func (a *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
+	// 检查角色是否存在
+	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {
+		return err
+	}
+	// 检查页面是否存在
+	if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
+		return err
+	}
+	// 插入数据
+	return repositories.RolesAndPagesRepository.CreateRecord(params)
+}

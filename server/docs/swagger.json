@@ -4,52 +4,6 @@
     "contact": {}
   },
   "paths": {
-    "/auth/bindPermissions": {
-      "post": {
-        "description": "给角色分配权限",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "权限管理"
-        ],
-        "summary": "给角色分配权限",
-        "responses": {
-          "200": {
-            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/auth/bindRoles": {
-      "post": {
-        "description": "给用户分配角色",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "权限管理"
-        ],
-        "summary": "给用户分配角色",
-        "responses": {
-          "200": {
-            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
     "/auth/captcha": {
       "get": {
         "description": "获取验证码",
@@ -60,7 +14,7 @@
           "application/json"
         ],
         "tags": [
-          "权限管理"
+          "登录"
         ],
         "summary": "获取验证码",
         "responses": {
@@ -83,32 +37,9 @@
           "application/json"
         ],
         "tags": [
-          "权限管理"
+          "登录"
         ],
         "summary": "登录",
-        "responses": {
-          "200": {
-            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/auth/menu": {
-      "get": {
-        "description": "获取用户菜单",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "权限管理"
-        ],
-        "summary": "获取用户菜单",
         "responses": {
           "200": {
             "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
@@ -237,6 +168,29 @@
         "responses": {}
       }
     },
+    "/pages/menu": {
+      "get": {
+        "description": "获取用户菜单",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "菜单管理"
+        ],
+        "summary": "获取用户菜单",
+        "responses": {
+          "200": {
+            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/pages/{id}": {
       "delete": {
         "description": "删除菜单",
@@ -297,6 +251,29 @@
         }
       }
     },
+    "/roles/bind": {
+      "post": {
+        "description": "给角色分配权限",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "角色管理"
+        ],
+        "summary": "给角色分配权限",
+        "responses": {
+          "200": {
+            "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/roles/{id}": {
       "delete": {
         "description": "删除角色",
@@ -343,7 +320,7 @@
     },
     "/users": {
       "get": {
-        "description": "获取系统中所有用户的列表",
+        "description": "根据查询参数查询用户信息",
         "consumes": [
           "application/json"
         ],
@@ -353,21 +330,7 @@
         "tags": [
           "用户管理"
         ],
-        "summary": "获取用户列表",
-        "parameters": [
-          {
-            "type": "integer",
-            "description": "页码，默认为1",
-            "name": "page",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "description": "每页显示的用户数量，默认为10",
-            "name": "limit",
-            "in": "query"
-          }
-        ],
+        "summary": "查询用户",
         "responses": {}
       },
       "post": {
@@ -382,22 +345,6 @@
           "用户管理"
         ],
         "summary": "创建新用户",
-        "responses": {}
-      }
-    },
-    "/users/search": {
-      "get": {
-        "description": "根据查询参数查询用户信息",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "用户管理"
-        ],
-        "summary": "查询用户",
         "responses": {}
       }
     },

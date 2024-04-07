@@ -1,6 +1,7 @@
 package pagesControllerModules
 
 import (
+	"github.com/Xi-Yuer/cms/constant"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
@@ -67,4 +68,25 @@ func (p *pagesController) GetPages(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, pages)
+}
+
+// GetUserMenus 获取用户菜单
+// @Summary 获取用户菜单
+// @Description 获取用户菜单
+// @Tags 菜单管理
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /pages/menu [get]
+func (a *pagesController) GetUserMenus(context *gin.Context) {
+	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
+	if !exist {
+		utils.Response.ParameterMissing(context, "用户id不能为空")
+		return
+	}
+	menus, err := services.PageService.GetUserMenus(jwtPayload.(*dto.JWTPayload).ID)
+	if err != nil {
+		return
+	}
+	utils.Response.Success(context, menus)
 }
