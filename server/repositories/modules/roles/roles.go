@@ -73,19 +73,61 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 
 }
 
-func (r *rolesRepository) GetRoles() ([]*dto.SingleRoleResponse, error) {
+func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
 	query := `
 	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id), create_time, update_time
 	FROM roles
 	LEFT JOIN roles_pages ON roles.role_id = roles_pages.role_id
 	WHERE delete_time IS NULL
-	GROUP BY roles.role_id
 	`
-	rows, err := db.DB.Query(query)
+
+	var queryParams []interface{}
+
+	if params.ID != "" {
+		query += " AND roles.role_id = ?"
+		queryParams = append(queryParams, params.ID)
+	}
+	if params.RoleName != "" {
+		query += " AND role_name LIKE ?"
+		queryParams = append(queryParams, "%"+params.RoleName+"%")
+	}
+
+	if params.Description != "" {
+		query += " AND description LIKE ?"
+		queryParams = append(queryParams, "%"+params.Description+"%")
+	}
+
+	if params.StartTime != "" {
+		query += " AND create_time >= ?"
+		queryParams = append(queryParams, params.StartTime)
+	}
+
+	if params.EndTime != "" {
+		query += " AND create_time <= ?"
+		queryParams = append(queryParams, params.EndTime)
+	}
+
+	query += " GROUP BY roles.role_id"
+	query += ` LIMIT ?, ?`
+	if params.Offset != 0 {
+		queryParams = append(queryParams, params.Offset)
+	} else {
+		queryParams = append(queryParams, 0)
+	}
+	if params.Limit != 0 {
+		queryParams = append(queryParams, params.Limit)
+	} else {
+		queryParams = append(queryParams, 10)
+	}
+	// 准备查询语句
+	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return nil, err
 	}
-
+	rows, err := stmt.Query(queryParams...)
+	if err != nil {
+		return nil, err
+	}
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
 		if err != nil {

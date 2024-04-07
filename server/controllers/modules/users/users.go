@@ -65,19 +65,23 @@ func (u *userController) GetUser(context *gin.Context) {
 // @Produce json
 // @Body
 // @Router /users [get]
-func (u *userController) GetUsers(content *gin.Context) {
+func (u *userController) GetUsers(context *gin.Context) {
 	var params dto.QueryUsersParams
-	err := content.ShouldBind(&params)
+	err := context.ShouldBind(&params)
 	if err != nil {
-		utils.Response.ParameterTypeError(content, err.Error())
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if params.Limit > 100 || params.Limit < 0 {
+		utils.Response.ParameterTypeError(context, "limit参数不正确")
 		return
 	}
 	users, err := services.UserService.FindUserByParams(&params)
 	if err != nil {
-		utils.Response.ServerError(content, err.Error())
+		utils.Response.ServerError(context, err.Error())
 		return
 	}
-	utils.Response.Success(content, users)
+	utils.Response.Success(context, users)
 }
 
 // UpdateUser 更新用户

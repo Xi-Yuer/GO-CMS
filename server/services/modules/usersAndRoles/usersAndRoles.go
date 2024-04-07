@@ -19,8 +19,8 @@ func (u *userAndRolesService) FindRoleById(id string) error {
 	return nil
 }
 
-func (u *userAndRolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
-	return repositories.RoleRepositorysModules.GetRoles()
+func (u *userAndRolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+	return repositories.RoleRepositorysModules.GetRoles(params)
 }
 
 func (u *userAndRolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {

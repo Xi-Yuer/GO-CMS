@@ -42,8 +42,8 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	return repositories.RoleRepositorysModules.UpdateRole(role, id)
 
 }
-func (r *rolesService) GetRoles() ([]*dto.SingleRoleResponse, error) {
-	return repositories.RoleRepositorysModules.GetRoles()
+func (r *rolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+	return repositories.RoleRepositorysModules.GetRoles(params)
 }
 
 func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {

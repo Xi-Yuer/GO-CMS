@@ -98,10 +98,20 @@ func (r *roleController) UpdateRole(context *gin.Context) {
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /roles [get]
 func (r *roleController) GetRoles(context *gin.Context) {
-	roles, err := services.RoleService.GetRoles()
+	var params dto.QueryRolesParams
+	err := context.ShouldBind(&params)
 	if err != nil {
-		utils.Response.ServerError(context, err.Error())
+		utils.Response.ParameterTypeError(context, err.Error())
 		return
 	}
-	utils.Response.Success(context, roles)
+	if params.Limit > 100 || params.Limit < 0 {
+		utils.Response.ParameterTypeError(context, "limit参数不正确")
+		return
+	}
+	if roles, err := services.RoleService.GetRoles(&params); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	} else {
+		utils.Response.Success(context, roles)
+	}
 }

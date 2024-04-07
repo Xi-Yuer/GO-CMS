@@ -175,17 +175,18 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		queryParams = append(queryParams, "%"+params.Account+"%")
 	}
 
-	query += "GROUP BY users.id"
-	if params.Limit != nil {
-		query += " LIMIT ?"
-		queryParams = append(queryParams, params.Limit)
-	}
-
-	if params.Offset != nil {
-		query += " OFFSET ?"
+	query += " GROUP BY users.id"
+	query += ` LIMIT ?, ?`
+	if params.Offset != 0 {
 		queryParams = append(queryParams, params.Offset)
+	} else {
+		queryParams = append(queryParams, 0)
 	}
-
+	if params.Limit != 0 {
+		queryParams = append(queryParams, params.Limit)
+	} else {
+		queryParams = append(queryParams, 10)
+	}
 	// 准备查询语句
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {

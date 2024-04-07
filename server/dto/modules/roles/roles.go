@@ -12,7 +12,15 @@ type UpdateRoleParams struct {
 	PageID      []string `json:"pageID" form:"pageID"`
 }
 
-type QueryRoleListParams struct{}
+type QueryRoleListParams struct {
+	ID          string `form:"id"`
+	Limit       int    `form:"limit"`
+	Offset      int    `form:"offset"`
+	RoleName    string `form:"roleName"`
+	Description string `form:"description"`
+	StartTime   string `form:"startTime"`
+	EndTime     string `form:"endTime"`
+}
 
 type SingleRoleResponse struct {
 	ID          string   `json:"id"`

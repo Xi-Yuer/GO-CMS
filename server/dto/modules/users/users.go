@@ -6,18 +6,18 @@ import (
 )
 
 type QueryUsersParams struct {
-	Limit        *string `form:"limit" binding:"required"`
-	Offset       *string `form:"offset" binding:"required"`
-	ID           string  `form:"id"`
-	Nickname     string  `form:"nickname"`
-	Account      string  `form:"account"`
-	Gender       string  `form:"gender"`
-	DepartmentID string  `form:"departmentID"`
-	Status       string  `form:"status"`
-	CreateTime   string  `form:"createTime"`
-	UpdateTime   string  `form:"updateTime"`
-	StartTime    string  `form:"startTime"`
-	EndTime      string  `form:"endTime"`
+	Limit        int    `form:"limit"`
+	Offset       int    `form:"offset"`
+	ID           string `form:"id"`
+	Nickname     string `form:"nickname"`
+	Account      string `form:"account"`
+	Gender       string `form:"gender"`
+	DepartmentID string `form:"departmentID"`
+	Status       string `form:"status"`
+	CreateTime   string `form:"createTime"`
+	UpdateTime   string `form:"updateTime"`
+	StartTime    string `form:"startTime"`
+	EndTime      string `form:"endTime"`
 }
 
 type CreateUserParams struct {
