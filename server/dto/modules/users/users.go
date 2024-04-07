@@ -50,7 +50,7 @@ type SingleUserResponse struct {
 	DepartmentID *string    `json:"departmentID"`
 	CreateTime   *time.Time `json:"createTime"`
 	UpdateTime   *time.Time `json:"updateTime"`
-	Status       *string    `json:"status"`
+	Status       int        `json:"status"`
 }
 
 type SingleUserResponseHasPassword struct {

@@ -20,6 +20,9 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 	if !exist {
 		return nil, errors.New("账号不存在")
 	}
+	if user.Status == 0 {
+		return nil, errors.New("账号被禁用")
+	}
 	// 验证密码
 	if err := utils.Bcrypt.VerifyPassword(params.Password, user.Password); err != nil {
 		return nil, errors.New("密码错误")
