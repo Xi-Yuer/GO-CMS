@@ -137,11 +137,11 @@ func (r *userRepository) SelectUsersByAccount(account string) bool {
 func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
 	query := `
 		SELECT 
-			id, account,nickname, status, department_id, status, create_time, update_time 
+			id, account,nickname, status,GROUP_CONCAT(ur.role_id), department_id, status, create_time, update_time 
 		FROM 
 			users 
-		WHERE 
-			 delete_time IS NULL
+		LEFT JOIN users_roles ur ON users.id = ur.user_id
+		WHERE users.delete_time IS NULL
 		`
 	var queryParams []interface{}
 	if params.ID != "" {
@@ -175,6 +175,7 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		queryParams = append(queryParams, "%"+params.Account+"%")
 	}
 
+	query += "GROUP BY users.id"
 	if params.Limit != nil {
 		query += " LIMIT ?"
 		queryParams = append(queryParams, params.Limit)
@@ -184,6 +185,7 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		query += " OFFSET ?"
 		queryParams = append(queryParams, params.Offset)
 	}
+
 	// 准备查询语句
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
@@ -210,9 +212,13 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 	var users []dto.UsersSingleResponse
 	for rows.Next() {
 		var user dto.UsersSingleResponse
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
+		var rolesID []uint8
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &rolesID, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
+		}
+		if rolesID != nil {
+			user.RolesID = strings.Split(string(rolesID), ",")
 		}
 		users = append(users, user)
 	}
