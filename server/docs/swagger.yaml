@@ -276,4 +276,21 @@ paths:
       summary: 更新用户信息
       tags:
         - 用户管理
+  /users/role/{id}:
+    get:
+      consumes:
+        - application/json
+      description: 查询用户（查询某个角色下的所有用户）
+      parameters:
+        - description: 角色ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses: { }
+      summary: 查询用户（查询某个角色下的所有用户）
+      tags:
+        - 用户管理
 swagger: "2.0"

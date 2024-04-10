@@ -346,6 +346,31 @@
         "responses": {}
       }
     },
+    "/users/role/{id}": {
+      "get": {
+        "description": "查询用户（查询某个角色下的所有用户）",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "用户管理"
+        ],
+        "summary": "查询用户（查询某个角色下的所有用户）",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "角色ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/users/{id}": {
       "get": {
         "description": "根据ID获取用户信息",

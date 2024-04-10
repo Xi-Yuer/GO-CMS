@@ -52,6 +52,17 @@ type SingleUserResponse struct {
 	UpdateTime   *time.Time `json:"updateTime"`
 	Status       int        `json:"status"`
 }
+type SingleUserByRoleIDResponse struct {
+	ID           string     `json:"id"`
+	Account      string     `json:"account"` // 账号
+	Nickname     string     `json:"nickname"`
+	Avatar       *string    `json:"avatar"`
+	RolesID      []string   `json:"rolesID"`
+	DepartmentID *string    `json:"departmentID"`
+	CreateTime   *time.Time `json:"createTime"`
+	UpdateTime   *time.Time `json:"updateTime"`
+	Status       int        `json:"status"`
+}
 
 type SingleUserResponseHasPassword struct {
 	SingleUserResponse
@@ -64,4 +75,8 @@ type JWTPayload struct {
 	RoleID       []string `json:"roleId"`
 	DepartmentID *string  `json:"departmentId"`
 	jwt.RegisteredClaims
+}
+
+type QueryUsersByRoleIDs struct {
+	RoleIDs []string `form:"roleIDs"`
 }

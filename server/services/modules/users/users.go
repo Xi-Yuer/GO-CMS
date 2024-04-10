@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/Xi-Yuer/cms/dto"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
+	usersAndRolesServiceModules "github.com/Xi-Yuer/cms/services/modules/usersAndRoles"
 	"github.com/Xi-Yuer/cms/utils"
 	"strconv"
 )
@@ -80,4 +81,11 @@ func (u *userService) DeleteUser(id string) error {
 
 func (u *userService) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
 	return repositories.UserRepositorysModules.FindUserByAccount(account)
+}
+
+func (u *userService) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+	if err := usersAndRolesServiceModules.UserAndRolesService.FindRoleById(roleID); err != nil {
+		return nil, err
+	}
+	return repositories.UserRepositorysModules.GetUserByRoleID(roleID, params)
 }

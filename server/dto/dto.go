@@ -14,6 +14,9 @@ type LoginResponse authResponsiesModules.LoginResponse
 // UsersSingleResponse 查询单个用户
 type UsersSingleResponse usersResponsiesModules.SingleUserResponse
 
+// SingleUserByRoleIDResponse 根据角色id查询单个用户
+type SingleUserByRoleIDResponse usersResponsiesModules.SingleUserByRoleIDResponse
+
 type SingleUserResponseHasPassword usersResponsiesModules.SingleUserResponseHasPassword
 
 // CreateSingleUserRequest 创建用户

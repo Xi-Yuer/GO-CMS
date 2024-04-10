@@ -139,3 +139,35 @@ func (u *userController) DeleteUser(context *gin.Context) {
 	}
 	utils.Response.Success(context, nil)
 }
+
+// GetUserByRoleID 查询用户（查询某个角色下的所有用户）
+// @Summary 查询用户（查询某个角色下的所有用户）
+// @Description 查询用户（查询某个角色下的所有用户）
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param id path int true "角色ID"
+// @Router /users/role/{id} [get]
+func (u *userController) GetUserByRoleID(context *gin.Context) {
+	roleID := context.Param("id")
+	var params dto.Page
+	if roleID == "" {
+		utils.Response.ParameterTypeError(context, "角色ID不能为空")
+		return
+	}
+	err := context.ShouldBind(&params)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if *params.Limit > 100 {
+		utils.Response.ParameterTypeError(context, "limit不能大于100")
+		return
+	}
+	singleResponses, err := services.UserService.GetUserByRoleID(roleID, params)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, singleResponses)
+}

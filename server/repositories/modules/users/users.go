@@ -25,7 +25,6 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	`, id)
 
 	if err != nil {
-		fmt.Println('1', err)
 		return nil, err
 	}
 	defer func(rows *sql.Rows) {
@@ -350,4 +349,60 @@ func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 
 	return nil
 
+}
+
+func (r *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+	var users []*dto.SingleUserByRoleIDResponse
+	query := `
+    SELECT u.id,
+       u.account,
+       u.nickname,
+       u.avatar,
+       u.create_time,
+       u.update_time,
+       u.status,
+       u.department_id,
+       GROUP_CONCAT(users_roles.role_id) AS role_ids
+	FROM users_roles
+			 CROSS JOIN cms.users u ON u.id = users_roles.user_id
+	WHERE user_id IN (SELECT user_id FROM users_roles WHERE role_id = ?)
+	GROUP BY u.id, u.account, u.nickname, u.avatar, u.create_time, u.update_time, u.status, u.department_id
+	LIMIT ?
+	OFFSET ?
+    `
+	rows, err := db.DB.Query(query, roleID, params.Limit, params.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			utils.Log.Error(err)
+		}
+	}(rows)
+	for rows.Next() {
+		var user dto.SingleUserByRoleIDResponse
+		var rolesID []uint8
+		err := rows.Scan(
+			&user.ID,
+			&user.Account,
+			&user.Nickname,
+			&user.Avatar,
+			&user.CreateTime,
+			&user.UpdateTime,
+			&user.Status,
+			&user.DepartmentID,
+			&rolesID,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		if rolesID != nil {
+			user.RolesID = strings.Split(string(rolesID), ",")
+		}
+		users = append(users, &user)
+	}
+
+	return users, nil
 }
