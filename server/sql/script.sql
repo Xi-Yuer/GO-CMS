@@ -38,6 +38,25 @@ create table pages
             on delete cascade
 );
 
+create table interfaces
+(
+    interface_id      varchar(36)               not null
+        primary key,
+    interface_name    varchar(255)              null,
+    interface_method  varchar(10)               not null,
+    interface_path    varchar(255)              not null,
+    interface_page_id varchar(36)               not null,
+    interface_desc    varchar(255)              null,
+    create_time       timestamp default (now()) null,
+    update_time       timestamp default (now()) null on update CURRENT_TIMESTAMP,
+    constraint interface_pk
+        unique (interface_id),
+    constraint interface_pages_page_id_fk
+        foreign key (interface_page_id) references pages (page_id)
+            on delete cascade
+)
+    comment '接口/资源表';
+
 create table roles
 (
     role_id     varchar(36)                         not null
