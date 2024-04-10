@@ -89,6 +89,48 @@ paths:
       summary: 修改部门
       tags:
         - 部门管理
+  /interface:
+    post:
+      consumes:
+        - application/json
+      description: 创建接口
+      produces:
+        - application/json
+      responses: { }
+      summary: 创建接口
+      tags:
+        - 接口管理
+  /interface/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: 删除接口
+      produces:
+        - application/json
+      responses: { }
+      summary: 删除接口
+      tags:
+        - 接口管理
+    get:
+      consumes:
+        - application/json
+      description: 获取接口
+      produces:
+        - application/json
+      responses: { }
+      summary: 获取接口
+      tags:
+        - 接口管理
+    patch:
+      consumes:
+        - application/json
+      description: 更新接口
+      produces:
+        - application/json
+      responses: { }
+      summary: 更新接口
+      tags:
+        - 接口管理
   /pages:
     get:
       consumes:

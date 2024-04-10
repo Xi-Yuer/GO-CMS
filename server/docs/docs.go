@@ -149,6 +149,66 @@ const docTemplate = `{
                 }
             }
         },
+        "/interface": {
+            "post": {
+                "description": "创建接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "创建接口",
+                "responses": {}
+            }
+        },
+        "/interface/{id}": {
+            "get": {
+                "description": "获取接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "获取接口",
+                "responses": {}
+            },
+            "delete": {
+                "description": "删除接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "删除接口",
+                "responses": {}
+            },
+            "patch": {
+                "description": "更新接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "更新接口",
+                "responses": {}
+            }
+        },
         "/pages": {
             "get": {
                 "description": "获取菜单",

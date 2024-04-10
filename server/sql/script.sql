@@ -1,21 +1,32 @@
-create table if not exists crud_permission
+create table department
 (
-    id           int auto_increment
+    id                varchar(36)                         not null
         primary key,
-    name         varchar(255) not null,
-    created_time datetime     not null,
-    updated_time datetime     not null
+    department_name   varchar(36)                         not null,
+    parent_department varchar(36)                         null,
+    create_time       timestamp default (now())           null,
+    update_time       timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
+    delete_time       timestamp                           null,
+    department_order  int                                 null,
+    constraint department_pk_2
+        unique (id),
+    constraint department_pk_3
+        unique (department_name),
+    constraint department_department_id_fk
+        foreign key (parent_department) references department (id)
+            on delete cascade
 );
 
-create table if not exists pages
+create table pages
 (
     page_id        varchar(36)                         not null
         primary key,
     page_name      varchar(255)                        not null,
     page_path      varchar(255)                        not null,
     page_icon      varchar(255)                        null,
-    page_component varchar(255)                        not null,
+    page_component varchar(255) null,
     parent_page    varchar(36)                         null,
+    page_order     int          not null,
     create_time    timestamp default CURRENT_TIMESTAMP null,
     update_time    timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP,
     delete_time    timestamp                           null on update CURRENT_TIMESTAMP,
@@ -27,7 +38,7 @@ create table if not exists pages
             on delete cascade
 );
 
-create table if not exists roles
+create table roles
 (
     role_id     varchar(36)                         not null
         primary key,
@@ -42,7 +53,7 @@ create table if not exists roles
         unique (role_name)
 );
 
-create table if not exists roles_pages
+create table roles_pages
 (
     role_id varchar(36) null,
     page_id varchar(36) null,
@@ -54,23 +65,27 @@ create table if not exists roles_pages
             on delete cascade
 );
 
-create table if not exists users
+create table users
 (
-    id          varchar(36)   not null
+    id            varchar(36)               not null
         primary key,
-    account     varchar(255)  not null,
-    password    varchar(255)  not null,
-    nickname    varchar(255)  not null,
-    avatar      varchar(255)  null,
-    create_time timestamp     null on update CURRENT_TIMESTAMP,
-    update_time timestamp     null on update CURRENT_TIMESTAMP,
-    delete_time timestamp     null,
-    status      int default 1 null,
+    account       varchar(255)              not null,
+    password      varchar(255)              not null,
+    nickname      varchar(255)              not null,
+    avatar        varchar(255)              null,
+    create_time   timestamp default (now()) null on update CURRENT_TIMESTAMP,
+    update_time   timestamp default (now()) null on update CURRENT_TIMESTAMP,
+    delete_time   timestamp                 null,
+    status        int       default 1       null,
+    department_id varchar(36)               null,
     constraint account
-        unique (account)
+        unique (account),
+    constraint users_department_id_fk
+        foreign key (department_id) references department (id)
+            on delete set null
 );
 
-create table if not exists users_roles
+create table users_roles
 (
     user_id varchar(36) not null,
     role_id varchar(36) not null,

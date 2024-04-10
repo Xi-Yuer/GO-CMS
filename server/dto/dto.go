@@ -3,6 +3,7 @@ package dto
 import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
 	departmentResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/department"
+	interfaceResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/interface"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
@@ -75,3 +76,12 @@ type DepartmentResponse = departmentResponsiesModules.DepartmentResponse
 
 // UpdateDepartmentRequest 更新部门
 type UpdateDepartmentRequest = departmentResponsiesModules.UpdateDepartmentRequest
+
+// CreateInterfaceRequest 创建接口
+type CreateInterfaceRequest = interfaceResponsiesModules.CreateInterfaceRequest
+
+// GetInterfaceResponse 获取接口
+type GetInterfaceResponse = interfaceResponsiesModules.GetInterfaceResponse
+
+// UpdateInterfaceRequest 更新接口
+type UpdateInterfaceRequest = interfaceResponsiesModules.UpdateInterfaceRequest

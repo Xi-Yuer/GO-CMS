@@ -2,6 +2,7 @@ package repositories
 
 import (
 	departmentRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/department"
+	interfaceRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/interface"
 	pagesRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/pages"
 	rolesRepositorysModules "github.com/Xi-Yuer/cms/repositories/modules/roles"
 	rolesAndPagesRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/rolesAndPages"
@@ -15,3 +16,4 @@ var UsersAndRolesRepositorys = usersAndRolesRepositorysModules.UsersAndRolesRepo
 var PageRepositorysModules = pagesRepositoryModules.PageRepository
 var RolesAndPagesRepository = rolesAndPagesRepositoryModules.RolesAndPagesRepository
 var DepartmentRepository = departmentRepositoryModules.DepartmentRepository
+var InterfaceRepository = interfaceRepositoryModules.InterfaceRepository
