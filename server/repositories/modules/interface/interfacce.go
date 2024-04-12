@@ -75,7 +75,7 @@ func (i *interfaceRepository) CheckInterfacesExistence(interfaceID []string) err
 	}
 	// 判断是否所有接口都存在
 	if count != len(interfaceID) {
-		return errors.New("接口不存在")
+		return errors.New("资源不存在")
 	}
 
 	return nil

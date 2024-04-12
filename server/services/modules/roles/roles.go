@@ -22,7 +22,7 @@ func (r *rolesService) CreateRole(role *dto.CreateRoleParams) error {
 func (r *rolesService) DeleteRole(id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse == nil {
-		return errors.New("角色不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
@@ -30,7 +30,7 @@ func (r *rolesService) DeleteRole(id string) error {
 func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse == nil {
-		return errors.New("角色不存在")
+		return errors.New("资源不存在")
 	}
 	var err error
 	// 更新角色权限
@@ -50,18 +50,18 @@ func (r *rolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRole
 func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermissionRecordParams) error {
 	// 检查角色是否存在
 	if err := repositories.RoleRepositorysModules.CheckRolesExistence([]string{params.RoleID}); err != nil {
-		return errors.New("角色不存在")
+		return errors.New("资源不存在")
 	}
 	// 检查页面是否存在
 	if params.PageID != nil {
 		if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
-			return errors.New("页面不存在")
+			return errors.New("资源不存在")
 		}
 	}
 
 	if params.InterfaceID != nil {
 		if err := repositories.InterfaceRepository.CheckInterfacesExistence(params.InterfaceID); err != nil {
-			return errors.New("接口不存在")
+			return errors.New("资源不存在")
 		}
 	}
 	var err error

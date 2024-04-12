@@ -51,7 +51,7 @@ func (u *userController) GetUser(context *gin.Context) {
 	}
 	user, err := services.UserService.GetUser(id)
 	if err != nil {
-		utils.Response.NotFound(context, "用户不存在")
+		utils.Response.NotFound(context, "资源不存在")
 		return
 	}
 	utils.Response.Success(context, user)

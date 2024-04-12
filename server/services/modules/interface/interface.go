@@ -20,14 +20,14 @@ func (i *interfaceService) GetInterfaceByPageID(id string) []*dto.GetInterfaceRe
 
 func (i *interfaceService) UpdateInterfaceByID(id string, params *dto.UpdateInterfaceRequest) error {
 	if _, exist := repositories.InterfaceRepository.GetInterfaceByID(id); !exist {
-		return errors.New("接口不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.InterfaceRepository.UpdateInterfaceByID(id, params)
 }
 
 func (i *interfaceService) DeleteInterfaceByID(id string) error {
 	if _, exist := repositories.InterfaceRepository.GetInterfaceByID(id); !exist {
-		return errors.New("接口不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.InterfaceRepository.DeleteInterfaceByID(id)
 }

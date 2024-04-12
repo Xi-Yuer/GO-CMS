@@ -44,7 +44,7 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	}
 
 	if user.ID == "" {
-		return nil, errors.New("用户不存在")
+		return nil, errors.New("资源不存在")
 	}
 	if rolesID != nil {
 		user.RolesID = strings.Split(string(rolesID), ",")
@@ -256,7 +256,7 @@ func (r *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool
 	if err != nil {
 		return nil, false
 	}
-	// 用户不存在
+	// 资源不存在
 	if user == nil {
 		return nil, false
 	}

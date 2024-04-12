@@ -196,7 +196,7 @@ func (r *rolesRepository) CheckRolesExistence(roleIDs []string) error {
 	}
 	// 判断是否所有角色都存在
 	if count != len(roleIDs) {
-		return errors.New("角色不存在")
+		return errors.New("资源不存在")
 	}
 
 	return nil

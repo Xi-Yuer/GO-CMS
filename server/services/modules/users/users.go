@@ -59,7 +59,7 @@ func (u *userService) FindUserByParams(params *dto.QueryUsersParams) ([]dto.User
 func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error {
 	_, exist := u.FindUserById(id)
 	if !exist {
-		return errors.New("用户不存在")
+		return errors.New("资源不存在")
 	}
 	if params.RoleID != nil {
 		// 给用户分配角色信息
@@ -74,7 +74,7 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 func (u *userService) DeleteUser(id string) error {
 	_, exist := u.FindUserById(id)
 	if !exist {
-		return errors.New("用户不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.UserRepositorysModules.DeleteUser(id)
 }

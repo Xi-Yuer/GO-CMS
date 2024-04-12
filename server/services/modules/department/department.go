@@ -17,7 +17,7 @@ func (d *departmentService) CreateDepartment(params *dto.CreateDepartmentRequest
 
 func (d *departmentService) DeleteDepartment(id string) error {
 	if department := repositories.DepartmentRepository.GetDepartmentByID(id); department.ID == "" {
-		return errors.New("部门不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.DepartmentRepository.DeleteDepartment(id)
 }
@@ -33,7 +33,7 @@ func (d *departmentService) GetDepartments() ([]*dto.DepartmentResponse, error) 
 
 func (d *departmentService) UpdateDepartment(id string, params *dto.UpdateDepartmentRequest) error {
 	if department := repositories.DepartmentRepository.GetDepartmentByID(id); department.ID == "" {
-		return errors.New("部门不存在")
+		return errors.New("资源不存在")
 	}
 	return repositories.DepartmentRepository.UpdateDepartment(id, params)
 }

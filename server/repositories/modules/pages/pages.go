@@ -89,7 +89,7 @@ func (p *pageRepository) CheckPagesExistence(pagesIDs []string) error {
 	}
 	// 判断是否所有角色都存在
 	if count != len(pagesIDs) {
-		return errors.New("页面不存在")
+		return errors.New("资源不存在")
 	}
 
 	return nil
@@ -127,7 +127,7 @@ func (p *pageRepository) GetPages() ([]*dto.SinglePageResponse, error) {
 func (p *pageRepository) UpdatePage(id string, params *dto.UpdatePageRequest) error {
 	err := p.CheckPagesExistence([]string{id})
 	if err != nil {
-		return errors.New("页面不存在")
+		return errors.New("资源不存在")
 	}
 
 	query := "UPDATE pages SET page_name = ?, page_order = ?, page_path = ?, page_icon = ?, page_component = ?, can_edit = ? WHERE page_id = ?"
