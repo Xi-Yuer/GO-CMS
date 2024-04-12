@@ -4,6 +4,7 @@ import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
 	departmentResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/department"
 	interfaceResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/interface"
+	logsResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/logs"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
@@ -85,3 +86,9 @@ type GetInterfaceResponse = interfaceResponsiesModules.GetInterfaceResponse
 
 // UpdateInterfaceRequest 更新接口
 type UpdateInterfaceRequest = interfaceResponsiesModules.UpdateInterfaceRequest
+
+// CreateLogRecordRequest 创建日志
+type CreateLogRecordRequest = logsResponsiesModules.CreateLogRecordRequest
+
+// GetLogRecordResponse 获取日志
+type GetLogRecordResponse = logsResponsiesModules.GetLogRecordResponse

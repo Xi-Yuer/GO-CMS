@@ -5,7 +5,8 @@ import (
 	"github.com/Xi-Yuer/cms/middlewares"
 	authRouterModules "github.com/Xi-Yuer/cms/routers/modules/auth"
 	departmentRouterModules "github.com/Xi-Yuer/cms/routers/modules/department"
-	InterfaceRpoterModuels "github.com/Xi-Yuer/cms/routers/modules/interface"
+	interfaceRpoterModuels "github.com/Xi-Yuer/cms/routers/modules/interface"
+	logsRouterModules "github.com/Xi-Yuer/cms/routers/modules/logs"
 	pagesRouterModules "github.com/Xi-Yuer/cms/routers/modules/pages"
 	rolesRouterModules "github.com/Xi-Yuer/cms/routers/modules/roles"
 	swaggerRouterModules "github.com/Xi-Yuer/cms/routers/modules/swagger"
@@ -22,7 +23,7 @@ func SetUpRouters() *gin.Engine {
 		panic(err.Error())
 	}
 
-	v1 := r.Group("/api/v1", gin.Logger(), middlewares.AuthMiddleWareModule, middlewares.SessionMiddleWareModule(config.Config.APP.SESSIONSECRET))
+	v1 := r.Group("/api/v1", gin.Logger(), middlewares.LogsRepository.SystemLogMiddleware, middlewares.AuthMiddleWareModule, middlewares.SessionMiddleWareModule(config.Config.APP.SESSIONSECRET))
 
 	{
 		usersRouterModules.UseUserRoutes(v1)
@@ -30,7 +31,8 @@ func SetUpRouters() *gin.Engine {
 		rolesRouterModules.UseRolesRoutes(v1)
 		pagesRouterModules.UsePagesRoutes(v1)
 		departmentRouterModules.UseDepartmentRoutes(v1)
-		InterfaceRpoterModuels.UseInterfaceRouter(v1)
+		interfaceRpoterModuels.UseInterfaceRouter(v1)
+		logsRouterModules.UseLogRoutes(v1)
 		swaggerRouterModules.UseSwaggerRoutes(r)
 	}
 

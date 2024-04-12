@@ -1,4 +1,4 @@
-package InterfaceRpoterModuels
+package interfaceRpoterModuels
 
 import (
 	"github.com/Xi-Yuer/cms/controllers"

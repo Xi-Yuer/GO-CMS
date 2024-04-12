@@ -131,6 +131,17 @@ paths:
       summary: 更新接口
       tags:
         - 接口管理
+  /logs:
+    get:
+      consumes:
+        - application/json
+      description: 获取日志
+      produces:
+        - application/json
+      responses: { }
+      summary: 获取日志
+      tags:
+        - 日志管理
   /pages:
     get:
       consumes:

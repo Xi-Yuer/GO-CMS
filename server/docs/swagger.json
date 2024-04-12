@@ -198,6 +198,22 @@
         "responses": {}
       }
     },
+    "/logs": {
+      "get": {
+        "description": "获取日志",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "日志管理"
+        ],
+        "summary": "获取日志",
+        "responses": {}
+      }
+    },
     "/pages": {
       "get": {
         "description": "获取菜单",

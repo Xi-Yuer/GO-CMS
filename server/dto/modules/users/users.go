@@ -37,8 +37,8 @@ type UpdateUserParams struct {
 }
 
 type Page struct {
-	Limit  *int `form:"limit" binding:"required"`
-	Offset *int `form:"offset" binding:"required"`
+	Limit  *int `form:"limit" json:"limit" binding:"required"`
+	Offset *int `form:"offset" json:"offset" binding:"required"`
 }
 
 type SingleUserResponse struct {
