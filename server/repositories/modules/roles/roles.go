@@ -71,9 +71,10 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 
 func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
 	query := `
-	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id), create_time, update_time
+	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id),GROUP_CONCAT(roles_interfaces.interface_id), create_time, update_time
 	FROM roles
 	LEFT JOIN roles_pages ON roles.role_id = roles_pages.role_id
+	LEFT JOIN roles_interfaces ON roles.role_id = roles_interfaces.role_id
 	WHERE delete_time IS NULL
 	`
 
@@ -135,12 +136,16 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 	for rows.Next() {
 		role := &dto.SingleRoleResponse{}
 		var rolesID []uint8
-		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &rolesID, &role.CreateTime, &role.UpdateTime)
+		var interfaceID []uint8
+		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &rolesID, &interfaceID, &role.CreateTime, &role.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
 		if rolesID != nil {
 			role.PagesID = strings.Split(string(rolesID), ",")
+		}
+		if interfaceID != nil {
+			role.InterfacesID = strings.Split(string(interfaceID), ",")
 		}
 		roles = append(roles, role)
 	}

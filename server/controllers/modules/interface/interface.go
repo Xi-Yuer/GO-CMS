@@ -60,13 +60,13 @@ func (i *interfaceControllerModules) UpdateInterface(context *gin.Context) {
 	utils.Response.Success(context, "更新成功")
 }
 
-// GetInterfaceByPageID 获取接口
-// @Summary 获取接口
-// @Description 获取接口
+// GetInterfaceByPageID 获取接口（根据页面ID）
+// @Summary 获取接口（根据页面ID）
+// @Description 获取接口（根据页面ID）
 // @Tags 接口管理
 // @Accept json
 // @Produce json
-// @Router /interface/{id} [get]
+// @Router /interface/page/{id} [get]
 func (i *interfaceControllerModules) GetInterfaceByPageID(context *gin.Context) {
 	id := context.Param("id")
 	if id == "" {
@@ -96,4 +96,25 @@ func (i *interfaceControllerModules) DeleteInterface(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, "删除成功")
+}
+
+// GetInterfacesByRoleID 获取接口（根据角色ID）
+// @Summary 获取接口（根据角色ID）
+// @Description 获取接口（根据角色ID）
+// @Tags 接口管理
+// @Accept json
+// @Produce json
+// @Router /interface/role/{id} [get]
+func (i *interfaceControllerModules) GetInterfacesByRoleID(context *gin.Context) {
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterMissing(context, "id不能为空")
+		return
+	}
+	interfaceResponses, err := services.RolesAndInterfacesService.GetInterfacesByRoleID(id)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, interfaceResponses)
 }

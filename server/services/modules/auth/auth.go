@@ -29,11 +29,29 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 	}
 	// 查找用户角色ID
 	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(user.ID)
+	// 查找用户的接口信息
+	var interfaceDic []string
+	for _, s := range rolesID {
+		interfaceID, err := repositories.RolesAndInterfacesRepository.GetRecordByRoleID(s)
+		if err != nil {
+			continue
+		}
+		for _, s2 := range interfaceID {
+			inter, e := repositories.InterfaceRepository.GetInterfaceByID(s2)
+			if !e {
+				continue
+			}
+			interfaceDic = append(interfaceDic, inter.InterfaceDic)
+		}
+	}
+	// 接口权限去重
+	interfaceDic = utils.Unique(interfaceDic)
 	// 生成token
 	jwtPayload := &dto.JWTPayload{
 		ID:           user.ID,
 		Account:      user.Account,
 		RoleID:       rolesID,
+		InterfaceDic: interfaceDic,
 		DepartmentID: user.DepartmentID,
 	}
 	tokenUsingHs256, err := utils.Jsonwebtoken.GenerateTokenUsingHs256(jwtPayload)
@@ -47,6 +65,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 			Nickname:     user.Nickname,
 			Avatar:       user.Avatar,
 			RolesID:      rolesID,
+			InterfaceDic: interfaceDic,
 			DepartmentID: user.DepartmentID,
 			Status:       user.Status,
 			Account:      user.Account,

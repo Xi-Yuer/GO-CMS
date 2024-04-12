@@ -165,9 +165,9 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/interface/{id}": {
+        "/interface/page/{id}": {
             "get": {
-                "description": "获取接口",
+                "description": "获取接口（根据页面ID）",
                 "consumes": [
                     "application/json"
                 ],
@@ -177,9 +177,27 @@ const docTemplate = `{
                 "tags": [
                     "接口管理"
                 ],
-                "summary": "获取接口",
+                "summary": "获取接口（根据页面ID）",
                 "responses": {}
-            },
+            }
+        },
+        "/interface/role/{id}": {
+            "get": {
+                "description": "获取接口（根据角色ID）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "获取接口（根据角色ID）",
+                "responses": {}
+            }
+        },
+        "/interface/{id}": {
             "delete": {
                 "description": "删除接口",
                 "consumes": [

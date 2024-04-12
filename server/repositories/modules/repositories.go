@@ -6,6 +6,7 @@ import (
 	logsRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/logs"
 	pagesRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/pages"
 	rolesRepositorysModules "github.com/Xi-Yuer/cms/repositories/modules/roles"
+	rolesAndInterfacesRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/rolesAndInterfaces"
 	rolesAndPagesRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/rolesAndPages"
 	userRepositorysModules "github.com/Xi-Yuer/cms/repositories/modules/users"
 	usersAndRolesRepositorysModules "github.com/Xi-Yuer/cms/repositories/modules/usersAndRoles"
@@ -19,3 +20,4 @@ var RolesAndPagesRepository = rolesAndPagesRepositoryModules.RolesAndPagesReposi
 var DepartmentRepository = departmentRepositoryModules.DepartmentRepository
 var InterfaceRepository = interfaceRepositoryModules.InterfaceRepository
 var LogsRepository = logsRepositoryModules.LogsRepository
+var RolesAndInterfacesRepository = rolesAndInterfacesRepositoryModules.RolesAndInterfacesRepository

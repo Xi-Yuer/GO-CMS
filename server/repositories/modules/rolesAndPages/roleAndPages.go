@@ -27,6 +27,9 @@ func (r *rolesAndPagesRepository) CreateRecord(params *dto.CreateRolePermissionR
 		}
 		return err
 	}
+	if len(params.PageID) == 0 {
+		return nil
+	}
 	query := "INSERT INTO roles_pages (role_id, page_id) VALUES "
 	for _, pageID := range params.PageID {
 		query += fmt.Sprintf("('%s', '%s'),", params.RoleID, pageID)

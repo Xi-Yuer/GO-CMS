@@ -7,6 +7,7 @@ import (
 	logsServiceModules "github.com/Xi-Yuer/cms/services/modules/logs"
 	pagesServiceModules "github.com/Xi-Yuer/cms/services/modules/pages"
 	rolesServiceModules "github.com/Xi-Yuer/cms/services/modules/roles"
+	rolesAndInterfacesServiceModules "github.com/Xi-Yuer/cms/services/modules/rolesAndInterfaces"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 )
 
@@ -17,3 +18,4 @@ var PageService = pagesServiceModules.PageService
 var DepartmentService = departmentServiceModules.DepartmentService
 var InterfaceService = interfaceServiceModules.InterfaceService
 var LogsService = logsServiceModules.LogsService
+var RolesAndInterfacesService = rolesAndInterfacesServiceModules.RolesAndInterfacesService

@@ -16,7 +16,7 @@ func (r *rolesService) CreateRole(role *dto.CreateRoleParams) error {
 	if roleID == 0 {
 		return errors.New("角色创建失败")
 	}
-	return r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: strconv.FormatInt(roleID, 10), PageID: role.PageID})
+	return r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: strconv.FormatInt(roleID, 10), PageID: role.PageID, InterfaceID: role.InterfaceID})
 }
 
 func (r *rolesService) DeleteRole(id string) error {
@@ -32,14 +32,15 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	if singleRoleResponse == nil {
 		return errors.New("角色不存在")
 	}
+	var err error
 	// 更新角色权限
-	if role.PageID != nil {
-		err := r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: id, PageID: role.PageID})
-		if err != nil {
-			return err
-		}
+	err = r.CreateRolePermissionsRecord(&dto.CreateRolePermissionRecordParams{RoleID: id, PageID: role.PageID, InterfaceID: role.InterfaceID})
+	if err != nil {
+		return err
 	}
-	return repositories.RoleRepositorysModules.UpdateRole(role, id)
+	// 更新角色基本信息
+	err = repositories.RoleRepositorysModules.UpdateRole(role, id)
+	return err
 
 }
 func (r *rolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
@@ -57,6 +58,19 @@ func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermiss
 			return errors.New("页面不存在")
 		}
 	}
-	// 插入数据
-	return repositories.RolesAndPagesRepository.CreateRecord(params)
+
+	if params.InterfaceID != nil {
+		if err := repositories.InterfaceRepository.CheckInterfacesExistence(params.InterfaceID); err != nil {
+			return errors.New("接口不存在")
+		}
+	}
+	var err error
+	// 创建角色接口权限
+	err = repositories.RolesAndInterfacesRepository.CreateRecord(params)
+	if err != nil {
+		return err
+	}
+	// 创建角色页面权限
+	err = repositories.RolesAndPagesRepository.CreateRecord(params)
+	return err
 }

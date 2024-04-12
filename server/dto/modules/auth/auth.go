@@ -18,6 +18,7 @@ type CreateUserRoleRecordParams struct {
 }
 
 type CreateRolePermissionRecordParams struct {
-	RoleID string   `form:"roleID" json:"roleID"`
-	PageID []string `form:"pageID" json:"pageID"`
+	RoleID      string   `form:"roleID" json:"roleID"`
+	PageID      []string `form:"pageID" json:"pageID"`
+	InterfaceID []string `form:"interfaceID" json:"interfaceID"`
 }

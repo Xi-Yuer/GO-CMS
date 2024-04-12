@@ -111,16 +111,6 @@ paths:
       summary: 删除接口
       tags:
         - 接口管理
-    get:
-      consumes:
-        - application/json
-      description: 获取接口
-      produces:
-        - application/json
-      responses: { }
-      summary: 获取接口
-      tags:
-        - 接口管理
     patch:
       consumes:
         - application/json
@@ -129,6 +119,28 @@ paths:
         - application/json
       responses: { }
       summary: 更新接口
+      tags:
+        - 接口管理
+  /interface/page/{id}:
+    get:
+      consumes:
+        - application/json
+      description: 获取接口（根据页面ID）
+      produces:
+        - application/json
+      responses: { }
+      summary: 获取接口（根据页面ID）
+      tags:
+        - 接口管理
+  /interface/role/{id}:
+    get:
+      consumes:
+        - application/json
+      description: 获取接口（根据角色ID）
+      produces:
+        - application/json
+      responses: { }
+      summary: 获取接口（根据角色ID）
       tags:
         - 接口管理
   /logs:

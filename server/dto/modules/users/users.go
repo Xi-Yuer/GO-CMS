@@ -47,6 +47,7 @@ type SingleUserResponse struct {
 	Nickname     string     `json:"nickname"`
 	Avatar       *string    `json:"avatar"`
 	RolesID      []string   `json:"rolesID"`
+	InterfaceDic []string   `json:"interfaceDic"`
 	DepartmentID *string    `json:"departmentID"`
 	CreateTime   *time.Time `json:"createTime"`
 	UpdateTime   *time.Time `json:"updateTime"`
@@ -73,6 +74,7 @@ type JWTPayload struct {
 	ID           string   `json:"id"`
 	Account      string   `json:"account"`
 	RoleID       []string `json:"roleId"`
+	InterfaceDic []string `json:"interfaceDic"`
 	DepartmentID *string  `json:"departmentId"`
 	jwt.RegisteredClaims
 }
