@@ -2,6 +2,7 @@ package snowflake
 
 import (
 	"fmt"
+	"github.com/Xi-Yuer/cms/utils"
 	"github.com/bwmarrin/snowflake"
 	"time"
 )
@@ -13,14 +14,14 @@ func Init(startTime string, machineID int64) (err error) {
 	// 格式化 1月2号下午3时4分5秒  2006年
 	st, err = time.Parse("2006-01-02", startTime)
 	if err != nil {
-		fmt.Println(err)
+		utils.Log.Error(err)
 		return
 	}
 
 	snowflake.Epoch = st.UnixNano() / 1e6
 	Node, err = snowflake.NewNode(machineID)
 	if err != nil {
-		fmt.Println(err)
+		utils.Log.Error(err)
 		return
 	}
 

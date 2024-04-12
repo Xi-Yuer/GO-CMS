@@ -3,7 +3,6 @@ package userRepositorysModules
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
@@ -329,8 +328,6 @@ func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 
 	query += ` WHERE id = ?`
 	queryParams = append(queryParams, id)
-	fmt.Println(query)
-
 	stmt, err := db.DB.Prepare(query)
 	if err != nil {
 		return err

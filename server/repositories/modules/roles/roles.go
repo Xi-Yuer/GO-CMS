@@ -3,7 +3,6 @@ package rolesRepositorysModules
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
@@ -60,9 +59,6 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 
 	query += " WHERE role_id = ?"
 	queryParams = append(queryParams, id)
-	fmt.Println(query)
-	fmt.Println(queryParams)
-
 	_, err := db.DB.Exec(query, queryParams...)
 
 	if err != nil {
