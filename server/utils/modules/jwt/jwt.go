@@ -13,12 +13,12 @@ type Jsonwebtoken struct {
 
 func (j *Jsonwebtoken) GenerateTokenUsingHs256(jwtPayload *dto.JWTPayload) (string, error) {
 	claim := dto.JWTPayload{
-		ID:       jwtPayload.ID,
-		NickName: jwtPayload.NickName,
-		RoleID:   jwtPayload.RoleID,
+		ID:      jwtPayload.ID,
+		Account: jwtPayload.Account,
+		RoleID:  jwtPayload.RoleID,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "Xi-Yuer",                                          // 签发者
-			Subject:   jwtPayload.NickName,                                // 签发对象
+			Subject:   jwtPayload.Account,                                 // 签发对象
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)), //过期时间
 			NotBefore: jwt.NewNumericDate(time.Now().Add(time.Second)),    //最早使用时间
 			IssuedAt:  jwt.NewNumericDate(time.Now()),                     //签发时间

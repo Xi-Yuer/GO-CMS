@@ -32,7 +32,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 	// 生成token
 	jwtPayload := &dto.JWTPayload{
 		ID:           user.ID,
-		NickName:     user.Nickname,
+		Account:      user.Account,
 		RoleID:       rolesID,
 		DepartmentID: user.DepartmentID,
 	}

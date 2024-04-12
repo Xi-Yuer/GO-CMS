@@ -27,17 +27,17 @@ func (m *systemLogMiddlewareModule) SystemLogMiddleware(context *gin.Context) {
 	start := time.Now()
 	context.Next()
 	duration := time.Since(start)
-	var user *dto.JWTPayload
+	user := &dto.JWTPayload{}
 	value, exists := context.Get(constant.JWTPAYLOAD)
 	if !exists {
-		user.NickName = "未登录用户"
+		user.Account = "未登录用户"
 		user.ID = ""
 	} else {
 		user = value.(*dto.JWTPayload)
 	}
 	params := dto.CreateLogRecordRequest{
 		ID:              utils.GenID(),
-		UserName:        user.NickName,
+		UserName:        user.Account,
 		UserID:          user.ID,
 		UserIP:          ip,
 		RequestMethod:   methods,

@@ -71,7 +71,7 @@ type SingleUserResponseHasPassword struct {
 
 type JWTPayload struct {
 	ID           string   `json:"id"`
-	NickName     string   `json:"nickName"`
+	Account      string   `json:"account"`
 	RoleID       []string `json:"roleId"`
 	DepartmentID *string  `json:"departmentId"`
 	jwt.RegisteredClaims
