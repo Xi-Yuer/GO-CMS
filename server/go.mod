@@ -5,7 +5,6 @@ go 1.21.1
 require (
 	github.com/bwmarrin/snowflake v0.3.0
 	github.com/dchest/captcha v1.0.0
-	github.com/deckarep/golang-set v1.8.0
 	github.com/gin-contrib/sessions v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/locales v0.14.1
