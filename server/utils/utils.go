@@ -4,6 +4,7 @@ import (
 	"github.com/Xi-Yuer/cms/utils/modules/bcrypt"
 	"github.com/Xi-Yuer/cms/utils/modules/buildTree"
 	"github.com/Xi-Yuer/cms/utils/modules/captcha"
+	"github.com/Xi-Yuer/cms/utils/modules/contain"
 	"github.com/Xi-Yuer/cms/utils/modules/jwt"
 	"github.com/Xi-Yuer/cms/utils/modules/logs"
 	"github.com/Xi-Yuer/cms/utils/modules/response"
@@ -23,3 +24,4 @@ var Jsonwebtoken = &jwt.Jsonwebtoken{}
 var Unique = unique.RemoveDuplicatesAndEmpty
 var BuildPages = buildTree.BuildMenu
 var BuildDepartment = buildTree.BuildDepartment
+var Contain = contain.StringInSlice

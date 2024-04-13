@@ -8,6 +8,8 @@ import sessionMiddleWareModule "github.com/Xi-Yuer/cms/middlewares/modules/sessi
 
 var SessionMiddleWareModule = sessionMiddleWareModule.Session
 
-var AuthMiddleWareModule = authMiddleWareModule.AuthMiddleWare
+var AuthMiddleWareModule = authMiddleWareModule.AuthTokenMiddleWare
 
 var LogsMiddlewareModule = systemLogsMiddlewareModule.SystemLogMiddlewareModule
+
+var AuthMethodMiddleWare = authMiddleWareModule.AuthMethodMiddleWare

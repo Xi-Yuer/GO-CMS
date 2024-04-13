@@ -24,10 +24,12 @@ func SetUpRouters() *gin.Engine {
 		panic(err.Error())
 	}
 
-	v1 := r.Group("/api/v1",
+	v1 := r.Group(
+		config.Config.APP.BASEURL,
 		gin.Logger(),
 		middlewares.LogsMiddlewareModule.SystemLogMiddleware,
 		middlewares.AuthMiddleWareModule,
+		middlewares.AuthMethodMiddleWare,
 		middlewares.SessionMiddleWareModule(config.Config.APP.SESSIONSECRET),
 	)
 

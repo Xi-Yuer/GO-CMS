@@ -6,7 +6,7 @@ import (
 )
 
 func UseLogRoutes(r *gin.RouterGroup) {
-	group := r.Group("/logs")
+	group := r.Group("/log")
 	{
 		group.GET("/system", controllers.LogsController.GetLogRecords)
 	}

@@ -6,6 +6,7 @@ var Config = config{
 		SESSIONSECRET: "1234567890",
 		JWT:           "1234567890",
 		SWAGPATH:      "http://localhost:8080/swagger/docs/index.html#/example",
+		BASEURL:       "/api/v1",
 	},
 	DB: DB{
 		NAME:     "root",
@@ -26,6 +27,7 @@ type APP struct {
 	SESSIONSECRET string
 	JWT           string
 	SWAGPATH      string
+	BASEURL       string
 }
 type DB struct {
 	NAME     string
