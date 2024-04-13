@@ -17,7 +17,7 @@ type commitsController struct{}
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /commits [get]
+// @Router /log/commits [get]
 func (c *commitsController) GetCommits(context *gin.Context) {
 	commits := repositories.CommitsRepositoryModules.GetCommits()
 	utils.Response.Success(context, commits)

@@ -143,15 +143,30 @@ paths:
       summary: 获取接口（根据角色ID）
       tags:
         - 接口管理
-  /logs:
+  /log/commits:
     get:
       consumes:
         - application/json
-      description: 获取日志
+      description: 获取Git提交记录
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取Git提交记录
+      tags:
+        - 日志管理
+  /log/system:
+    get:
+      consumes:
+        - application/json
+      description: 获取系统日志
       produces:
         - application/json
       responses: { }
-      summary: 获取日志
+      summary: 获取系统日志
       tags:
         - 日志管理
   /pages:

@@ -6,8 +6,8 @@ import (
 )
 
 func UseCommitsRoutes(r *gin.RouterGroup) {
-	group := r.Group("/commits")
+	group := r.Group("/log")
 	{
-		group.GET("", controllers.CommitsController.GetCommits)
+		group.GET("/commits", controllers.CommitsController.GetCommits)
 	}
 }

@@ -11,13 +11,13 @@ var LogsController = &logsControllerModules{}
 
 type logsControllerModules struct{}
 
-// GetLogRecords 获取日志
-// @Summary 获取日志
-// @Description 获取日志
+// GetLogRecords 获取系统日志
+// @Summary 获取系统日志
+// @Description 获取系统日志
 // @Tags 日志管理
 // @Accept json
 // @Produce json
-// @Router /logs [get]
+// @Router /log/system [get]
 func (l *logsControllerModules) GetLogRecords(context *gin.Context) {
 	var params dto.Page
 	if err := context.ShouldBind(&params); err != nil {

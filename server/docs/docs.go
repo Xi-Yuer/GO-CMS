@@ -227,9 +227,9 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/logs": {
+        "/log/commits": {
             "get": {
-                "description": "获取日志",
+                "description": "获取Git提交记录",
                 "consumes": [
                     "application/json"
                 ],
@@ -239,7 +239,30 @@ const docTemplate = `{
                 "tags": [
                     "日志管理"
                 ],
-                "summary": "获取日志",
+                "summary": "获取Git提交记录",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/log/system": {
+            "get": {
+                "description": "获取系统日志",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志管理"
+                ],
+                "summary": "获取系统日志",
                 "responses": {}
             }
         },
