@@ -16,8 +16,9 @@ type commitsController struct{}
 // @Tags 日志管理
 // @Accept json
 // @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /commits [get]
-func (receiver *commitsController) GetCommits(context *gin.Context) {
+func (c *commitsController) GetCommits(context *gin.Context) {
 	commits := repositories.CommitsRepositoryModules.GetCommits()
 	utils.Response.Success(context, commits)
 }
