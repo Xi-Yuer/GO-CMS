@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	commitsRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/commits"
 	departmentRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/department"
 	interfaceRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/interface"
 	logsRepositoryModules "github.com/Xi-Yuer/cms/repositories/modules/logs"
@@ -21,3 +22,4 @@ var DepartmentRepository = departmentRepositoryModules.DepartmentRepository
 var InterfaceRepository = interfaceRepositoryModules.InterfaceRepository
 var LogsRepository = logsRepositoryModules.LogsRepository
 var RolesAndInterfacesRepository = rolesAndInterfacesRepositoryModules.RolesAndInterfacesRepository
+var CommitsRepositoryModules = commitsRepositoryModules.CommitsRepositoryModules

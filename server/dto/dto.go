@@ -2,6 +2,7 @@ package dto
 
 import (
 	authResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/auth"
+	commitsResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/commits"
 	departmentResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/department"
 	interfaceResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/interface"
 	logsResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/logs"
@@ -92,3 +93,6 @@ type CreateLogRecordRequest = logsResponsiesModules.CreateLogRecordRequest
 
 // GetLogRecordResponse 获取日志
 type GetLogRecordResponse = logsResponsiesModules.GetLogRecordResponse
+
+// CommitResponse 提交记录
+type CommitResponse = commitsResponsiesModules.CommitResponse
