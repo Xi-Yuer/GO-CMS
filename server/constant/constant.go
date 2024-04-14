@@ -12,26 +12,26 @@ var PermissionMap = map[string]string{
 	"^POST:" + config.Config.APP.BASEURL + "/users$":           `POST:/users`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/roles/\\d+$": `GET:/users/roles/:id`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":       `GET:/users/:id`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":     `PUT:/users/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":     `PATCH:/users/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":    `DELETE:/users/:id`,
 
 	// 角色管理
 	"^GET:" + config.Config.APP.BASEURL + "/roles$":           `GET:/roles`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$": `GET:/users/role/:id`,
 	"^POST:" + config.Config.APP.BASEURL + "/roles$":          `POST:/roles`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `PUT:/roles/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `PATCH:/roles/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/roles/\\d+$":   `DELETE:/roles/:id`,
 
 	// 部门管理
 	"^GET:" + config.Config.APP.BASEURL + "/department$":         `GET:/department`,
 	"^POST:" + config.Config.APP.BASEURL + "/department$":        `POST:/department`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/department/\\d+$":  `PUT:/department/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/department/\\d+$":  `PATCH:/department/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/department/\\d+$": `DELETE:/department/:id`,
 
 	// 菜单管理
 	"^GET:" + config.Config.APP.BASEURL + "/pages$":         `GET:/pages`,
 	"^POST:" + config.Config.APP.BASEURL + "/pages$":        `POST:/pages`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/pages/\\d+$":  `PUT:/pages/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/pages/\\d+$":  `PATCH:/pages/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/pages/\\d+$": `DELETE:/pages/:id`,
 	"^GET:" + config.Config.APP.BASEURL + "/pages/menus$":   `GET:/pages/menus`,
 

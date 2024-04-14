@@ -24,6 +24,7 @@ func (p *pagesController) CreatePage(context *gin.Context) {
 	var pageParams dto.CreatePageParams
 	if err := context.ShouldBind(&pageParams); err != nil {
 		utils.Response.ParameterMissing(context, err.Error())
+		return
 	}
 	if *pageParams.IsOutSite == 1 && *pageParams.OutSiteLink == "" {
 		utils.Response.ParameterMissing(context, "外链地址不能为空")
