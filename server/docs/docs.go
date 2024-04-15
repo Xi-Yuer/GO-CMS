@@ -400,6 +400,31 @@ const docTemplate = `{
                 }
             }
         },
+        "/roles/export": {
+            "post": {
+                "description": "导出角色",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "导出角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/roles/{id}": {
             "delete": {
                 "description": "删除角色",
@@ -471,6 +496,31 @@ const docTemplate = `{
                     "用户管理"
                 ],
                 "summary": "创建新用户",
+                "responses": {}
+            }
+        },
+        "/users/export": {
+            "post": {
+                "description": "导出用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "导出用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {}
             }
         },

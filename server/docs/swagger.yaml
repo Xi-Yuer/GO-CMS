@@ -1,13 +1,13 @@
 info:
-  contact: { }
+  contact: {}
 paths:
   /auth/captcha:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取验证码
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -15,14 +15,14 @@ paths:
             type: string
       summary: 获取验证码
       tags:
-        - 登录
+      - 登录
   /auth/login:
     post:
       consumes:
-        - application/json
+      - application/json
       description: 登录
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -30,14 +30,14 @@ paths:
             type: string
       summary: 登录
       tags:
-        - 登录
+      - 登录
   /department:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取部门
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -45,13 +45,13 @@ paths:
             type: string
       summary: 获取部门
       tags:
-        - 部门管理
+      - 部门管理
     post:
       consumes:
-        - application/json
+      - application/json
       description: 创建部门
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -59,14 +59,14 @@ paths:
             type: string
       summary: 创建部门
       tags:
-        - 部门管理
+      - 部门管理
   /department/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: 删除部门
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -74,13 +74,13 @@ paths:
             type: string
       summary: 删除部门
       tags:
-        - 部门管理
+      - 部门管理
     patch:
       consumes:
-        - application/json
+      - application/json
       description: 修改部门
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -88,68 +88,68 @@ paths:
             type: string
       summary: 修改部门
       tags:
-        - 部门管理
+      - 部门管理
   /interface:
     post:
       consumes:
-        - application/json
+      - application/json
       description: 创建接口
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 创建接口
       tags:
-        - 接口管理
+      - 接口管理
   /interface/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: 删除接口
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 删除接口
       tags:
-        - 接口管理
+      - 接口管理
     patch:
       consumes:
-        - application/json
+      - application/json
       description: 更新接口
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 更新接口
       tags:
-        - 接口管理
+      - 接口管理
   /interface/page/{id}:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取接口（根据页面ID）
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 获取接口（根据页面ID）
       tags:
-        - 接口管理
+      - 接口管理
   /interface/role/{id}:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取接口（根据角色ID）
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 获取接口（根据角色ID）
       tags:
-        - 接口管理
+      - 接口管理
   /log/commits:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取Git提交记录
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -157,56 +157,56 @@ paths:
             type: string
       summary: 获取Git提交记录
       tags:
-        - 日志管理
+      - 日志管理
   /log/system:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取系统日志
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 获取系统日志
       tags:
-        - 日志管理
+      - 日志管理
   /pages:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取菜单
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 获取菜单
       tags:
-        - 菜单管理
+      - 菜单管理
     post:
       consumes:
-        - application/json
+      - application/json
       description: 创建菜单
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 创建菜单
       tags:
-        - 菜单管理
+      - 菜单管理
   /pages/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: 删除菜单
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 删除菜单
       tags:
-        - 菜单管理
+      - 菜单管理
     patch:
       consumes:
-        - application/json
+      - application/json
       description: 更新菜单
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -214,14 +214,14 @@ paths:
             type: string
       summary: 更新菜单
       tags:
-        - 菜单管理
+      - 菜单管理
   /pages/menu:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取用户菜单
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -229,14 +229,14 @@ paths:
             type: string
       summary: 获取用户菜单
       tags:
-        - 菜单管理
+      - 菜单管理
   /roles:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 获取角色
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -244,13 +244,13 @@ paths:
             type: string
       summary: 获取角色
       tags:
-        - 角色管理
+      - 角色管理
     post:
       consumes:
-        - application/json
+      - application/json
       description: 创建角色
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -258,14 +258,14 @@ paths:
             type: string
       summary: 创建角色
       tags:
-        - 角色管理
+      - 角色管理
   /roles/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: 删除角色
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -273,13 +273,13 @@ paths:
             type: string
       summary: 删除角色
       tags:
-        - 角色管理
+      - 角色管理
     patch:
       consumes:
-        - application/json
+      - application/json
       description: 更新角色
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -287,51 +287,68 @@ paths:
             type: string
       summary: 更新角色
       tags:
-        - 角色管理
+      - 角色管理
+  /roles/export:
+    post:
+      consumes:
+      - application/json
+      description: 导出角色
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: 导出角色
+      tags:
+      - 角色管理
   /users:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 根据查询参数查询用户信息
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 查询用户
       tags:
-        - 用户管理
+      - 用户管理
     post:
       consumes:
-        - application/json
+      - application/json
       description: 创建新用户并将其添加到系统中
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 创建新用户
       tags:
-        - 用户管理
+      - 用户管理
   /users/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: 根据用户ID删除用户
       parameters:
-        - description: 用户ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 删除用户
       tags:
-        - 用户管理
+      - 用户管理
     get:
       consumes:
-        - application/json
+      - application/json
       description: 根据ID获取用户信息
       produces:
-        - application/json
+      - application/json
       responses:
         "200":
           description: '{"code":200,"data":{},"msg":"ok"}'
@@ -339,38 +356,55 @@ paths:
             type: string
       summary: 根据ID获取用户信息
       tags:
-        - 用户管理
+      - 用户管理
     patch:
       consumes:
-        - application/json
+      - application/json
       description: 更新现有用户的信息
       parameters:
-        - description: 用户ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 更新用户信息
       tags:
-        - 用户管理
+      - 用户管理
+  /users/export:
+    post:
+      consumes:
+      - application/json
+      description: 导出用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: 导出用户
+      tags:
+      - 用户管理
   /users/role/{id}:
     get:
       consumes:
-        - application/json
+      - application/json
       description: 查询用户（查询某个角色下的所有用户）
       parameters:
-        - description: 角色ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
-        - application/json
-      responses: { }
+      - application/json
+      responses: {}
       summary: 查询用户（查询某个角色下的所有用户）
       tags:
-        - 用户管理
+      - 用户管理
 swagger: "2.0"
