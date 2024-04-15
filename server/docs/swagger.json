@@ -458,6 +458,22 @@
                 }
             }
         },
+        "/system": {
+            "get": {
+                "description": "获取系统运行信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统管理"
+                ],
+                "summary": "获取系统运行信息",
+                "responses": {}
+            }
+        },
         "/users": {
             "get": {
                 "description": "根据查询参数查询用户信息",

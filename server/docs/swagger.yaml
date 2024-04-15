@@ -305,6 +305,17 @@ paths:
       summary: 导出角色
       tags:
       - 角色管理
+  /system:
+    get:
+      consumes:
+      - application/json
+      description: 获取系统运行信息
+      produces:
+      - application/json
+      responses: {}
+      summary: 获取系统运行信息
+      tags:
+      - 系统管理
   /users:
     get:
       consumes:
