@@ -14,6 +14,7 @@ var PermissionMap = map[string]string{
 	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":       `GET:/users/:id`,
 	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":     `PATCH:/users/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":    `DELETE:/users/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/export$":    `POST:/users/export`,
 
 	// 角色管理
 	"^GET:" + config.Config.APP.BASEURL + "/roles$":           `GET:/roles`,
@@ -21,6 +22,7 @@ var PermissionMap = map[string]string{
 	"^POST:" + config.Config.APP.BASEURL + "/roles$":          `POST:/roles`,
 	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `PATCH:/roles/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/roles/\\d+$":   `DELETE:/roles/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/export$":   `POST:/roles/export`,
 
 	// 部门管理
 	"^GET:" + config.Config.APP.BASEURL + "/department$":         `GET:/department`,
