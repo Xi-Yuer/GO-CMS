@@ -11,6 +11,7 @@ import (
 	pagesRouterModules "github.com/Xi-Yuer/cms/routers/modules/pages"
 	rolesRouterModules "github.com/Xi-Yuer/cms/routers/modules/roles"
 	swaggerRouterModules "github.com/Xi-Yuer/cms/routers/modules/swagger"
+	systemRouterModules "github.com/Xi-Yuer/cms/routers/modules/system"
 	usersRouterModules "github.com/Xi-Yuer/cms/routers/modules/users"
 	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
@@ -42,6 +43,7 @@ func SetUpRouters() *gin.Engine {
 		interfaceRpoterModuels.UseInterfaceRouter(v1)
 		logsRouterModules.UseLogRoutes(v1)
 		commitsRouterModules.UseCommitsRoutes(v1)
+		systemRouterModules.UseSystemRoutes(v1)
 		swaggerRouterModules.UseSwaggerRoutes(r)
 	}
 

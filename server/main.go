@@ -13,8 +13,8 @@ import (
 )
 
 func main() {
-	err := db.InitDB()
-	if err != nil {
+
+	if err := db.InitDB(); err != nil {
 		utils.Log.Panic(err)
 		return
 	}

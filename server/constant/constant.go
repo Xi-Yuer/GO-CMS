@@ -45,6 +45,9 @@ var PermissionMap = map[string]string{
 	"^PATCH:" + config.Config.APP.BASEURL + "/interface/\\d+$":    `PATCH:/interface/:id`,
 
 	// 日志管理
-	"^GET:" + config.Config.APP.BASEURL + "/log/commits": `GET:/log/commits`,
-	"^GET:" + config.Config.APP.BASEURL + "/log/system":  `GET:/log/system`,
+	"^GET:" + config.Config.APP.BASEURL + "/log/commits$": `GET:/log/commits`,
+	"^GET:" + config.Config.APP.BASEURL + "/log/system$":  `GET:/log/system`,
+
+	// 系统管理
+	"^GET:" + config.Config.APP.BASEURL + "/system$": `GET:/system`,
 }

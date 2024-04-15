@@ -8,6 +8,7 @@ import (
 	logsControllerModules "github.com/Xi-Yuer/cms/controllers/modules/logs"
 	pagesControllerModules "github.com/Xi-Yuer/cms/controllers/modules/pages"
 	roleControllersModules "github.com/Xi-Yuer/cms/controllers/modules/role"
+	systemControllerModules "github.com/Xi-Yuer/cms/controllers/modules/system"
 	userControllersModules "github.com/Xi-Yuer/cms/controllers/modules/users"
 )
 
@@ -19,3 +20,4 @@ var DepartmentController = departmentControllerModules.DepartmentController
 var InterfaceController = interfaceControllerModules.InterfaceController
 var LogsController = logsControllerModules.LogsController
 var CommitsController = commitsControllerModules.CommitsController
+var SystemController = systemControllerModules.SystemController
