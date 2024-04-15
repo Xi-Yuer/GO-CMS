@@ -7,14 +7,15 @@ import (
 
 func UseUserRoutes(r *gin.RouterGroup) {
 
-	userRouters := r.Group("/users")
+	group := r.Group("/users")
 
 	{
-		userRouters.POST("", controllers.UserController.CreateUser)
-		userRouters.GET("/:id", controllers.UserController.GetUser)
-		userRouters.GET("", controllers.UserController.GetUsers)
-		userRouters.GET("/role/:id", controllers.UserController.GetUserByRoleID)
-		userRouters.PATCH("/:id", controllers.UserController.UpdateUser)
-		userRouters.DELETE("/:id", controllers.UserController.DeleteUser)
+		group.POST("", controllers.UserController.CreateUser)
+		group.GET("/:id", controllers.UserController.GetUser)
+		group.GET("", controllers.UserController.GetUsers)
+		group.GET("/role/:id", controllers.UserController.GetUserByRoleID)
+		group.PATCH("/:id", controllers.UserController.UpdateUser)
+		group.DELETE("/:id", controllers.UserController.DeleteUser)
+		group.POST("/export", controllers.UserController.ExportExcel)
 	}
 }

@@ -171,3 +171,34 @@ func (u *userController) GetUserByRoleID(context *gin.Context) {
 	}
 	utils.Response.Success(context, singleResponses)
 }
+
+// ExportExcel 导出用户
+// @Summary 导出用户
+// @Description 导出用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Param id path int true "用户ID"
+// @Router /users/export [post]
+func (u *userController) ExportExcel(context *gin.Context) {
+	var IDs dto.ExportExcelResponse
+	err := context.ShouldBind(&IDs)
+	if err != nil {
+		utils.Response.ParameterMissing(context, err.Error())
+		return
+	}
+	responses, err := services.UserService.ExportExcel(&IDs)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	var data [][]interface{}
+	data = append(data, []interface{}{"ID", "账号", "昵称", "头像", "状态", "部门ID", "角色ID", "接口权限", "创建时间", "更新时间"})
+	for _, response := range responses {
+		data = append(data, []interface{}{response.ID, response.Account, response.Nickname, response.Avatar, response.Status, response.DepartmentID, response.RolesID, response.InterfaceDic, response.CreateTime.Format("2006/01/02 03:04:05"), response.UpdateTime.Format("2006/01/02 03:04:05")})
+	}
+	if err := utils.ExportExcel(context, data, "用户表"); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+}

@@ -115,3 +115,34 @@ func (r *roleController) GetRoles(context *gin.Context) {
 		utils.Response.Success(context, roles)
 	}
 }
+
+// ExportExcel 导出角色
+// @Summary 导出角色
+// @Description 导出角色
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Param id path int true "角色ID"
+// @Router /roles/export [post]
+func (r *roleController) ExportExcel(context *gin.Context) {
+	var IDs dto.ExportExcelResponse
+	err := context.ShouldBind(&IDs)
+	if err != nil {
+		utils.Response.ParameterMissing(context, err.Error())
+		return
+	}
+	responses, err := services.RoleService.ExportExcel(&IDs)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	var data [][]interface{}
+	data = append(data, []interface{}{"ID", "角色名", "接口ID", "描述", "创建时间", "更新时间"})
+	for _, response := range responses {
+		data = append(data, []interface{}{response.ID, response.RoleName, response.InterfacesID, response.Description, response.CreateTime, response.UpdateTime})
+	}
+	if err := utils.ExportExcel(context, data, "角色表"); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+}

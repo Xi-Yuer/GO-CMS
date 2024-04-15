@@ -12,5 +12,6 @@ func UseRolesRoutes(r *gin.RouterGroup) {
 		group.POST("", controllers.RoleController.CreateRole)
 		group.DELETE("/:id", controllers.RoleController.DeleteRole)
 		group.PATCH("/:id", controllers.RoleController.UpdateRole)
+		group.POST("/export", controllers.RoleController.ExportExcel)
 	}
 }

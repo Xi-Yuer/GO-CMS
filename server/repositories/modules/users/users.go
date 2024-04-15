@@ -14,7 +14,7 @@ var UserRepository = &userRepository{}
 
 type userRepository struct{}
 
-func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
+func (u *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
 	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
@@ -52,7 +52,7 @@ func (r *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	return user, nil
 }
 
-func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
+func (u *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
 	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
@@ -92,7 +92,7 @@ func (r *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	return users, nil
 }
 
-func (r *userRepository) CreateUser(user *dto.CreateSingleUserRequest) int64 {
+func (u *userRepository) CreateUser(user *dto.CreateSingleUserRequest) int64 {
 	id := utils.GenID()
 	exec, err := db.DB.Exec("INSERT INTO users (id,account,nickname,password,department_id) VALUES (?, ?, ?, ?,?)", id, user.Account, user.Nickname, user.Password, user.DepartmentID)
 	if err != nil {
@@ -108,7 +108,7 @@ func (r *userRepository) CreateUser(user *dto.CreateSingleUserRequest) int64 {
 	return id
 }
 
-func (r *userRepository) SelectUsersByAccount(account string) bool {
+func (u *userRepository) SelectUsersByAccount(account string) bool {
 	exec, err := db.DB.Query("SELECT count(account) FROM users WHERE account = ? AND delete_time IS NULL", account)
 	if err != nil {
 		return false
@@ -132,7 +132,7 @@ func (r *userRepository) SelectUsersByAccount(account string) bool {
 	return count > 0
 }
 
-func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
+func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
 	query := `
 		SELECT 
 			id, account,nickname, status,GROUP_CONCAT(ur.role_id), department_id, status, create_time, update_time 
@@ -228,7 +228,7 @@ func (r *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 	return users, nil
 }
 
-func (r *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
+func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
 	if account == "" {
 		return nil, false
 	}
@@ -251,8 +251,8 @@ func (r *userRepository) FindUserByAccount(account string) (*dto.SingleUserRespo
 	return nil, false
 }
 
-func (r *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
-	user, err := r.GetUser(id)
+func (u *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
+	user, err := u.GetUser(id)
 	if err != nil {
 		return nil, false
 	}
@@ -263,7 +263,7 @@ func (r *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool
 	return user, true
 }
 
-func (r *userRepository) DeleteUser(id string) error {
+func (u *userRepository) DeleteUser(id string) error {
 	now := time.Now()
 	stmt, err := db.DB.Prepare(`UPDATE users SET delete_time = ? WHERE id = ?`)
 	if err != nil {
@@ -282,7 +282,7 @@ func (r *userRepository) DeleteUser(id string) error {
 	return nil
 }
 
-func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) error {
+func (u *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) error {
 	query := "UPDATE cms.users SET "
 	var (
 		queryParams []any
@@ -348,7 +348,7 @@ func (r *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 
 }
 
-func (r *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
 	var users []*dto.SingleUserByRoleIDResponse
 	query := `
     SELECT u.id,
@@ -401,5 +401,33 @@ func (r *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto
 		users = append(users, &user)
 	}
 
+	return users, nil
+}
+
+func (u *userRepository) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.UsersSingleResponse, error) {
+	query := "SELECT id, account, nickname, avatar , department_id ,status, create_time, update_time  FROM users WHERE id IN "
+	value := ""
+	hasSet := false
+	for _, id := range params.IDs {
+		value += id + ","
+		hasSet = true
+	}
+	if hasSet {
+		value = value[:len(value)-1]
+	}
+	query += "(" + value + ")"
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	var users []*dto.UsersSingleResponse
+	for rows.Next() {
+		var user dto.UsersSingleResponse
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Avatar, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, &user)
+	}
 	return users, nil
 }

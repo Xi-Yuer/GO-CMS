@@ -201,3 +201,31 @@ func (r *rolesRepository) CheckRolesExistence(roleIDs []string) error {
 
 	return nil
 }
+
+func (r *rolesRepository) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.SingleRoleResponse, error) {
+	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE role_id IN "
+	value := ""
+	hasSet := false
+	for _, id := range params.IDs {
+		value += id + ","
+		hasSet = true
+	}
+	if hasSet {
+		value = value[:len(value)-1]
+	}
+	query += "(" + value + ")"
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	var roles []*dto.SingleRoleResponse
+	for rows.Next() {
+		var role dto.SingleRoleResponse
+		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CreateTime, &role.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		roles = append(roles, &role)
+	}
+	return roles, nil
+}

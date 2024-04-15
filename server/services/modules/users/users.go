@@ -89,3 +89,7 @@ func (u *userService) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.Si
 	}
 	return repositories.UserRepositorysModules.GetUserByRoleID(roleID, params)
 }
+
+func (u *userService) ExportExcel(IDs *dto.ExportExcelResponse) ([]*dto.UsersSingleResponse, error) {
+	return repositories.UserRepositorysModules.ExportExcel(IDs)
+}

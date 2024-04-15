@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/utils/modules/buildTree"
 	"github.com/Xi-Yuer/cms/utils/modules/captcha"
 	"github.com/Xi-Yuer/cms/utils/modules/contain"
+	"github.com/Xi-Yuer/cms/utils/modules/exportExcel"
 	"github.com/Xi-Yuer/cms/utils/modules/jwt"
 	"github.com/Xi-Yuer/cms/utils/modules/logs"
 	"github.com/Xi-Yuer/cms/utils/modules/response"
@@ -25,3 +26,4 @@ var Unique = unique.RemoveDuplicatesAndEmpty
 var BuildPages = buildTree.BuildMenu
 var BuildDepartment = buildTree.BuildDepartment
 var Contain = contain.StringInSlice
+var ExportExcel = exportExcel.ExportExcel

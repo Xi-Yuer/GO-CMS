@@ -74,3 +74,6 @@ func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermiss
 	err = repositories.RolesAndPagesRepository.CreateRecord(params)
 	return err
 }
+func (r *rolesService) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.SingleRoleResponse, error) {
+	return repositories.RoleRepositorysModules.ExportExcel(params)
+}
