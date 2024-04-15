@@ -9,6 +9,7 @@ import (
 	logsResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/logs"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
+	timeTaskResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/timeTask"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 )
 
@@ -100,3 +101,21 @@ type CommitResponse = commitsResponsiesModules.CommitResponse
 
 // ExportExcelResponse 导出Excel
 type ExportExcelResponse = commonResponsiesModules.ExportExcelResponse
+
+// StartTimeTack 开始定时任务
+type StartTimeTack = timeTaskResponsiesModules.StartTimeTack
+
+// StopTimeTack 停止定时任务
+type StopTimeTack = timeTaskResponsiesModules.StopTimeTack
+
+// DeleteTimeTack 删除定时任务
+type DeleteTimeTack = timeTaskResponsiesModules.DeleteTimeTack
+
+// CreateTimeTack 创建定时任务
+type CreateTimeTack = timeTaskResponsiesModules.CreateTimeTack
+
+// UpdateTimeTask 更新定时任务
+type UpdateTimeTask = timeTaskResponsiesModules.UpdateTimeTask
+
+// TimeTaskResponse 获取定时任务
+type TimeTaskResponse = timeTaskResponsiesModules.TimeTaskResponse

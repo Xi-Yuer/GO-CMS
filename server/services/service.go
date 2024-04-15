@@ -8,6 +8,7 @@ import (
 	pagesServiceModules "github.com/Xi-Yuer/cms/services/modules/pages"
 	rolesServiceModules "github.com/Xi-Yuer/cms/services/modules/roles"
 	rolesAndInterfacesServiceModules "github.com/Xi-Yuer/cms/services/modules/rolesAndInterfaces"
+	timeTaskServiceModules "github.com/Xi-Yuer/cms/services/modules/timeTask"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 )
 
@@ -19,3 +20,4 @@ var DepartmentService = departmentServiceModules.DepartmentService
 var InterfaceService = interfaceServiceModules.InterfaceService
 var LogsService = logsServiceModules.LogsService
 var RolesAndInterfacesService = rolesAndInterfacesServiceModules.RolesAndInterfacesService
+var TimeTaskService = timeTaskServiceModules.TimeTaskService

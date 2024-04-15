@@ -316,6 +316,66 @@ paths:
       summary: 获取系统运行信息
       tags:
       - 系统管理
+  /timeTask:
+    get:
+      consumes:
+      - application/json
+      description: 获取定时任务
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取定时任务
+      tags:
+      - 定时任务
+  /timeTask/start/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 开启定时任务
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 开启定时任务
+      tags:
+      - 定时任务
+  /timeTask/stop/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 停止定时任务
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 停止定时任务
+      tags:
+      - 定时任务
+  /timeTask/update/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: 更新定时任务
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 更新定时任务
+      tags:
+      - 定时任务
   /users:
     get:
       consumes:

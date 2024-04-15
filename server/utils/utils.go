@@ -10,6 +10,7 @@ import (
 	"github.com/Xi-Yuer/cms/utils/modules/logs"
 	"github.com/Xi-Yuer/cms/utils/modules/response"
 	"github.com/Xi-Yuer/cms/utils/modules/snowflake"
+	"github.com/Xi-Yuer/cms/utils/modules/timeTask"
 	"github.com/Xi-Yuer/cms/utils/modules/translator"
 	"github.com/Xi-Yuer/cms/utils/modules/unique"
 )
@@ -27,3 +28,4 @@ var BuildPages = buildTree.BuildMenu
 var BuildDepartment = buildTree.BuildDepartment
 var Contain = contain.StringInSlice
 var ExportExcel = exportExcel.ExportExcel
+var TimeTask = timeTask.TimeTask
