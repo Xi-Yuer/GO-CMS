@@ -10,6 +10,7 @@ import (
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
 	timeTaskResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/timeTask"
+	uploadResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/upload"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
 )
 
@@ -119,3 +120,9 @@ type UpdateTimeTask = timeTaskResponsiesModules.UpdateTimeTask
 
 // TimeTaskResponse 获取定时任务
 type TimeTaskResponse = timeTaskResponsiesModules.TimeTaskResponse
+
+// UploadBigFileRequest 上传大文件
+type UploadBigFileRequest = uploadResponsiesModules.UploadBigFileRequest
+
+// CheckChunkResponse 检查分片
+type CheckChunkResponse = uploadResponsiesModules.CheckChunkResponse

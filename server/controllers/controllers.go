@@ -10,6 +10,7 @@ import (
 	roleControllersModules "github.com/Xi-Yuer/cms/controllers/modules/role"
 	systemControllerModules "github.com/Xi-Yuer/cms/controllers/modules/system"
 	"github.com/Xi-Yuer/cms/controllers/modules/timeTask"
+	uploadControllerModules "github.com/Xi-Yuer/cms/controllers/modules/upload"
 	userControllersModules "github.com/Xi-Yuer/cms/controllers/modules/users"
 )
 
@@ -23,3 +24,4 @@ var LogsController = logsControllerModules.LogsController
 var CommitsController = commitsControllerModules.CommitsController
 var SystemController = systemControllerModules.SystemController
 var TimeTaskController = timeTaskControllerModules.TimeTaskController
+var UploadController = uploadControllerModules.UploadController

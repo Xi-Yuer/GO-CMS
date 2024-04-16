@@ -9,6 +9,7 @@ import (
 	rolesServiceModules "github.com/Xi-Yuer/cms/services/modules/roles"
 	rolesAndInterfacesServiceModules "github.com/Xi-Yuer/cms/services/modules/rolesAndInterfaces"
 	timeTaskServiceModules "github.com/Xi-Yuer/cms/services/modules/timeTask"
+	uploadServiceModules "github.com/Xi-Yuer/cms/services/modules/upload"
 	userServiceModules "github.com/Xi-Yuer/cms/services/modules/users"
 )
 
@@ -21,3 +22,4 @@ var InterfaceService = interfaceServiceModules.InterfaceService
 var LogsService = logsServiceModules.LogsService
 var RolesAndInterfacesService = rolesAndInterfacesServiceModules.RolesAndInterfacesService
 var TimeTaskService = timeTaskServiceModules.TimeTaskService
+var UploadService = uploadServiceModules.UploadService
