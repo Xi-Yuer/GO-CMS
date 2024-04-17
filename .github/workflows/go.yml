@@ -20,6 +20,7 @@ jobs:
 
       - name: Initialize Go module
         run: go mod init github.com/Xi-Yuer/cms
+        working-directory: ./server
 
       - name: Build
         run: |
