@@ -26,12 +26,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
 
-    - name: Build
-      run: go build -v -o CMS ./main.go
-      working-directory: ./server
-
     - name: CMS Build
       uses: actions/upload-artifact@v3
       with:
         name: CMS
         path: ./build
+
+    - name: Build
+      run: go build -v -o CMS ./main.go
+      working-directory: ./server
+
+
