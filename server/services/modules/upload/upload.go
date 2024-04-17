@@ -14,7 +14,7 @@ type uploadService struct{}
 
 // CheckChunk 文件检查
 func (u *uploadService) CheckChunk(params *dto.UploadBigFileRequest) (dto.CheckChunkResponse, error) {
-	hashPath := "./uploadFile" + params.Identifier
+	hashPath := "./uploadFile/" + params.Identifier
 	var chunkList []string
 
 	var checkChunk dto.CheckChunkResponse
@@ -53,7 +53,7 @@ func (u *uploadService) UploadChunk(context *gin.Context, params *dto.UploadBigF
 
 	fileHash := params.Identifier
 	file := params.UpFile
-	hashPath := "./uploadFile" + fileHash
+	hashPath := "./uploadFile/" + fileHash
 
 	exists, err := utils.File.PathExists(hashPath)
 	if err != nil {
@@ -89,7 +89,7 @@ func (u *uploadService) UploadChunk(context *gin.Context, params *dto.UploadBigF
 func (u *uploadService) MergeChunk(params dto.UploadBigFileRequest) (string, error) {
 	fileHash := params.Identifier
 	file := params.UpFile
-	hashPath := "./uploadFile" + fileHash
+	hashPath := "./uploadFile/" + fileHash
 
 	exists, err := utils.File.PathExists(hashPath)
 	if err != nil {
