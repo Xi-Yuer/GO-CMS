@@ -126,3 +126,12 @@ type UploadBigFileRequest = uploadResponsiesModules.UploadBigFileRequest
 
 // CheckChunkResponse 检查分片
 type CheckChunkResponse = uploadResponsiesModules.CheckChunkResponse
+
+// CheckChunkRequest 检查分片
+type CheckChunkRequest = uploadResponsiesModules.CheckChunkRequest
+
+// UploadFinishRequest 上传完成
+type UploadFinishRequest = uploadResponsiesModules.UploadFinishRequest
+
+// UploadRecordResponse 上传记录
+type UploadRecordResponse = uploadResponsiesModules.UploadRecordResponse
