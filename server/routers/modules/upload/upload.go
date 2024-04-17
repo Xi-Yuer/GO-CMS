@@ -8,8 +8,10 @@ import (
 func UseUploadRoutes(r *gin.RouterGroup) {
 	group := r.Group("/upload")
 	{
-		group.POST("/checkChunk", controllers.UploadController.CheckChunk)
-		group.POST("/uploadChunk", controllers.UploadController.UploadChunk)
-		group.POST("/mergeChunk", controllers.UploadController.MergeChunk)
+		group.POST("/check", controllers.UploadController.CheckFile)
+		group.POST("", controllers.UploadController.UploadChunk)
+		group.POST("/finish", controllers.UploadController.FinishUpload)
+		group.DELETE("/del/:id", controllers.UploadController.DeleteFile)
+		group.GET("", controllers.UploadController.GetFile)
 	}
 }

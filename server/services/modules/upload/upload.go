@@ -1,128 +1,101 @@
 package uploadServiceModules
 
 import (
+	"errors"
 	"github.com/Xi-Yuer/cms/dto"
+	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
-	"github.com/gin-gonic/gin"
+	"io"
+	"mime/multipart"
 	"os"
-	"strings"
+	"sync"
 )
 
 var UploadService = &uploadService{}
 
+var mu sync.Mutex
+
 type uploadService struct{}
 
-// CheckChunk 文件检查
-func (u *uploadService) CheckChunk(params *dto.UploadBigFileRequest) (dto.CheckChunkResponse, error) {
+func (u *uploadService) CheckFile(params *dto.CheckChunkRequest) (dto.CheckChunkResponse, error) {
 	hashPath := "./uploadFile/" + params.Identifier
-	var chunkList []string
-
-	var checkChunk dto.CheckChunkResponse
 	// 检查路径是否存在
-	exists, err := utils.File.PathExists(hashPath)
-	if err != nil {
-		return checkChunk, err
-	}
+	exists := utils.File.PathExists(hashPath)
 	if exists {
-		// 如果文件夹存在，读取所有文件名并返回
-		entries, err := os.ReadDir(hashPath)
+		// 如果文件存在，读取所有文件大小并返回
+		stat, err := os.Stat(hashPath)
 		if err != nil {
-			return checkChunk, err
-		}
-		// 文件是否上传完成
-		state := 0
-		for _, entry := range entries {
-			fileName := entry.Name()
-			chunkList = append(chunkList, fileName)
-			fileBaseName := strings.Split(fileName, ".")[0]
-
-			if fileBaseName == hashPath {
-				state = 1
-			}
+			return dto.CheckChunkResponse{}, err
 		}
 		return dto.CheckChunkResponse{
-			Status:    state,
-			ChunkList: chunkList,
-		}, nil
+			HasReadySize: stat.Size(),
+		}, err
 	}
-	return checkChunk, err
+	return dto.CheckChunkResponse{HasReadySize: 0}, nil
 }
 
-// UploadChunk 上传区块
-func (u *uploadService) UploadChunk(context *gin.Context, params *dto.UploadBigFileRequest) error {
-
+func (u *uploadService) UploadChunk(params *dto.UploadBigFileRequest) error {
+	mu.Lock()
+	defer mu.Unlock()
 	fileHash := params.Identifier
 	file := params.UpFile
-	hashPath := "./uploadFile/" + fileHash
+	filePath := "./uploadFile/" + fileHash
 
-	exists, err := utils.File.PathExists(hashPath)
-	if err != nil {
-		return err
-	}
-	if !exists {
-		if err := os.Mkdir(hashPath, os.ModePerm); err != nil {
+	var newFile *os.File
+	var err error
+
+	if exists := utils.File.PathExists(filePath); !exists {
+		newFile, err = os.Create(filePath)
+		if err != nil {
 			return err
 		}
-	}
-
-	if err := context.SaveUploadedFile(file, hashPath+"/"+file.Filename); err != nil {
-		return err
 	} else {
-		var chunkList []string
-		dir, err := os.ReadDir(hashPath)
+		newFile, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
 			return err
 		}
-		for _, entry := range dir {
-			fileName := entry.Name()
-			// 本地 mac 文件排除
-			if fileName == ".DS_Store" {
-				continue
-			}
-			chunkList = append(chunkList, fileName)
-		}
-		return nil
 	}
+	defer func(newFile *os.File) {
+		_ = newFile.Close()
+	}(newFile)
+
+	open, err := file.Open()
+	if err != nil {
+		return err
+	}
+	defer func(open multipart.File) {
+		_ = open.Close()
+	}(open)
+
+	// 逐块读取并写入文件
+	_, err = io.Copy(newFile, io.LimitReader(open, 1024*1024))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-// MergeChunk 区块合并
-func (u *uploadService) MergeChunk(params dto.UploadBigFileRequest) (string, error) {
-	fileHash := params.Identifier
-	file := params.UpFile
-	hashPath := "./uploadFile/" + fileHash
+func (u *uploadService) FinishUpload(account string, params *dto.UploadFinishRequest) (string, error) {
+	if err := repositories.UploadRepository.CreateRecord(account, params); err != nil {
+		return "", err
+	}
+	return "/uploadFile/" + params.Identifier + "." + params.FileExt, nil
+}
 
-	exists, err := utils.File.PathExists(hashPath)
-	if err != nil {
-		return "", err
+func (u *uploadService) DeleteFile(id string) error {
+	// 判断文件是否存在
+	if _, err := os.Stat("./uploadFile/" + id); err != nil {
+		return errors.New("文件不存在")
 	}
-	if exists {
-		return "/" + hashPath + "/" + file.Filename, nil
+	// 删除文件
+	if err := os.Remove("./uploadFile/" + id); err != nil {
+		return err
 	}
-	dir, err := os.ReadDir(hashPath)
-	if err != nil {
-		return "", err
-	}
-	// 创建文件
-	create, err := os.Create(hashPath + "/" + file.Filename)
-	if err != nil {
-		return "", err
-	}
-	defer func(create *os.File) {
-		_ = create.Close()
-	}(create)
+	// 删除数据库记录
+	return repositories.UploadRepository.DeleteRecord(id)
+}
 
-	for _, file := range dir {
-		if file.Name() == ".DS_Store" {
-			continue
-		}
-		// 文件缓冲区
-		fileBuf, err := os.ReadFile(hashPath + "/" + file.Name())
-		if err != nil {
-			return "", err
-		}
-		if _, err := create.Write(fileBuf); err != nil {
-			return "", err
-		}
-	}
-	return "/" + hashPath + "/" + file.Filename, nil
+func (u *uploadService) GetFileList(params *dto.Page) ([]dto.UploadRecordResponse, error) {
+	return repositories.UploadRepository.GetRecords(params)
 }

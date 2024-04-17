@@ -24,6 +24,14 @@ func (r *response) Success(context *gin.Context, v any) {
 	})
 }
 
+func (r *response) FileExist(context *gin.Context, v any) {
+	context.JSON(http.StatusOK, responseStruct{
+		Code: http.StatusContinue,
+		Data: v,
+		Msg:  "文件不存在，继续上传文件",
+	})
+}
+
 func (r *response) NoPermission(context *gin.Context, v string) {
 	context.JSON(http.StatusForbidden, responseStruct{
 		Code: http.StatusForbidden,

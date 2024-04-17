@@ -50,4 +50,8 @@ var PermissionMap = map[string]string{
 
 	// 系统管理
 	"^GET:" + config.Config.APP.BASEURL + "/system$": `GET:/system`,
+
+	// 定时任务
+
+	// 文件上传
 }
