@@ -31,12 +31,12 @@ func (f *file) CheckOrCreateFolder(folderPath string) error {
 		if err != nil {
 			return fmt.Errorf("创建文件夹失败: %v", err)
 		}
-		fmt.Println("文件夹不存在，已创建:", folderPath)
+		//fmt.Println("文件夹不存在，已创建:", folderPath)
 	} else if err != nil {
 		// 其他错误，返回错误信息
 		return fmt.Errorf("检查文件夹失败: %v", err)
 	} else {
-		fmt.Println("文件夹已存在:", folderPath)
+		//fmt.Println("文件夹已存在:", folderPath)
 	}
 	return nil
 }

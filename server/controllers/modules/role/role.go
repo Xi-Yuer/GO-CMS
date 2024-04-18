@@ -146,3 +146,45 @@ func (r *roleController) ExportExcel(context *gin.Context) {
 		return
 	}
 }
+
+// CreateOneRecord 绑定用户
+// @Summary 绑定用户
+// @Description 绑定用户
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Router /roles/bindUser [post]
+func (r *roleController) CreateOneRecord(context *gin.Context) {
+	var params dto.CreateOneRecord
+	if err := context.ShouldBind(&params); err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if err := services.RoleService.CreateOneRecord(&params); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+
+	}
+	utils.Response.Success(context, "添加成功")
+}
+
+// DeleteOneRecord 解绑用户
+// @Summary 解绑用户
+// @Description 解绑用户
+// @Tags 角色管理
+// @Accept json
+// @Produce json
+// @Router /roles/deBindUser [post]
+func (r *roleController) DeleteOneRecord(context *gin.Context) {
+	var params dto.DeleteOneRecord
+	if err := context.ShouldBind(&params); err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if err := services.RoleService.DeleteOneRecord(&params); err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+
+	}
+	utils.Response.Success(context, "删除成功")
+}

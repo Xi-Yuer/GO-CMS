@@ -33,3 +33,13 @@ type SingleRoleResponse struct {
 	CreateTime   string   `json:"createTime"`
 	UpdateTime   string   `json:"updateTime"`
 }
+
+type CreateOneRecord struct {
+	UserID string `form:"userID"`
+	RoleID string `form:"roleID"`
+}
+
+type DeleteOneRecord struct {
+	UserID string `form:"userID"`
+	RoleID string `form:"roleID"`
+}
