@@ -400,6 +400,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/roles/bindUser": {
+            "post": {
+                "description": "绑定用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "绑定用户",
+                "responses": {}
+            }
+        },
+        "/roles/deBindUser": {
+            "post": {
+                "description": "解绑用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "解绑用户",
+                "responses": {}
+            }
+        },
         "/roles/export": {
             "post": {
                 "description": "导出角色",
