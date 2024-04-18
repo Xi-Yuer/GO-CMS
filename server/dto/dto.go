@@ -58,6 +58,12 @@ type QueryRolesParams = rolesResponsiesModules.QueryRoleListParams
 // SingleRoleResponse 查询单个角色
 type SingleRoleResponse = rolesResponsiesModules.SingleRoleResponse
 
+// CreateOneRecord 角色新增用户
+type CreateOneRecord = rolesResponsiesModules.CreateOneRecord
+
+// DeleteOneRecord 角色删除用户
+type DeleteOneRecord = rolesResponsiesModules.DeleteOneRecord
+
 // AuthorizationManagementParams 给用户分配角色
 type AuthorizationManagementParams = authResponsiesModules.CreateUserRoleRecordParams
 

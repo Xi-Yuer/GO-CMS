@@ -400,6 +400,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/roles/bindUser": {
+            "post": {
+                "description": "绑定用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "绑定用户",
+                "responses": {}
+            }
+        },
+        "/roles/deBindUser": {
+            "post": {
+                "description": "解绑用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "解绑用户",
+                "responses": {}
+            }
+        },
         "/roles/export": {
             "post": {
                 "description": "导出角色",
@@ -657,6 +689,29 @@ const docTemplate = `{
                     "文件管理"
                 ],
                 "summary": "删除文件",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload/download": {
+            "post": {
+                "description": "文件下载",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件管理"
+                ],
+                "summary": "文件下载",
                 "responses": {
                     "200": {
                         "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",

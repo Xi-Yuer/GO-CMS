@@ -77,3 +77,11 @@ func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermiss
 func (r *rolesService) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.SingleRoleResponse, error) {
 	return repositories.RoleRepositorysModules.ExportExcel(params)
 }
+
+func (r *rolesService) CreateOneRecord(params *dto.CreateOneRecord) error {
+	return repositories.UsersAndRolesRepositorys.CreateOneRecord(params)
+}
+
+func (r *rolesService) DeleteOneRecord(params *dto.DeleteOneRecord) error {
+	return repositories.UsersAndRolesRepositorys.DeleteOneRecord(params)
+}

@@ -19,13 +19,11 @@ type UploadFinishRequest struct {
 	Identifier string `form:"identifier" binding:"required"`
 	FileName   string `form:"fileName" binding:"required"`
 	FileSize   int64  `form:"fileSize" binding:"required"`
-	FileExt    string `form:"fileExt" binding:"required"`
 }
 type UploadRecordResponse struct {
 	FileID     string `json:"fileID"`
 	FileName   string `json:"fileName"`
 	FileSize   int64  `json:"fileSize"`
-	FileExt    string `json:"fileExt"`
 	UploadUser string `json:"uploadUser"`
 	UploadTime string `json:"uploadTime"`
 }

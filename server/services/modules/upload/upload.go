@@ -2,6 +2,7 @@ package uploadServiceModules
 
 import (
 	"errors"
+	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/dto"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
@@ -18,7 +19,7 @@ var mu sync.Mutex
 type uploadService struct{}
 
 func (u *uploadService) CheckFile(params *dto.CheckChunkRequest) (dto.CheckChunkResponse, error) {
-	hashPath := "./uploadFile/" + params.Identifier
+	hashPath := config.Config.FILEPATH + params.Identifier
 	// 检查路径是否存在
 	exists := utils.File.PathExists(hashPath)
 	if exists {
@@ -39,7 +40,7 @@ func (u *uploadService) UploadChunk(params *dto.UploadBigFileRequest) error {
 	defer mu.Unlock()
 	fileHash := params.Identifier
 	file := params.UpFile
-	filePath := "./uploadFile/" + fileHash
+	filePath := config.Config.FILEPATH + fileHash
 
 	var newFile *os.File
 	var err error
@@ -80,16 +81,16 @@ func (u *uploadService) FinishUpload(account string, params *dto.UploadFinishReq
 	if err := repositories.UploadRepository.CreateRecord(account, params); err != nil {
 		return "", err
 	}
-	return "/uploadFile/" + params.Identifier + "." + params.FileExt, nil
+	return config.Config.FILEPATH + params.Identifier, nil
 }
 
 func (u *uploadService) DeleteFile(id string) error {
 	// 判断文件是否存在
-	if _, err := os.Stat("./uploadFile/" + id); err != nil {
+	if _, err := os.Stat(config.Config.FILEPATH + id); err != nil {
 		return errors.New("文件不存在")
 	}
 	// 删除文件
-	if err := os.Remove("./uploadFile/" + id); err != nil {
+	if err := os.Remove(config.Config.FILEPATH + id); err != nil {
 		return err
 	}
 	// 删除数据库记录
@@ -98,4 +99,12 @@ func (u *uploadService) DeleteFile(id string) error {
 
 func (u *uploadService) GetFileList(params *dto.Page) ([]dto.UploadRecordResponse, error) {
 	return repositories.UploadRepository.GetRecords(params)
+}
+
+func (u *uploadService) DownloadFile(id string) (*dto.UploadRecordResponse, error) {
+	info, err := repositories.UploadRepository.GetFileInfo(id)
+	if err != nil {
+		return nil, err
+	}
+	return info, nil
 }

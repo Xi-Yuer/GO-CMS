@@ -2,10 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/Xi-Yuer/cms/config"
-	"github.com/Xi-Yuer/cms/db"
-	"github.com/Xi-Yuer/cms/routers"
-	"github.com/Xi-Yuer/cms/utils"
+	"github.com/Xi-Yuer/cms/bootStrap"
 	"os"
 	"os/signal"
 	"syscall"
@@ -13,23 +10,7 @@ import (
 )
 
 func main() {
-
-	if err := db.InitDB(); err != nil {
-		utils.Log.Panic(err)
-		return
-	}
-
-	r := routers.SetUpRouters()
-	go func() {
-		err := r.Run(config.Config.APP.PORT)
-		if err != nil {
-			utils.Log.Panic(err)
-		}
-	}()
-
-	utils.Log.Info("服务器启动成功，运行端口", config.Config.APP.PORT)
-	utils.Log.Info("接口文档地址", config.Config.APP.SWAGPATH)
-	// 优雅退出程序
+	bootStrap.Start()
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quit

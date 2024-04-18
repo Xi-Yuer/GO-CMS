@@ -1,6 +1,7 @@
 package uploadControllerModules
 
 import (
+	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/constant"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
@@ -125,4 +126,30 @@ func (u *uploadController) GetFile(context *gin.Context) {
 		return
 	}
 	utils.Response.Success(context, fileList)
+}
+
+// DownloadFile 文件下载
+// @Summary 文件下载
+// @Description 文件下载
+// @Tags 文件管理
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /upload/download [post]
+func (u *uploadController) DownloadFile(context *gin.Context) {
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
+	file, err := services.UploadService.DownloadFile(id)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	context.Header("Content-Type", "application/octet-stream")
+	context.Header("Content-Disposition", "attachment; filename="+file.FileName)
+	context.Header("Content-Transfer-Encoding", "binary")
+	context.Header("Content-Length", "-1")
+	context.File(config.Config.FILEPATH + id)
 }

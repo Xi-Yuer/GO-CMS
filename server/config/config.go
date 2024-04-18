@@ -7,6 +7,7 @@ var Config = config{
 		JWT:           "1234567890",
 		SWAGPATH:      "http://localhost:8080/swagger/docs/index.html#/example",
 		BASEURL:       "/api/v1",
+		FILEPATH:      "./uploadFile/",
 	},
 	DB: DB{
 		NAME:     "root",
@@ -28,6 +29,7 @@ type APP struct {
 	JWT           string
 	SWAGPATH      string
 	BASEURL       string
+	FILEPATH      string
 }
 type DB struct {
 	NAME     string

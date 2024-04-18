@@ -288,6 +288,28 @@ paths:
       summary: 更新角色
       tags:
       - 角色管理
+  /roles/bindUser:
+    post:
+      consumes:
+      - application/json
+      description: 绑定用户
+      produces:
+      - application/json
+      responses: {}
+      summary: 绑定用户
+      tags:
+      - 角色管理
+  /roles/deBindUser:
+    post:
+      consumes:
+      - application/json
+      description: 解绑用户
+      produces:
+      - application/json
+      responses: {}
+      summary: 解绑用户
+      tags:
+      - 角色管理
   /roles/export:
     post:
       consumes:
@@ -433,6 +455,21 @@ paths:
           schema:
             type: string
       summary: 删除文件
+      tags:
+      - 文件管理
+  /upload/download:
+    post:
+      consumes:
+      - application/json
+      description: 文件下载
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 文件下载
       tags:
       - 文件管理
   /upload/finish:

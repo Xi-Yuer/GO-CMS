@@ -13,5 +13,6 @@ func UseUploadRoutes(r *gin.RouterGroup) {
 		group.POST("/finish", controllers.UploadController.FinishUpload)
 		group.DELETE("/del/:id", controllers.UploadController.DeleteFile)
 		group.GET("", controllers.UploadController.GetFile)
+		group.POST("/download/:id", controllers.UploadController.DownloadFile)
 	}
 }
