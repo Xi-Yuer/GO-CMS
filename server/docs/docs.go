@@ -38,6 +38,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/cookie": {
+            "get": {
+                "description": "获取一个短期的 Cookie 文件下载需要用到",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "登录"
+                ],
+                "summary": "获取一个短期的 Cookie",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "登录",
@@ -653,6 +676,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/upload/aHref/download": {
+            "post": {
+                "description": "文件下载",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件管理"
+                ],
+                "summary": "文件下载",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/upload/check": {
             "post": {
                 "description": "检查文件状态",
@@ -689,29 +735,6 @@ const docTemplate = `{
                     "文件管理"
                 ],
                 "summary": "删除文件",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/upload/download": {
-            "post": {
-                "description": "文件下载",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "文件管理"
-                ],
-                "summary": "文件下载",
                 "responses": {
                     "200": {
                         "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",

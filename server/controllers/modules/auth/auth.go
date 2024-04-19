@@ -4,6 +4,7 @@ import (
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -53,4 +54,22 @@ func (a *authController) Login(context *gin.Context) {
 // @Router /auth/captcha [get]
 func (a *authController) Captcha(context *gin.Context) {
 	utils.Captcha.GenerateCaptcha(context, 4)
+}
+
+// Cookie 获取一个短期的 Cookie
+// @Summary 获取一个短期的 Cookie
+// @Schemes
+// @Description 获取一个短期的 Cookie 文件下载需要用到
+// @Tags 登录
+// @Accept json
+// @Produce json
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /auth/cookie [get]
+func (a *authController) Cookie(context *gin.Context) {
+	userToken := context.Request.Header.Get("Authorization")
+	session := sessions.Default(context)
+	session.Set("token", userToken)
+	_ = session.Save()
+	context.SetCookie("token", userToken, 3600, "/", "localhost", false, true)
+	utils.Response.Success(context, "请求成功,可继续下载文件")
 }

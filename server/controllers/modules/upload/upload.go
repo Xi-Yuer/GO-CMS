@@ -135,7 +135,7 @@ func (u *uploadController) GetFile(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /upload/download [post]
+// @Router /upload/aHref/download [post]
 func (u *uploadController) DownloadFile(context *gin.Context) {
 	id := context.Param("id")
 	if id == "" {
@@ -150,6 +150,5 @@ func (u *uploadController) DownloadFile(context *gin.Context) {
 	context.Header("Content-Type", "application/octet-stream")
 	context.Header("Content-Disposition", "attachment; filename="+file.FileName)
 	context.Header("Content-Transfer-Encoding", "binary")
-	context.Header("Content-Length", "-1")
 	context.File(config.Config.FILEPATH + id)
 }
