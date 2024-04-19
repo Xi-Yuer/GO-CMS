@@ -2,8 +2,11 @@ package uploadRepositorysModules
 
 import (
 	"database/sql"
+	"fmt"
+	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
+	"os"
 	"time"
 )
 
@@ -66,4 +69,25 @@ func (u *uploadRepository) GetFileInfo(id string) (*dto.UploadRecordResponse, er
 		}
 	}
 	return &record, nil
+}
+
+func (u *uploadRepository) DeleteAllFile() {
+	query := "SELECT id FROM file WHERE upload_time < ?"
+	rows, _ := db.DB.Query(query, time.Now().Add(24*time.Hour))
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+	}(rows)
+	for rows.Next() {
+		var id string
+		if err := rows.Scan(&id); err != nil {
+			return
+		}
+		if err := u.DeleteRecord(id); err != nil {
+			return
+		}
+		// 删除文件
+		if err := os.Remove(config.Config.FILEPATH + id); err != nil {
+			fmt.Println("删除文件失败:", err)
+		}
+	}
 }

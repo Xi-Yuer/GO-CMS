@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Xi-Yuer/cms/dto"
+	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
 	"strconv"
 	"time"
@@ -23,25 +24,32 @@ type timeTask struct {
 var tasks = []timeTask{
 	{
 		TaskID:      utils.GenID(),
-		TaskName:    "task1",
+		TaskName:    "测试定时任务（每秒触发一次）",
 		Cron:        "@every 1s",
 		Status:      false,
 		LastRunTime: time.Now(),
 		RunTimes:    0,
 		TaskFunc: func() {
-			fmt.Println("task1")
+			fmt.Println("task executed")
 		},
 	},
 	{
 		TaskID:      utils.GenID(),
-		TaskName:    "task2",
-		Cron:        "*/10 * * * * *",
+		TaskName:    "删除用户新增的页面(每天中午12点触发)",
+		Cron:        "0 0 12 * * ?",
 		Status:      false,
 		LastRunTime: time.Now(),
 		RunTimes:    0,
-		TaskFunc: func() {
-			fmt.Println("task2")
-		},
+		TaskFunc:    repositories.PageRepositorysModules.DeleteRubbishPage,
+	},
+	{
+		TaskID:      utils.GenID(),
+		TaskName:    "删除24小时之前上传的文件(每天中午12点触发)",
+		Cron:        "0 0 12 * * ?",
+		Status:      false,
+		LastRunTime: time.Now(),
+		RunTimes:    0,
+		TaskFunc:    repositories.UploadRepository.DeleteAllFile,
 	},
 }
 
