@@ -140,3 +140,9 @@ func (p *pageRepository) UpdatePage(id string, params *dto.UpdatePageRequest) er
 	_, err = db.DB.Exec(query, params.PageName, params.PageOrder, params.PagePath, params.PageIcon, params.PageComponent, params.IsOutSite, params.OutSiteLink, id)
 	return err
 }
+
+// DeleteRubbishPage 删除用户使用过程中新增的页面
+func (p *pageRepository) DeleteRubbishPage() {
+	query := "DELETE FROM pages WHERE can_edit != 0"
+	_, _ = db.DB.Exec(query)
+}
