@@ -150,6 +150,5 @@ func (u *uploadController) DownloadFile(context *gin.Context) {
 	context.Header("Content-Type", "application/octet-stream")
 	context.Header("Content-Disposition", "attachment; filename="+file.FileName)
 	context.Header("Content-Transfer-Encoding", "binary")
-	context.Header("Content-Length", "-1")
 	context.File(config.Config.FILEPATH + id)
 }

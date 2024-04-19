@@ -52,6 +52,19 @@ var PermissionMap = map[string]string{
 	"^GET:" + config.Config.APP.BASEURL + "/system$": `GET:/system`,
 
 	// 定时任务
+	"^POST:" + config.Config.APP.BASEURL + "/timeTask/start/\\d+$":   `POST:/timeTask/start/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/timeTask/stop/\\d+$":    `POST:/timeTask/stop/:id`,
+	"^GET:" + config.Config.APP.BASEURL + "/timeTask$":               `GET:/timeTask`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/timeTask/update/\\d+$": `PATCH:/timeTask/update/:id`,
 
-	// 文件上传
+	// 文件上传下载
+	"^DELETE:" + config.Config.APP.BASEURL + "/upload/del/.+$": `DELETE:/upload/del/:id`,
+	"^GET:" + config.Config.APP.BASEURL + "/upload$":           `GET:/upload`,
+	"^POST:" + config.Config.APP.BASEURL + "/upload/check$":    `POST:/upload/check`,
+	"^POST:" + config.Config.APP.BASEURL + "/upload$":          `POST:/upload`,
+	"^POST:" + config.Config.APP.BASEURL + "/upload/finish$":   `POST:/upload/finish`,
+	// 是否可以通过 Ajax 下载文件
+	"^POST:" + config.Config.APP.BASEURL + "/upload/download/.+$": `POST:/upload/download/:id`,
+	// 是否可以通过 a 连接下载文件
+	"^GET:" + config.Config.APP.BASEURL + "/auth/cookie$": `GET:/auth/cookie`,
 }
