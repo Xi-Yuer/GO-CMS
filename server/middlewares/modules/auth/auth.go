@@ -5,6 +5,7 @@ import (
 	"github.com/Xi-Yuer/cms/constant"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"regexp"
 )
@@ -76,14 +77,42 @@ func AuthMethodMiddleWare(context *gin.Context) {
 
 func WhiteList(context *gin.Context) bool {
 	// 白名单
-	whiteList := []string{config.Config.BASEURL + "/auth/login", config.Config.BASEURL + "/auth/captcha"}
+	prefix := "^" + config.Config.BASEURL
+	whiteList := []string{"/auth/login$", "/auth/captcha$", "/upload/download/aHref/.+"}
 	pass := false
 	for _, v := range whiteList {
-		if v == context.Request.URL.Path {
+		re, err := regexp.Compile(prefix + v)
+		if err != nil {
+			return pass
+		}
+		if re.MatchString(context.Request.URL.Path) {
 			context.Next()
 			pass = true
 			break
 		}
 	}
 	return pass
+}
+
+func AuthVerifyCookie(context *gin.Context) {
+	// 获取cookie
+	cookie, err := context.Cookie("token")
+	if err != nil {
+		utils.Response.NoAuth(context, "Cookie不能为空")
+		context.Abort()
+		return
+	}
+
+	// 验证cookie
+	session := sessions.Default(context)
+	token := session.Get("token")
+	session.Delete("token")
+	_ = session.Save()
+	if cookie != token {
+		utils.Response.NoAuth(context, "Cookie已过期")
+		context.Abort()
+		return
+	}
+
+	context.Next()
 }

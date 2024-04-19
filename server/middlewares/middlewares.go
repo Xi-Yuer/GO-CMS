@@ -13,3 +13,5 @@ var AuthMiddleWareModule = authMiddleWareModule.AuthTokenMiddleWare
 var LogsMiddlewareModule = systemLogsMiddlewareModule.SystemLogMiddlewareModule
 
 var AuthMethodMiddleWare = authMiddleWareModule.AuthMethodMiddleWare
+
+var AuthVerifyCookie = authMiddleWareModule.AuthVerifyCookie
