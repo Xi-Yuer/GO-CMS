@@ -1,9 +1,9 @@
 import { memo, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { ConfigProvider, theme } from 'antd';
-import Router from '@/components/router';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
+import { DynamicComponentLoader } from '@/components/dynamicComponentLoader';
 
 const APP = () => {
   const { langMode, themeMode } = useAppSelector((state) => state.UIStore);
@@ -22,14 +22,8 @@ const APP = () => {
             borderRadius: 4,
             colorPrimary: '#00aeff',
           },
-          components: {
-            Layout: {
-              headerBg: 'white',
-              siderBg: 'white',
-            },
-          },
         }}>
-        <Router />
+        <DynamicComponentLoader />
       </ConfigProvider>
     </>
   );

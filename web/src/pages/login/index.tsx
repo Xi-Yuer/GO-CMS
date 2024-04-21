@@ -8,11 +8,16 @@ import { useTranslation } from 'react-i18next';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
 import { FieldType } from '@/pages/login/type.ts';
-import { changeToken, changeUserInfo } from '@/store/UserStore';
+import { changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
+import { getUserMenusRequest } from '@/service/api/pages';
+import { useNavigate } from 'react-router-dom';
+import { sleep } from '@/utils/sleep';
 
 const Login: FC = () => {
+  const navigate = useNavigate();
   const [captcha, setCaptcha] = useState<string>();
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const [formRef] = Form.useForm();
   const { themeMode } = useTheme();
@@ -34,17 +39,26 @@ const Login: FC = () => {
   };
 
   const onFinish = (values: FieldType) => {
+    setLoading(true);
     loginRequest(values as LoginParamsType)
-      .then((r) => {
+      .then(async (r) => {
         const { token, user } = r.data;
         dispatch(changeUserInfo(user));
         dispatch(changeToken(token));
+        await sleep(1000);
+        const result = await getUserMenusRequest();
+        dispatch(changeMenus(result.data));
+        navigate('/');
       })
       .catch(() => {
         getCaptcha();
         formRef.resetFields(['captcha']);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
+
   return (
     <>
       <div
@@ -93,7 +107,7 @@ const Login: FC = () => {
                   </div>
                 </Form.Item>
                 <div className='w-full'>
-                  <Button block htmlType='submit' type='primary'>
+                  <Button block htmlType='submit' type='primary' loading={loading}>
                     {t('login')}
                   </Button>
                 </div>

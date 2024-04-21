@@ -20,7 +20,7 @@ func AuthTokenMiddleWare(context *gin.Context) {
 	token := context.GetHeader(constant.AUTHORIZATION)
 	tokenHs256, err := utils.Jsonwebtoken.ParseTokenHs256(token)
 	if err != nil {
-		utils.Response.NoAuth(context, "Token验证失败")
+		utils.Response.NoAuth(context, "Token验证失败"+err.Error())
 		context.Abort()
 		return
 	}

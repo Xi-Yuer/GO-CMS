@@ -10,11 +10,6 @@ const request = new Request<IResponse>(import.meta.env.VITE_APP_BASE_URL, 1000 *
       const token = cache.get(constants.localStorage.token);
       if (token) {
         config.headers.Authorization = token;
-      } else {
-        cache.clear();
-        if (window.location.pathname !== constants.routePath.login) {
-          window.location.href = constants.routePath.login;
-        }
       }
       return config;
     },

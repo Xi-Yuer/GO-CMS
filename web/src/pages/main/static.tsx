@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store';
 import { Layout, MenuProps } from 'antd';
 import { menuType } from '@/types/menus';
 import { Icon } from '@/components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const useMainPage = () => {
   const { Header, Sider, Content } = Layout;
   const navigate = useNavigate();
   const { menus } = useAppSelector((state) => state.UserStore);
-  const [defaultOpenKeys] = useState([]);
+  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>([]);
+  const { pathname } = useLocation();
 
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(e.key);
   };
+
+  useEffect(() => {
+    navigate(pathname);
+    setDefaultOpenKeys([pathname]);
+  }, []);
 
   return {
     menus1: menus,
