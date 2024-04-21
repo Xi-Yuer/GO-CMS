@@ -1,8 +1,7 @@
 import { memo, useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { ConfigProvider, theme } from 'antd';
-import router from '@/router';
+import Router from '@/components/router';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
 
@@ -20,10 +19,17 @@ const APP = () => {
         theme={{
           algorithm,
           token: {
+            borderRadius: 4,
             colorPrimary: '#00aeff',
           },
+          components: {
+            Layout: {
+              headerBg: 'white',
+              siderBg: 'white',
+            },
+          },
         }}>
-        <RouterProvider router={router}></RouterProvider>
+        <Router />
       </ConfigProvider>
     </>
   );

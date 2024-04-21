@@ -5,9 +5,14 @@ import { Locale } from 'antd/es/locale';
 export const constants = {
   localStorage: {
     lang: 'lang',
+    token: 'token',
   },
   langMap: {
     zhCN,
     enUS,
   } as Record<string, Locale | undefined>,
+  routePath: {
+    login: '/login',
+    main: '/',
+  },
 };

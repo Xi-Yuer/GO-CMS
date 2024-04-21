@@ -1,11 +1,11 @@
-import { memo } from 'react';
+import { FC, memo } from 'react';
 import TranslateDark from '@/components/icon/translateDark.tsx';
 import { useTheme } from '@/hooks/useTheme.ts';
 import TranslateLight from '@/components/icon/translateLight.tsx';
 import { Dropdown, MenuProps } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-const Translate = () => {
+const Translate: FC = () => {
   const { themeMode } = useTheme();
   const { i18n } = useTranslation();
   const items: MenuProps['items'] = [

@@ -1,1 +1,1 @@
-export { login, getCaptchaRequest } from './api/login/index.ts';
+export * from './api/login/index.ts';

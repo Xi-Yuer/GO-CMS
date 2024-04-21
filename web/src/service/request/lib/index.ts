@@ -59,6 +59,10 @@ export default class Request<R> {
         cancelToken: this.cancelTokenSource.token,
       })
         .then((res) => {
+          if (res instanceof Error) {
+            reject(res);
+            return;
+          }
           resolve(res as any);
         })
         .catch((err) => {

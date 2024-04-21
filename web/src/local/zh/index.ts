@@ -8,5 +8,8 @@ export default {
     completeAccount: '请输入账号',
     completePassword: '请输入密码',
     completeCaptcha: '请输入验证码',
+    accountRequired: '账号不能为空',
+    passwordRequired: '密码不能为空',
+    captchaRequired: '验证码不能为空',
   },
 };

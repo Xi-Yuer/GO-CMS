@@ -1,11 +1,22 @@
-import { createBrowserRouter } from 'react-router-dom';
 import Login from '@/pages/login';
+import Main from '@/pages/main';
+import WithAuth from '@/components/auth';
+import { createBrowserRouter } from 'react-router-dom';
 
-const router = createBrowserRouter([
+const routes = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login />,
+  },
   {
     path: '/',
-    element: <Login />,
+    element: (
+      <WithAuth>
+        <Main />
+      </WithAuth>
+    ),
+    children: [],
   },
 ]);
 
-export default router;
+export default routes;

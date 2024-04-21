@@ -4,5 +4,6 @@ import TranslateDark from '@/components/icon/translateDark.tsx';
 import TranslateLight from '@/components/icon/translateLight.tsx';
 import ThemeBar from '@/components/theme';
 import Translate from '@/components/translate/translate.tsx';
+import Icon from '@/components/icon/icon.tsx';
 
-export { DarkSvg, LightSvg, TranslateLight, TranslateDark, ThemeBar, Translate };
+export { DarkSvg, LightSvg, TranslateLight, TranslateDark, ThemeBar, Translate, Icon };

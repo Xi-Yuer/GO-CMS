@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
-import useUIStoreSlice from '@/store/UIStore';
+import UseUIStoreSlice from '@/store/UIStore';
+import UserStoreSlice from '@/store/UserStore';
 import storage from 'redux-persist/es/storage';
 import { useDispatch, useSelector } from 'react-redux';
 
 const reducers = combineReducers({
-  UIStore: useUIStoreSlice,
+  UIStore: UseUIStoreSlice,
+  UserStore: UserStoreSlice,
 });
 
 const persistedReducer = persistReducer(
