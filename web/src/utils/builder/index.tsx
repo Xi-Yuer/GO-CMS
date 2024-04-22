@@ -98,3 +98,18 @@ export const getTheCurrentRoutePathAllMenuEntity: (path: string, menus: menuType
   }
   return [];
 };
+
+export const getMenuByPath: (path: string, menus: menuType[]) => menuType | undefined = (path: string, menus: menuType[]) => {
+  for (const item of menus) {
+    if (item.pagePath === path) {
+      return item;
+    }
+    if (item.children?.length) {
+      const menu = getMenuByPath(path, item.children);
+      if (menu) {
+        return menu;
+      }
+    }
+  }
+  return undefined;
+};

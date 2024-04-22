@@ -1,24 +1,26 @@
 import { FC, memo } from 'react';
 import { Image, Layout, Menu } from 'antd';
-import { AppBreadcrumb, ThemeBar, Translate } from '@/components';
-import Logo from '@/assets/svg/logo.svg';
-import { useMainPage } from '@/pages/Main/static.tsx';
+import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
+import { useMainPage } from '@/pages/Main/hooks.tsx';
+import { useTheme } from '@/hooks/useTheme';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/store';
+import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
-import { useTheme } from '@/hooks/useTheme.ts';
 
 const Main: FC = () => {
-  const { Sider, Header, Content, menus, onSelect, defaultSelectedKeys, defaultOpenKeys } = useMainPage();
+  const { Sider, Header, Content, menus, onSelect, onOpenChange } = useMainPage();
+  const { defaultSelectedKeys, defaultOpenKeys } = useAppSelector((state) => state.UIStore);
   const navigate = useNavigate();
   const { themeMode } = useTheme();
 
   return (
     <>
-      <Layout className='h-screen overflow-hidden'>
+      <Layout className='h-screen overflow-hidden select-none'>
         <Sider width='250px' theme={themeMode}>
           <div
             className='h-16 bg-white dark:bg-[#001624] animate__animated animate__backInDown dark:text-white flex items-center justify-center  text-xl font-bold cursor-pointer'
-            onClick={() => navigate(menus[0].key)}>
+            onClick={() => menus[0] && navigate(menus[0].key)}>
             <Image src={Logo} width={30} />
             <span>Go-React-Admin</span>
           </div>
@@ -29,6 +31,9 @@ const Main: FC = () => {
             theme={themeMode}
             items={menus}
             className='h-screen select-none'
+            onOpenChange={onOpenChange}
+            selectedKeys={defaultSelectedKeys}
+            openKeys={defaultOpenKeys}
             defaultSelectedKeys={defaultSelectedKeys}
             defaultOpenKeys={defaultOpenKeys}
           />
@@ -45,7 +50,8 @@ const Main: FC = () => {
               </div>
             </div>
           </Header>
-          <Content className='p-[30px]'>
+          <AppHeaderTab />
+          <Content className='px-8 py-4'>
             <div
               className={classNames('w-full h-full p-4', {
                 physicLightCard: themeMode === 'light',

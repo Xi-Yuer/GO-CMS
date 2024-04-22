@@ -4,10 +4,13 @@ import { useTheme } from '@/hooks/useTheme.ts';
 import TranslateLight from '@/components/Icon/translateLight.tsx';
 import { Dropdown, MenuProps } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { changeLang } from '@/store/UIStore';
+import { useDispatch } from 'react-redux';
 
 const Translate: FC = () => {
   const { themeMode } = useTheme();
   const { i18n } = useTranslation();
+  const dispatch = useDispatch();
   const items: MenuProps['items'] = [
     {
       key: 'zh',
@@ -19,6 +22,7 @@ const Translate: FC = () => {
     },
   ];
   const onClick: MenuProps['onClick'] = ({ key }) => {
+    dispatch(changeLang(key));
     i18n.changeLanguage(key).then((r) => r);
   };
 

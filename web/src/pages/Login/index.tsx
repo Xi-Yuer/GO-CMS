@@ -13,6 +13,7 @@ import { useAppDispatch } from '@/store';
 import { getUserMenusRequest } from '@/service/api/pages';
 import { useNavigate } from 'react-router-dom';
 import { sleep } from '@/utils/sleep';
+import { changeTabHeader } from '@/store/UIStore';
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -48,7 +49,10 @@ const Login: FC = () => {
         await sleep(1000);
         const result = await getUserMenusRequest();
         dispatch(changeMenus(result.data));
-        navigate('/');
+        if (result.data?.length) {
+          navigate(result.data[0].pagePath || '/');
+          dispatch(changeTabHeader([result.data[0]]));
+        }
       })
       .catch(() => {
         getCaptcha();

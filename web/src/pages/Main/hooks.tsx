@@ -1,32 +1,43 @@
-import { useState } from 'react';
-import { useAppSelector } from '@/store';
+import { useEffect } from 'react';
 import { Layout, MenuProps } from 'antd';
 import { menuType } from '@/types/menus';
 import { Icon } from '@/components';
+import { useAppSelector } from '@/store';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getTheCurrentRoutePathAllMenuPath } from '@/utils/builder';
+import { getMenuByPath, getTheCurrentRoutePathAllMenuPath } from '@/utils/builder';
+import { useDispatch } from 'react-redux';
+import { addTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys } from '@/store/UIStore';
 
 export const useMainPage = () => {
   const { Header, Sider, Content } = Layout;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { menus } = useAppSelector((state) => state.UserStore);
+
   const { pathname } = useLocation();
-  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([pathname]);
-  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>(getTheCurrentRoutePathAllMenuPath(pathname, menus));
+  useEffect(() => {
+    dispatch(changeDefaultSelectedKeys([pathname]));
+    dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(pathname, menus)));
+  }, [pathname, menus]);
 
   const onSelect: MenuProps['onSelect'] = (e) => {
-    setDefaultOpenKeys(e.keyPath);
-    setDefaultSelectedKeys(e.selectedKeys);
+    dispatch(changeDefaultSelectedKeys(e.selectedKeys));
+    dispatch(changeDefaultOpenKeys(e.keyPath));
+    dispatch(addTabHeader(getMenuByPath(e.key, menus)));
     navigate(e.key);
   };
+
+  const onOpenChange = (e: string[]) => {
+    dispatch(changeDefaultOpenKeys(e));
+  };
+
   return {
     menus: getItem(menus),
     Header,
     Sider,
     Content,
-    defaultOpenKeys,
-    defaultSelectedKeys,
     onSelect,
+    onOpenChange,
   };
 };
 

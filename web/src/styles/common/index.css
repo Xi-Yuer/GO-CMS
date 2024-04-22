@@ -10,7 +10,7 @@
 }
 
 .physicLightCard {
-    border-radius: 20px;
+    border-radius: 10px;
     background: #ededed;
     box-shadow: 9px 9px 18px #c9c9c9,
     -9px -9px 18px #ffffff;
@@ -24,10 +24,10 @@
 }
 
 .physicDarkCard {
-    border-radius: 20px;
+    border-radius: 10px;
     background: #001624;
     box-shadow: 9px 9px 18px #272727,
-    -9px -9px 18px #353535;
+    -9px -9px 18px #2d2d2d;
 }
 
 @layer utilities {

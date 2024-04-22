@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { cache } from '@/utils';
 import { constants } from '@/constant';
+import { menuType } from '@/types/menus';
+
+interface IUserStore {
+  token: string | null;
+  userInfo: any;
+  menus: menuType[];
+}
 
 const UserStoreSlice = createSlice({
   name: 'UserStore',
@@ -8,7 +15,7 @@ const UserStoreSlice = createSlice({
     token: null,
     userInfo: null,
     menus: [],
-  },
+  } as IUserStore,
   reducers: {
     changeToken(state, action) {
       cache.set(constants.localStorage.token, action.payload);
