@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { ConfigProvider, theme } from 'antd';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
-import { DynamicComponentLoader } from '@/components/dynamicComponentLoader';
+import { Router } from '@/components';
 
 const APP = () => {
   const { langMode, themeMode } = useAppSelector((state) => state.UIStore);
@@ -23,7 +23,7 @@ const APP = () => {
             colorPrimary: '#00aeff',
           },
         }}>
-        <DynamicComponentLoader />
+        <Router />
       </ConfigProvider>
     </>
   );

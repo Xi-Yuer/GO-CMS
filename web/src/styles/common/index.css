@@ -3,23 +3,35 @@
 @tailwind utilities;
 
 .physicLight {
-  border-radius: 20px;
-  background: #ededed;
-  box-shadow:
-    9px 9px 18px #c9c9c9,
+    border-radius: 20px;
+    background: #ededed;
+    box-shadow: 9px 9px 18px #c9c9c9,
+    -9px -9px 18px #ffffff;
+}
+
+.physicLightCard {
+    border-radius: 20px;
+    background: #ededed;
+    box-shadow: 9px 9px 18px #c9c9c9,
     -9px -9px 18px #ffffff;
 }
 
 .physicDark {
-  border-radius: 20px;
-  background: #2e2e2e;
-  box-shadow:
-    9px 9px 18px #272727,
+    border-radius: 20px;
+    background: #2e2e2e;
+    box-shadow: 9px 9px 18px #272727,
+    -9px -9px 18px #353535;
+}
+
+.physicDarkCard {
+    border-radius: 20px;
+    background: #001624;
+    box-shadow: 9px 9px 18px #272727,
     -9px -9px 18px #353535;
 }
 
 @layer utilities {
-  .tran {
-    transition: all 0.2s ease;
-  }
+    .tran {
+        transition: all 0.2s ease;
+    }
 }

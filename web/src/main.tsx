@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom/client';
+import 'animate.css';
 import 'dayjs/locale/zh-cn';
 import '@/styles/index.css';
 import '@/local/index';

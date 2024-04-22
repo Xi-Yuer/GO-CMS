@@ -1,9 +1,11 @@
-import { DarkSvg } from '@/components/icon/dark.tsx';
-import { LightSvg } from '@/components/icon/light.tsx';
-import TranslateDark from '@/components/icon/translateDark.tsx';
-import TranslateLight from '@/components/icon/translateLight.tsx';
-import ThemeBar from '@/components/theme';
-import Translate from '@/components/translate/translate.tsx';
-import Icon from '@/components/icon/icon.tsx';
+import { DarkSvg } from '@/components/Icon/dark.tsx';
+import { LightSvg } from '@/components/Icon/light.tsx';
+import { Router } from '@/components/Router';
+import Icon from '@/components/Icon/icon.tsx';
+import TranslateDark from '@/components/Icon/translateDark.tsx';
+import TranslateLight from '@/components/Icon/translateLight.tsx';
+import ThemeBar from '@/components/Theme';
+import Translate from '@/components/Translate/translate.tsx';
+import AppBreadcrumb from '@/components/AppBreadcrumb';
 
-export { DarkSvg, LightSvg, TranslateLight, TranslateDark, ThemeBar, Translate, Icon };
+export { DarkSvg, LightSvg, Icon, Router, TranslateLight, TranslateDark, ThemeBar, Translate, AppBreadcrumb };

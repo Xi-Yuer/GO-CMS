@@ -12,7 +12,7 @@ export const constants = {
     enUS,
   } as Record<string, Locale | undefined>,
   routePath: {
-    login: '/login',
+    login: '/Login',
     main: '/',
   },
 };

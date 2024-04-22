@@ -7,7 +7,7 @@ import { getCaptchaRequest, LoginParamsType, loginRequest } from '@/service';
 import { useTranslation } from 'react-i18next';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
-import { FieldType } from '@/pages/login/type.ts';
+import { FieldType } from '@/pages/Login/type.ts';
 import { changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
 import { getUserMenusRequest } from '@/service/api/pages';
@@ -75,7 +75,7 @@ const Login: FC = () => {
             physicLight: themeMode === 'light',
             physicDark: themeMode === 'dark',
           })}>
-          <div className='flex flex-col flex-1 p-10 pt-20'>
+          <div className='flex flex-col flex-1 p-10 pt-20 animate__animated animate__backInUp'>
             <p className='text-2xl font-bold'>{t('welcome')}</p>
             <div className='mt-10 ml-[-40px] hidden lg:flex'>
               <Image src={Logo} preview={false} />

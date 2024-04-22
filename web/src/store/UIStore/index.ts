@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { constants } from '@/constant';
 import { cache } from '@/utils';
+import { MenuTheme } from 'antd';
+
+interface IUIStore {
+  isFold: boolean;
+  langMode: string;
+  themeMode: MenuTheme | undefined;
+}
 
 const useUIStoreSlice = createSlice({
   name: 'UIStore',
@@ -8,7 +15,7 @@ const useUIStoreSlice = createSlice({
     isFold: false,
     langMode: 'zh',
     themeMode: 'light',
-  },
+  } as IUIStore,
   reducers: {
     changeFold(state, action) {
       state.isFold = action.payload;

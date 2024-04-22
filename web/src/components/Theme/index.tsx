@@ -1,5 +1,5 @@
-import { LightSvg } from '@/components/icon/light.tsx';
-import { DarkSvg } from '@/components/icon/dark.tsx';
+import { LightSvg } from '@/components/Icon/light.tsx';
+import { DarkSvg } from '@/components/Icon/dark.tsx';
 import { Switch } from 'antd';
 import { useTheme } from '@/hooks/useTheme.ts';
 import { memo } from 'react';

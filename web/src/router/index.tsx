@@ -1,15 +1,25 @@
-import Login from '@/pages/login';
-import Main from '@/pages/main';
+import Login from '@/pages/Login';
+import Main from '@/pages/Main';
+import NotFont from '@/pages/NotFont';
+import { Suspense } from 'react';
 
 export const routes = [
   {
-    path: '/login',
+    path: '/Login',
     element: <Login />,
   },
   {
     path: '/',
-    element: <Main />,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Main></Main>
+      </Suspense>
+    ),
     children: [],
+  },
+  {
+    path: '*',
+    element: <NotFont />,
   },
 ];
 

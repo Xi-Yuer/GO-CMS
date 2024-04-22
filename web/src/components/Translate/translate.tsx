@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
-import TranslateDark from '@/components/icon/translateDark.tsx';
+import TranslateDark from '@/components/Icon/translateDark.tsx';
 import { useTheme } from '@/hooks/useTheme.ts';
-import TranslateLight from '@/components/icon/translateLight.tsx';
+import TranslateLight from '@/components/Icon/translateLight.tsx';
 import { Dropdown, MenuProps } from 'antd';
 import { useTranslation } from 'react-i18next';
 

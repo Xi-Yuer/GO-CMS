@@ -2,9 +2,9 @@ export default {
   translation: {
     login: 'Sign in',
     title: 'Go-React-Admin',
-    welcome: 'Welcome to the management system',
+    welcome: 'Welcome to the management System',
     slogan: 'A General Management System Developed Based on Golang',
-    description: 'A universal management system developed based on Go language, designed to provide a better learning platform for more beginners',
+    description: 'A universal management System developed based on Go language, designed to provide a better learning platform for more beginners',
     completeAccount: 'Account',
     completePassword: 'Password',
     completeCaptcha: 'Captcha',

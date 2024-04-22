@@ -1,34 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppSelector } from '@/store';
 import { Layout, MenuProps } from 'antd';
 import { menuType } from '@/types/menus';
 import { Icon } from '@/components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getTheCurrentRoutePathAllMenuPath } from '@/utils/builder';
 
 export const useMainPage = () => {
   const { Header, Sider, Content } = Layout;
   const navigate = useNavigate();
   const { menus } = useAppSelector((state) => state.UserStore);
-  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>([]);
   const { pathname } = useLocation();
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState<string[]>([pathname]);
+  const [defaultOpenKeys, setDefaultOpenKeys] = useState<string[]>(getTheCurrentRoutePathAllMenuPath(pathname, menus));
 
-  const onClick: MenuProps['onClick'] = (e) => {
+  const onSelect: MenuProps['onSelect'] = (e) => {
+    setDefaultOpenKeys(e.keyPath);
+    setDefaultSelectedKeys(e.selectedKeys);
     navigate(e.key);
   };
-
-  useEffect(() => {
-    navigate(pathname);
-    setDefaultOpenKeys([pathname]);
-  }, []);
-
   return {
-    menus1: menus,
     menus: getItem(menus),
     Header,
     Sider,
     Content,
     defaultOpenKeys,
-    onClick,
+    defaultSelectedKeys,
+    onSelect,
   };
 };
 
