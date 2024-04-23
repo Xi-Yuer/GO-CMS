@@ -22,7 +22,7 @@ const Translate: FC = () => {
     },
   ];
   const onClick: MenuProps['onClick'] = ({ key }) => {
-    dispatch(changeLang(key));
+    dispatch(changeLang(key as 'zh' | 'en'));
     i18n.changeLanguage(key).then((r) => r);
   };
 

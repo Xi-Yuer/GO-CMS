@@ -28,11 +28,11 @@ const useUIStoreSlice = createSlice({
       state.isFold = action.payload;
     },
 
-    changeLang(state, action) {
+    changeLang(state, action: { payload: 'en' | 'zh'; type: string }) {
       state.langMode = action.payload;
     },
 
-    changeThemeMode(state, action) {
+    changeThemeMode(state, action: { payload: 'dark' | 'light' | undefined; type: string }) {
       state.themeMode = action.payload;
       if (action.payload === 'dark') {
         document.documentElement.classList.add('dark');
@@ -42,7 +42,7 @@ const useUIStoreSlice = createSlice({
       cache.set(constants.localStorage.lang, action.payload);
     },
 
-    addTabHeader(state, action) {
+    addTabHeader(state, action: { payload: menuType; type: string }) {
       const tabHeader = action.payload;
       state.TabHeader.forEach((item, index) => {
         if (item.pageID === tabHeader.pageID) {
@@ -52,21 +52,21 @@ const useUIStoreSlice = createSlice({
       state.TabHeader.push(tabHeader);
     },
 
-    delTabHeader(state, action) {
+    delTabHeader(state, action: { payload: number; type: string }) {
       const result = state.TabHeader;
       result.splice(action.payload, 1);
       state.TabHeader = result;
     },
 
-    changeTabHeader(state, action) {
+    changeTabHeader(state, action: { payload: menuType[]; type: string }) {
       state.TabHeader = action.payload;
     },
 
-    changeDefaultOpenKeys(state, action) {
+    changeDefaultOpenKeys(state, action: { payload: string[]; type: string }) {
       state.defaultOpenKeys = action.payload;
     },
 
-    changeDefaultSelectedKeys(state, action) {
+    changeDefaultSelectedKeys(state, action: { payload: string[]; type: string }) {
       state.defaultSelectedKeys = action.payload;
     },
   },

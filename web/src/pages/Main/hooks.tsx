@@ -4,7 +4,7 @@ import { menuType } from '@/types/menus';
 import { Icon } from '@/components';
 import { useAppSelector } from '@/store';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getMenuByPath, getTheCurrentRoutePathAllMenuPath } from '@/utils/builder';
+import { getFirstMenu, getMenuByPath, getTheCurrentRoutePathAllMenuPath } from '@/utils';
 import { useDispatch } from 'react-redux';
 import { addTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys } from '@/store/UIStore';
 
@@ -23,17 +23,18 @@ export const useMainPage = () => {
   // 跳转至首页
   const navigateHome = () => {
     if (menus && menus.length) {
-      dispatch(changeDefaultSelectedKeys([menus[0].pagePath]));
-      dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(menus[0].pagePath, menus)));
-      dispatch(addTabHeader(getMenuByPath(menus[0].pagePath, menus)));
-      navigate(menus[0].pagePath);
+      const firstMenu = getFirstMenu(menus);
+      dispatch(changeDefaultSelectedKeys([firstMenu.pagePath] || []));
+      dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(firstMenu.pagePath, menus)));
+      dispatch(addTabHeader(getMenuByPath(firstMenu.pagePath, menus) || ({} as menuType)));
+      navigate(firstMenu.pagePath);
     }
   };
 
   const onSelect: MenuProps['onSelect'] = (e) => {
     dispatch(changeDefaultSelectedKeys(e.selectedKeys));
     dispatch(changeDefaultOpenKeys(e.keyPath));
-    dispatch(addTabHeader(getMenuByPath(e.key, menus)));
+    dispatch(addTabHeader(getMenuByPath(e.key, menus) || ({} as menuType)));
     navigate(e.key);
   };
 

@@ -1,6 +1,6 @@
 import { useNavigate, useRoutes } from 'react-router-dom';
 import { useAppSelector } from '@/store';
-import { builderMenuRoutes } from '@/utils/builder';
+import { builderMenuRoutes } from '@/utils';
 import { useEffect } from 'react';
 import routes from '@/router';
 

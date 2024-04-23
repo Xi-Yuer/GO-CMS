@@ -1,7 +1,7 @@
 import { FC, memo, useEffect, useState } from 'react';
 import { useAppSelector } from '@/store';
 import { menuType } from '@/types/menus';
-import { getTheCurrentRoutePathAllMenuEntity } from '@/utils/builder';
+import { getTheCurrentRoutePathAllMenuEntity } from '@/utils';
 import { useLocation } from 'react-router-dom';
 import { Breadcrumb } from 'antd';
 

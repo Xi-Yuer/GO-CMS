@@ -12,7 +12,7 @@ import { changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
 import { getUserMenusRequest } from '@/service/api/pages';
 import { useNavigate } from 'react-router-dom';
-import { sleep } from '@/utils/sleep';
+import { getFirstMenu, sleep } from '@/utils';
 import { changeTabHeader } from '@/store/UIStore';
 
 const Login: FC = () => {
@@ -50,8 +50,8 @@ const Login: FC = () => {
         const result = await getUserMenusRequest();
         dispatch(changeMenus(result.data));
         if (result.data?.length) {
-          navigate(result.data[0].pagePath || '/');
-          dispatch(changeTabHeader([result.data[0]]));
+          navigate(getFirstMenu(result.data).pagePath || '/');
+          dispatch(changeTabHeader([getFirstMenu(result.data)]));
         }
       })
       .catch(() => {
@@ -79,10 +79,10 @@ const Login: FC = () => {
             physicLight: themeMode === 'light',
             physicDark: themeMode === 'dark',
           })}>
-          <div className='flex flex-col flex-1 p-10 pt-20 animate__animated animate__backInUp'>
+          <div className='flex flex-col flex-1 p-10 pt-20'>
             <p className='text-2xl font-bold'>{t('welcome')}</p>
             <div className='mt-10 ml-[-40px] hidden lg:flex'>
-              <Image src={Logo} preview={false} />
+              <Image src={Logo} preview={false} className='animate__animated animate__backInUp' />
               <div className='w-full mt-10'>
                 <p className='text-xl font-bold'>{t('slogan')}</p>
                 <p className='mt-2 text-sm text-[#6c727f] dark:text-[#fff] tran'>{t('description')}</p>

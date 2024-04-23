@@ -16,7 +16,7 @@ const pagesMap: Record<string, React.ReactNode | null> = {
   '/system/role': <SystemRole />,
   '/system/department': <SystemDepartment />,
   '/system/menu': <SystemMenu />,
-  '/test': <Test />,
+  '/test/test2': <Test />,
 };
 
 // 返回所有 Main 下的路由
@@ -112,4 +112,17 @@ export const getMenuByPath: (path: string, menus: menuType[]) => menuType | unde
     }
   }
   return undefined;
+};
+
+// 获取第一个菜单
+export const getFirstMenu: (menus: menuType[]) => menuType = (menus: menuType[]) => {
+  if (menus && menus.length) {
+    if (!menus[0].children?.length) {
+      return menus[0];
+    }
+    if (menus[0].children?.length) {
+      return getFirstMenu(menus[0].children);
+    }
+  }
+  return {} as menuType;
 };

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { menuType } from '@/types/menus';
 import React from 'react';
 import { addTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys, changeTabHeader, delTabHeader } from '@/store/UIStore';
-import { getTheCurrentRoutePathAllMenuPath } from '@/utils/builder';
+import { getFirstMenu, getTheCurrentRoutePathAllMenuPath } from '@/utils';
 import { CloseCircleOutlined, CloseOutlined, CloseSquareOutlined, SyncOutlined } from '@ant-design/icons';
 
 export const useAppHeaderTab = () => {
@@ -20,17 +20,17 @@ export const useAppHeaderTab = () => {
 
   const onclose = (e: React.MouseEvent<HTMLElement>, item: menuType, index: number) => {
     e.preventDefault();
-
+    const firstMenu = getFirstMenu(menus);
     // 当前 tab 只有一个，且点击的 tab 是用户路由的第一项，则不处理（因为tab至少需要一项）
-    if (TabHeader.length === 1 && pathname === menus[0].pagePath) return;
+    if (TabHeader.length === 1 && pathname === firstMenu.pagePath) return;
 
     // 当前 tab 只有一个了
     if (TabHeader.length === 1) {
       dispatch(delTabHeader(index));
-      dispatch(addTabHeader(menus[0]));
-      changeDefaultOpenMenu(menus[0].pagePath, menus);
+      dispatch(addTabHeader(firstMenu));
+      changeDefaultOpenMenu(firstMenu.pagePath, menus);
       // 默认跳转到菜单的第一项
-      navigate(menus[0].pagePath);
+      navigate(firstMenu.pagePath);
       return;
     }
 
