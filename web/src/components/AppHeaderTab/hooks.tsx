@@ -5,10 +5,12 @@ import React from 'react';
 import { addTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys, changeTabHeader, delTabHeader } from '@/store/UIStore';
 import { getFirstMenu, getTheCurrentRoutePathAllMenuPath } from '@/utils';
 import { CloseCircleOutlined, CloseOutlined, CloseSquareOutlined, SyncOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 export const useAppHeaderTab = () => {
   const { TabHeader } = useAppSelector((state) => state.UIStore);
   const { menus } = useAppSelector((state) => state.UserStore);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
@@ -75,24 +77,24 @@ export const useAppHeaderTab = () => {
         {index !== 0 && (
           <div className='flex gap-2' onClick={() => onCloseLeftAll(item, index)}>
             <CloseOutlined />
-            关闭左侧标签页
+            {t('closeLeft')}
           </div>
         )}
         {index !== TabHeader.length - 1 && (
           <div className='flex gap-2' onClick={() => onCloseRightAll(item, index)}>
             <CloseCircleOutlined />
-            关闭右侧标签页
+            {t('closeRight')}
           </div>
         )}
         {TabHeader.length > 1 && (
           <div className='flex gap-2' onClick={() => onCloseOtherAll(item, index)}>
             <CloseSquareOutlined />
-            关闭其他标签页
+            {t('closeOther')}
           </div>
         )}
         <div className='flex gap-2' onClick={() => window.location.reload()}>
           <SyncOutlined />
-          刷新当前标签页
+          {t('refreshTab')}
         </div>
       </div>
     );

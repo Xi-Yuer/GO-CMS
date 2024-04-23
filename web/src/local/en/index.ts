@@ -11,5 +11,9 @@ export default {
     accountRequired: 'Account is Required',
     passwordRequired: 'Password is Required',
     captchaRequired: 'Captcha is Required',
+    closeLeft: 'closeLeft',
+    closeRight: 'closeRight',
+    closeOther: 'closeOther',
+    refreshTab: 'refreshTab',
   },
 };

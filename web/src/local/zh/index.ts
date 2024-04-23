@@ -11,5 +11,9 @@ export default {
     accountRequired: '账号不能为空',
     passwordRequired: '密码不能为空',
     captchaRequired: '验证码不能为空',
+    closeLeft: '关闭左侧标签页',
+    closeRight: '关闭右侧标签页',
+    closeOther: '关闭其他标签页',
+    refreshTab: '刷新标签页',
   },
 };
