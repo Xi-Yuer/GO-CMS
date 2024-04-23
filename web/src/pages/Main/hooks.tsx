@@ -20,6 +20,16 @@ export const useMainPage = () => {
     dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(pathname, menus)));
   }, [pathname, menus]);
 
+  // 跳转至首页
+  const navigateHome = () => {
+    if (menus && menus.length) {
+      dispatch(changeDefaultSelectedKeys([menus[0].pagePath]));
+      dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(menus[0].pagePath, menus)));
+      dispatch(addTabHeader(getMenuByPath(menus[0].pagePath, menus)));
+      navigate(menus[0].pagePath);
+    }
+  };
+
   const onSelect: MenuProps['onSelect'] = (e) => {
     dispatch(changeDefaultSelectedKeys(e.selectedKeys));
     dispatch(changeDefaultOpenKeys(e.keyPath));
@@ -38,6 +48,7 @@ export const useMainPage = () => {
     Content,
     onSelect,
     onOpenChange,
+    navigateHome,
   };
 };
 

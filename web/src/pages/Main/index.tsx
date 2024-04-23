@@ -3,15 +3,14 @@ import { Image, Layout, Menu } from 'antd';
 import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
 import { useMainPage } from '@/pages/Main/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
 
 const Main: FC = () => {
-  const { Sider, Header, Content, menus, onSelect, onOpenChange } = useMainPage();
+  const { Sider, Header, Content, menus, onSelect, onOpenChange, navigateHome } = useMainPage();
   const { defaultSelectedKeys, defaultOpenKeys } = useAppSelector((state) => state.UIStore);
-  const navigate = useNavigate();
   const { themeMode } = useTheme();
 
   return (
@@ -20,8 +19,8 @@ const Main: FC = () => {
         <Sider width='250px' theme={themeMode}>
           <div
             className='h-16 bg-white dark:bg-[#001624] animate__animated animate__backInDown dark:text-white flex items-center justify-center  text-xl font-bold cursor-pointer'
-            onClick={() => menus[0] && navigate(menus[0].key)}>
-            <Image src={Logo} width={30} />
+            onClick={navigateHome}>
+            <Image src={Logo} width={30} preview={false} />
             <span>Go-React-Admin</span>
           </div>
           <Menu
