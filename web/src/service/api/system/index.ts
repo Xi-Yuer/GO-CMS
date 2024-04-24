@@ -48,6 +48,7 @@ export const MenUsageMap = [
 ];
 
 export interface IGitCommit {
+  date: string;
   children: {
     author: string;
     commitID: string;

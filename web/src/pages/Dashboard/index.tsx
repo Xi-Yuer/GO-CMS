@@ -5,11 +5,11 @@ import { useDashBoard } from '@/pages/Dashboard/hooks.ts';
 import { useAppSelector } from '@/store';
 import { BugOutlined, SmileOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { gitCommitsOptions } from '@/pages/Dashboard/options.ts';
+import dayjs from 'dayjs';
 
 const Dashboard: FC = () => {
-  const { totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount } = useDashBoard();
   const { themeMode } = useAppSelector((state) => state.UIStore);
+  const { totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount, gitCommitFrequency } = useDashBoard();
 
   const commonStyle = 'bg-white dark:bg-[#110f25] rounded-md shadow-md p-4  no-scrollbar w-full';
   const echartsContent = [
@@ -26,6 +26,7 @@ const Dashboard: FC = () => {
     return {
       color: '#00CCFF',
       dot: <SmileOutlined />,
+      label: <p className='text-[#5bb4ef]'>{item.date}</p>,
       children: item.children.map((item) => {
         return (
           <div key={item.commitID} className='cursor-pointer'>
@@ -34,7 +35,7 @@ const Dashboard: FC = () => {
               content={
                 <div>
                   <p>Auth:{item.author}</p>
-                  <p>Date:{item.date}</p>
+                  <p>Date:{dayjs(item.date).format('YYYY-MM-DD HH:mm:ss')}</p>
                 </div>
               }>
               <p>{item.message}</p>
@@ -71,7 +72,7 @@ const Dashboard: FC = () => {
               className={classNames(commonStyle, 'flex-1 pr-0', {
                 physicDarkDashBoard: themeMode === 'dark',
               })}>
-              <ReactECharts option={gitCommitsOptions} theme={themeMode} style={{ height: '100%', width: '100%' }} />,
+              <ReactECharts option={gitCommitFrequency} theme={themeMode} style={{ width: '100%', height: '250px' }} />
             </div>
           </div>
         </Col>

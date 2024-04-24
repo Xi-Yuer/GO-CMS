@@ -90,23 +90,22 @@ func sortSubDepartment(page *dto.DepartmentResponse) {
 // FormatCommits 格式化提交记录为指定的结构
 func FormatCommits(groupedCommits map[string][]*dto.CommitResponse) []map[string]interface{} {
 	var formattedCommits []map[string]interface{}
+	// 按照时间顺序遍历
 
-	for _, commits := range groupedCommits {
-		commitMap := make(map[string]interface{})
-		children := make([]map[string]interface{}, len(commits))
+	keys := make([]string, 0, len(groupedCommits))
 
-		for i, commit := range commits {
-			children[i] = map[string]interface{}{
-				"commitID": commit.CommitID,
-				"author":   commit.Author,
-				"message":  commit.Message,
-				"email":    commit.Email,
-				"date":     commit.Email,
-			}
-		}
+	for k := range groupedCommits {
+		keys = append(keys, k)
+	}
 
-		commitMap["children"] = children
-		formattedCommits = append(formattedCommits, commitMap)
+	sort.Strings(keys)
+
+	for _, key := range keys {
+		commitGroup := groupedCommits[key]
+		formattedCommits = append(formattedCommits, map[string]interface{}{
+			"date":     key,
+			"children": commitGroup,
+		})
 	}
 
 	return formattedCommits
@@ -116,7 +115,8 @@ func FormatCommits(groupedCommits map[string][]*dto.CommitResponse) []map[string
 func GroupCommitsByDate(commits []*dto.CommitResponse) map[string][]*dto.CommitResponse {
 	grouped := make(map[string][]*dto.CommitResponse)
 	for _, commit := range commits {
-		dateKey := commit.Date // 以 "YYYY-MM-DD" 格式作为键
+		// 2024-03-04T09:44:50Z
+		dateKey := commit.Date[:10] // 以 "YYYY-MM-DD" 格式作为键
 		grouped[dateKey] = append(grouped[dateKey], commit)
 	}
 	return grouped
