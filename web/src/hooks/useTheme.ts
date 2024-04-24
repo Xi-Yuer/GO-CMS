@@ -6,6 +6,7 @@ export const useTheme = () => {
   const dispatch = useAppDispatch();
   const toggleTheme = () => {
     dispatch(changeThemeMode(themeMode === 'dark' ? 'light' : 'dark'));
+    window.location.reload();
   };
 
   return {

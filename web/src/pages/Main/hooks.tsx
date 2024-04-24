@@ -20,6 +20,12 @@ export const useMainPage = () => {
     dispatch(changeDefaultOpenKeys(getTheCurrentRoutePathAllMenuPath(pathname, menus)));
   }, [pathname, menus]);
 
+  useEffect(() => {
+    if (menus.length) {
+      navigate(getFirstMenu(menus).pagePath);
+    }
+  }, []);
+
   // 跳转至首页
   const navigateHome = () => {
     if (menus && menus.length) {

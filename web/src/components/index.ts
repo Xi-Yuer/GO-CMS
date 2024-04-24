@@ -8,5 +8,6 @@ import ThemeBar from '@/components/Theme';
 import Translate from '@/components/Translate/translate.tsx';
 import AppBreadcrumb from '@/components/AppBreadcrumb';
 import AppHeaderTab from '@/components/AppHeaderTab';
+import Card from '@/components/Card';
 
-export { DarkSvg, LightSvg, Icon, Router, TranslateLight, TranslateDark, ThemeBar, Translate, AppBreadcrumb, AppHeaderTab };
+export { DarkSvg, LightSvg, Icon, Router, TranslateLight, TranslateDark, ThemeBar, Translate, AppBreadcrumb, AppHeaderTab, Card };
