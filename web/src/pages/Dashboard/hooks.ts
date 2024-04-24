@@ -1,16 +1,14 @@
 import { getSystemRunTimeInfoRequest } from '@/service';
 import { useEffect, useState } from 'react';
 import { EChartsOption } from 'echarts';
-import { useTotalOption } from '@/pages/Dashboard/options.ts';
+import { SystemMemUsedSituationOptions } from '@/pages/Dashboard/options.ts';
 
 export const useDashBoard = () => {
-  const options = useTotalOption();
-  const [totalOption, setTotalOption] = useState<EChartsOption>(options);
-
+  const [totalOption, setTotalOption] = useState<EChartsOption>(SystemMemUsedSituationOptions);
   const getSystemInfoAction = () => {
     getSystemRunTimeInfoRequest().then((res) => {
       setTotalOption({
-        ...options,
+        ...SystemMemUsedSituationOptions,
         series: [
           {
             data: res.data.map((item: any) => item.memUsage.total),
@@ -25,8 +23,9 @@ export const useDashBoard = () => {
 
   useEffect(() => {
     getSystemInfoAction();
-    setInterval(getSystemInfoAction, 1000);
+    // setInterval(getSystemInfoAction, 1000);
   }, []);
+
   return {
     totalOption,
   };

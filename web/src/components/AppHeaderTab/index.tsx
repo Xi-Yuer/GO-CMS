@@ -7,7 +7,7 @@ import { useAppHeaderTab } from '@/components/AppHeaderTab/hooks.tsx';
 const AppHeaderTab: FC = () => {
   const { content, onclick, onclose, TabHeader, pathname } = useAppHeaderTab();
   return (
-    <div className='flex py-4 bg-white border-t px-8 dark:bg-[#001624] dark:border-[#a6aeb3]'>
+    <div className='flex py-4 bg-white border-t px-8 dark:bg-[#001624] dark:border-[#a6aeb3] overflow-y-scroll no-scrollbar'>
       {!!TabHeader.length &&
         TabHeader.map((item, index) => {
           return (
