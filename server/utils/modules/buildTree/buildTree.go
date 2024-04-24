@@ -86,3 +86,38 @@ func sortSubDepartment(page *dto.DepartmentResponse) {
 		sortSubDepartment(&child)
 	}
 }
+
+// FormatCommits 格式化提交记录为指定的结构
+func FormatCommits(groupedCommits map[string][]*dto.CommitResponse) []map[string]interface{} {
+	var formattedCommits []map[string]interface{}
+
+	for _, commits := range groupedCommits {
+		commitMap := make(map[string]interface{})
+		children := make([]map[string]interface{}, len(commits))
+
+		for i, commit := range commits {
+			children[i] = map[string]interface{}{
+				"commitID": commit.CommitID,
+				"author":   commit.Author,
+				"message":  commit.Message,
+				"email":    commit.Email,
+				"date":     commit.Email,
+			}
+		}
+
+		commitMap["children"] = children
+		formattedCommits = append(formattedCommits, commitMap)
+	}
+
+	return formattedCommits
+}
+
+// GroupCommitsByDate 将提交记录按照日期进行分组
+func GroupCommitsByDate(commits []*dto.CommitResponse) map[string][]*dto.CommitResponse {
+	grouped := make(map[string][]*dto.CommitResponse)
+	for _, commit := range commits {
+		dateKey := commit.Date // 以 "YYYY-MM-DD" 格式作为键
+		grouped[dateKey] = append(grouped[dateKey], commit)
+	}
+	return grouped
+}

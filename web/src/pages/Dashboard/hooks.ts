@@ -54,7 +54,7 @@ export const useDashBoard = () => {
   useEffect(() => {
     getSystemInfoAction();
     getGitCommitAction();
-    // timer = setInterval(getSystemInfoAction, 1000);
+    timer = setInterval(getSystemInfoAction, 1000);
     return () => {
       timer && clearInterval(timer);
     };

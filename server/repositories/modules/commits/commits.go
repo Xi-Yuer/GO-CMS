@@ -9,7 +9,7 @@ var CommitsRepositoryModules = &commitsRepositoryModules{}
 
 type commitsRepositoryModules struct{}
 
-func (receiver *commitsRepositoryModules) GetCommits() []*dto.CommitResponse {
+func (c *commitsRepositoryModules) GetCommits() []*dto.CommitResponse {
 	rows, err := db.DB.Query("SELECT commit_id, author, email, commit_date, message FROM cms.commits")
 	if err != nil {
 		return nil
@@ -27,4 +27,20 @@ func (receiver *commitsRepositoryModules) GetCommits() []*dto.CommitResponse {
 
 	}
 	return commitLogs
+}
+
+func (c *commitsRepositoryModules) GetCommitsCount() (int, error) {
+	query := "SELECT COUNT(*) FROM cms.commits"
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return 0, err
+	}
+	var count int
+	for rows.Next() {
+		err := rows.Scan(&count)
+		if err != nil {
+			return 0, err
+		}
+	}
+	return count, nil
 }

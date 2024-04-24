@@ -1,3 +1,4 @@
+import * as echarts from 'echarts';
 import { EChartsOption } from 'echarts';
 
 export const SystemMemUsedSituationOptions: EChartsOption = {
@@ -183,3 +184,76 @@ export const AllMemUsageOptions: EChartsOption = {
     },
   ],
 };
+
+export const gitCommitsOptions = {
+  calendar: {
+    top: 120,
+    left: 30,
+    right: 30,
+    cellSize: ['auto', 13],
+    range: '2022',
+    splitLine: {
+      show: false,
+    },
+    itemStyle: {
+      borderWidth: 0.5,
+    },
+    dayLabel: {
+      nameMap: 'ZH',
+    },
+    monthLabel: {
+      nameMap: 'ZH',
+    },
+    yearLabel: {
+      show: false,
+    },
+  },
+  tooltip: {},
+  visualMap: [
+    {
+      type: 'piecewise',
+      pieces: [
+        {
+          value: 0,
+          color: '#ffffff',
+        },
+        {
+          min: 1,
+          max: 1000,
+          color: '#8ce4a2',
+        },
+        {
+          min: 1001,
+          max: 2000,
+          color: '#2dbb60',
+        },
+        {
+          min: 3000,
+          max: 3000,
+          color: '#186235',
+        },
+      ],
+      orient: 'horizontal',
+      left: 'center',
+      top: 65,
+    },
+  ],
+  series: [
+    {
+      type: 'heatmap',
+      coordinateSystem: 'calendar',
+      data: createData('2022'),
+    },
+  ],
+};
+
+function createData(year: any) {
+  const date = +echarts.time.parse(year + '-01-01');
+  const end = +echarts.time.parse(+year + 1 + '-01-01');
+  const dayTime = 3600 * 24 * 1000;
+  const data = [];
+  for (let time = date; time < end; time += dayTime) {
+    data.push([echarts.time.format(time, '{yyyy}-{MM}-{dd}', false), Math.floor(Math.random() * 10000)]);
+  }
+  return data;
+}
