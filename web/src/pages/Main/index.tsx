@@ -39,7 +39,7 @@ const Main: FC = () => {
         </Sider>
         <Layout>
           <Header className='flex items-center justify-between bg-white dark:bg-[#001624] dark:text-white px-6'>
-            <div className='flex-1 '>
+            <div className='flex-1'>
               <AppBreadcrumb />
             </div>
             <div className='flex items-center'>
@@ -52,7 +52,7 @@ const Main: FC = () => {
           <AppHeaderTab />
           <Content className='px-8 py-4'>
             <div
-              className={classNames('w-full h-full min-h-[600px] p-4', {
+              className={classNames('w-full h-full min-h-[600px] overflow-y-scroll no-scrollbar p-4', {
                 physicLightCard: themeMode === 'light',
                 physicDarkCard: themeMode === 'dark',
               })}>

@@ -1,7 +1,17 @@
 import { FC, memo, ReactNode } from 'react';
+import classNames from 'classnames';
+import { useAppSelector } from '@/store';
 
 const Card: FC<{ children: ReactNode }> = ({ children }) => {
-  return <div className='bg-white dark:bg-[#141414] rounded-md shadow-md h-full min-h-[130px] p-2'>{children}</div>;
+  const { themeMode } = useAppSelector((state) => state.UIStore);
+  return (
+    <div
+      className={classNames('flex-1 bg-white dark:bg-[#110f25] rounded-md shadow-md p-4 max-h-[520px] min-h-[130px] overflow-scroll no-scrollbar', {
+        physicDarkDashBoard: themeMode === 'dark',
+      })}>
+      {children}
+    </div>
+  );
 };
 
 export default memo(Card);

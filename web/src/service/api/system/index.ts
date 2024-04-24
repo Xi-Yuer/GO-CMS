@@ -16,8 +16,61 @@ export interface SystemInfo {
   };
 }
 
+export const MenUsageMap = [
+  {
+    key: 'available',
+    label: '可用内存',
+  },
+  {
+    key: 'used',
+    label: '已使用内存',
+  },
+  {
+    key: 'free',
+    label: '空闲内存',
+  },
+  {
+    key: 'active',
+    label: '活跃内存',
+  },
+  {
+    key: 'inactive',
+    label: '非活跃内存',
+  },
+  {
+    key: 'wired',
+    label: '已分配内存',
+  },
+  {
+    key: 'laundry',
+    label: '被回收内存',
+  },
+];
+
+export interface IGitCommit {
+  children: {
+    author: string;
+    commitID: string;
+    date: string;
+    email: string;
+    message: string;
+  }[];
+}
+
 export const getSystemRunTimeInfoRequest = () => {
   return request.get<AxiosResponse<SystemInfo[]>>({
     url: '/system',
+  });
+};
+
+export const getGitCommitInfoRequest = () => {
+  return request.get<AxiosResponse<IGitCommit[]>>({
+    url: '/log/commits',
+  });
+};
+
+export const getGitCommitCountRequest = () => {
+  return request.get<AxiosResponse<number>>({
+    url: '/log/commits/count',
   });
 };

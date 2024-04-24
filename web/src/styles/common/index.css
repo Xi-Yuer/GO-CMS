@@ -23,6 +23,12 @@
     -9px -9px 18px #353535;
 }
 
+.physicDarkDashBoard {
+    border-radius: 20px;
+    background: #2e2e2e;
+    box-shadow: 9px 9px 18px #000000;
+}
+
 .physicDarkCard {
     border-radius: 10px;
     background: #001624;
