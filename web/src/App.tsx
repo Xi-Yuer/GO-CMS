@@ -4,8 +4,11 @@ import { ConfigProvider, theme } from 'antd';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
 import { Router } from '@/components';
+import 'dayjs/locale/zh-cn';
+import dayjs from 'dayjs';
 
 const APP = () => {
+  dayjs.locale('zh-cn');
   const { langMode, themeMode } = useAppSelector((state) => state.UIStore);
   const dispatch = useAppDispatch();
   const algorithm = themeMode === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm;

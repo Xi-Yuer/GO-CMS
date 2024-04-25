@@ -64,7 +64,7 @@ func (u *userController) GetUser(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Body
-// @Router /users [get]
+// @Router /users/query [post]
 func (u *userController) GetUsers(context *gin.Context) {
 	var params dto.QueryUsersParams
 	err := context.ShouldBind(&params)
@@ -105,17 +105,22 @@ func (u *userController) UpdateUser(context *gin.Context) {
 		return
 	}
 	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
+
+	// 判断是否为管理员或者用户自己
+	if jwtPayload.(*dto.JWTPayload).IsAdmin == 1 || jwtPayload.(*dto.JWTPayload).ID == id {
+		err = services.UserService.UpdateUser(&user, id)
+		if err != nil {
+			utils.Response.ServerError(context, err.Error())
+			return
+		}
+		utils.Response.Success(context, nil)
+		return
+	}
+	// 判断是否为普通用户
 	if !exist || jwtPayload.(*dto.JWTPayload).ID != id {
 		utils.Response.NoPermission(context, "暂无权限")
 		return
 	}
-
-	err = services.UserService.UpdateUser(&user, id)
-	if err != nil {
-		utils.Response.ServerError(context, err.Error())
-		return
-	}
-	utils.Response.Success(context, nil)
 }
 
 // DeleteUser 删除用户

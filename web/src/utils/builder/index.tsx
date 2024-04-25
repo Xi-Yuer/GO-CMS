@@ -24,7 +24,7 @@ export const builderMenuRoutes = (menus: menuType[]) => {
   const mainChildrenRoutes: RouteObject[] = [];
 
   function recursionMenu(menus: menuType[]) {
-    menus.forEach((item) => {
+    menus?.forEach((item) => {
       if (item.children?.length) {
         recursionMenu(item.children);
       } else {
@@ -132,7 +132,7 @@ export const getFirstMenuChildren: (menus: menuType[]) => menuType[] = (menus: m
   const firstMenuChildren: menuType[] = [];
 
   function recursionMenu(menus: menuType[]) {
-    menus.forEach((item) => {
+    menus?.forEach((item) => {
       if (item.children?.length) {
         recursionMenu(item.children);
       } else {

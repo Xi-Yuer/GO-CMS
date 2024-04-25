@@ -35,7 +35,7 @@ var PermissionMap = map[string]string{
 	"^POST:" + config.Config.APP.BASEURL + "/pages$":        `POST:/pages`,
 	"^PATCH:" + config.Config.APP.BASEURL + "/pages/\\d+$":  `PATCH:/pages/:id`,
 	"^DELETE:" + config.Config.APP.BASEURL + "/pages/\\d+$": `DELETE:/pages/:id`,
-	"^GET:" + config.Config.APP.BASEURL + "/pages/menus$":   `GET:/pages/menus`,
+	//"^GET:" + config.Config.APP.BASEURL + "/pages/menus$":   `GET:/pages/menus`,
 
 	// 接口管理
 	"^POST:" + config.Config.APP.BASEURL + "/interface$":          `POST:/interface`,

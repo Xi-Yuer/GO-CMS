@@ -13,17 +13,17 @@ const Translate: FC = () => {
   const dispatch = useDispatch();
   const items: MenuProps['items'] = [
     {
-      key: 'zh',
+      key: 'zhCN',
       label: '简体中文',
     },
     {
-      key: 'en',
+      key: 'enUS',
       label: 'English',
     },
   ];
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    dispatch(changeLang(key as 'zh' | 'en'));
-    i18n.changeLanguage(key).then((r) => r);
+  const onClick: MenuProps['onClick'] = async ({ key }) => {
+    dispatch(changeLang(key as 'zhCN' | 'enUS'));
+    await i18n.changeLanguage(key === 'zhCN' ? 'zh' : 'en');
   };
 
   return (

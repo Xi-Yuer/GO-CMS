@@ -11,7 +11,7 @@ const i18next = i18n
   .use(initReactI18next)
   .init({
     debug: false,
-    fallbackLng: cache.get(constants.localStorage.lang) || 'zh',
+    fallbackLng: cache.get(constants.localStorage.lang) === 'enUS' ? 'en' : 'zh' || 'zh',
     interpolation: {
       escapeValue: false,
     },

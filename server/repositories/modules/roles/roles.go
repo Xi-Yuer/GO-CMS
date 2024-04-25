@@ -114,7 +114,7 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 	if params.Limit != 0 {
 		queryParams = append(queryParams, params.Limit)
 	} else {
-		queryParams = append(queryParams, 10)
+		queryParams = append(queryParams, 100)
 	}
 	// 准备查询语句
 	stmt, err := db.DB.Prepare(query)

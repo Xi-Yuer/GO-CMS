@@ -24,14 +24,14 @@ type CreateUserParams struct {
 	Account      string   `form:"account" json:"account" binding:"required"`
 	Nickname     string   `form:"nickname" json:"nickname" binding:"required"`
 	Password     string   `form:"password" json:"password" binding:"required"`
-	RoleID       []string `form:"roleID" json:"roleID" binding:"required"`
+	RoleID       []string `form:"roleID" json:"rolesID" binding:"required"`
 	DepartmentID string   `form:"departmentID" json:"departmentID" binding:"required"`
 }
 
 type UpdateUserParams struct {
 	Nickname     string   `form:"nickname"`
 	Password     string   `form:"password"`
-	RoleID       []string `form:"roleID"`
+	RoleID       []string `form:"rolesID"`
 	Status       string   `form:"status"`
 	DepartmentID string   `form:"departmentID"`
 }
@@ -45,13 +45,14 @@ type SingleUserResponse struct {
 	ID           string     `json:"id"`
 	Account      string     `json:"account"` // 账号
 	Nickname     string     `json:"nickname"`
+	IsAdmin      int        `json:"isAdmin"`
 	Avatar       *string    `json:"avatar"`
 	RolesID      []string   `json:"rolesID"`
 	InterfaceDic []string   `json:"interfaceDic"`
 	DepartmentID *string    `json:"departmentID"`
 	CreateTime   *time.Time `json:"createTime"`
 	UpdateTime   *time.Time `json:"updateTime"`
-	Status       int        `json:"status"`
+	Status       string     `json:"status"`
 }
 type SingleUserByRoleIDResponse struct {
 	ID           string     `json:"id"`
@@ -73,6 +74,7 @@ type SingleUserResponseHasPassword struct {
 type JWTPayload struct {
 	ID           string   `json:"id"`
 	Account      string   `json:"account"`
+	IsAdmin      int      `json:"isAdmin"`
 	RoleID       []string `json:"roleId"`
 	InterfaceDic []string `json:"interfaceDic"`
 	DepartmentID *string  `json:"departmentId"`

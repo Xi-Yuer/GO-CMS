@@ -6,7 +6,7 @@ import { menuType } from '@/types/menus';
 
 interface IUIStore {
   isFold: boolean;
-  langMode: string;
+  langMode: 'enUS' | 'zhCN';
   themeMode: MenuTheme | undefined;
   TabHeader: menuType[];
   defaultSelectedKeys: string[];
@@ -17,7 +17,7 @@ const useUIStoreSlice = createSlice({
   name: 'UIStore',
   initialState: {
     isFold: true,
-    langMode: 'zh',
+    langMode: 'zhCN',
     themeMode: 'light',
     TabHeader: [],
     defaultSelectedKeys: [],
@@ -28,7 +28,7 @@ const useUIStoreSlice = createSlice({
       state.isFold = action.payload;
     },
 
-    changeLang(state, action: { payload: 'en' | 'zh'; type: string }) {
+    changeLang(state, action: { payload: 'enUS' | 'zhCN'; type: string }) {
       state.langMode = action.payload;
     },
 

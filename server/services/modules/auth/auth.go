@@ -20,7 +20,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 	if !exist {
 		return nil, errors.New("账号不存在")
 	}
-	if user.Status == 0 {
+	if user.Status == "0" {
 		return nil, errors.New("账号被禁用")
 	}
 	// 验证密码
@@ -50,6 +50,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 	jwtPayload := &dto.JWTPayload{
 		ID:           user.ID,
 		Account:      user.Account,
+		IsAdmin:      user.IsAdmin,
 		RoleID:       rolesID,
 		InterfaceDic: interfaceDic,
 		DepartmentID: user.DepartmentID,
@@ -64,6 +65,7 @@ func (a *authService) Login(params *dto.LoginRequestParams) (*dto.LoginResponse,
 			ID:           user.ID,
 			Nickname:     user.Nickname,
 			Avatar:       user.Avatar,
+			IsAdmin:      user.IsAdmin,
 			RolesID:      rolesID,
 			InterfaceDic: interfaceDic,
 			DepartmentID: user.DepartmentID,

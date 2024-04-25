@@ -1,18 +1,18 @@
 import { FC, memo, useEffect, useState } from 'react';
 import { useTheme } from '@/hooks/useTheme.ts';
 import { ThemeBar, Translate } from '@/components/index';
-import { Button, Form, Image, Input } from 'antd';
+import { Button, Form, Image, Input, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from '@ant-design/icons';
 import { getCaptchaRequest, getUserMenusRequest, LoginParamsType, loginRequest } from '@/service';
 import { useTranslation } from 'react-i18next';
-import Logo from '@/assets/svg/logo.svg';
-import classNames from 'classnames';
 import { FieldType } from '@/pages/Login/type.ts';
 import { changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import { getFirstMenu, sleep } from '@/utils';
 import { changeTabHeader } from '@/store/UIStore';
+import Logo from '@/assets/svg/logo.svg';
+import classNames from 'classnames';
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -51,6 +51,8 @@ const Login: FC = () => {
         if (result.data?.length) {
           navigate(getFirstMenu(result.data).pagePath || '/');
           dispatch(changeTabHeader([getFirstMenu(result.data)]));
+        } else {
+          message.error('暂无任何菜单，请联系管理员');
         }
       })
       .catch(() => {

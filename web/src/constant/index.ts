@@ -8,8 +8,8 @@ export const constants = {
     token: 'token',
   },
   langMap: {
-    zhCN,
-    enUS,
+    zhCN: zhCN,
+    enUS: enUS,
   } as Record<string, Locale | undefined>,
   routePath: {
     login: '/Login',

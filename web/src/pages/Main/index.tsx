@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
-import { FullscreenOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { ExpandOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { changeFold } from '@/store/UIStore';
 import { useFullscreen } from 'ahooks';
 
@@ -58,7 +58,7 @@ const Main: FC = () => {
             </div>
             <div className='flex items-center'>
               <div className='flex items-center justify-center text-xl mr-2 cursor-pointer' onClick={toggleFullscreen}>
-                <FullscreenOutlined />
+                <ExpandOutlined />
               </div>
               <ThemeBar />
               <div className='mt-3'>
