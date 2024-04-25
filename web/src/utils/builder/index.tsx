@@ -126,3 +126,24 @@ export const getFirstMenu: (menus: menuType[]) => menuType = (menus: menuType[])
   }
   return {} as menuType;
 };
+
+// 获取用户所有菜单的第一项子菜单
+export const getFirstMenuChildren: (menus: menuType[]) => menuType[] = (menus: menuType[]) => {
+  const firstMenuChildren: menuType[] = [];
+
+  function recursionMenu(menus: menuType[]) {
+    menus.forEach((item) => {
+      if (item.children?.length) {
+        recursionMenu(item.children);
+      } else {
+        // 排除仪表盘页面
+        if (item.pagePath !== '/dashboard') {
+          firstMenuChildren.push(item);
+        }
+      }
+    });
+  }
+
+  recursionMenu(menus);
+  return firstMenuChildren;
+};

@@ -1,19 +1,23 @@
 import { FC, memo } from 'react';
-import { Col, Popover, Row, Spin, Timeline } from 'antd';
 import ReactECharts from 'echarts-for-react';
 import { useDashBoard } from '@/pages/Dashboard/hooks.ts';
 import { useAppSelector } from '@/store';
+import { useTranslation } from 'react-i18next';
+import { getFirstMenuChildren } from '@/utils';
+import { Icon } from '@/components';
+import { Col, Popover, Row, Spin, Timeline } from 'antd';
 import { BugOutlined, SmileOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { useTranslation } from 'react-i18next';
 
 const Dashboard: FC = () => {
   const { t } = useTranslation();
+  const { menus } = useAppSelector((state) => state.UserStore);
   const { themeMode } = useAppSelector((state) => state.UIStore);
-  const { loading, totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount, gitCommitFrequency } = useDashBoard();
+  const { loading, totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount, gitCommitFrequency, navigateToPage } = useDashBoard();
 
-  const commonStyle = 'bg-white dark:bg-[#110f25] rounded-md shadow-md p-4  no-scrollbar w-full';
+  const commonStyle = 'bg-white dark:bg-[#110f25] rounded-md shadow-md p-4 no-scrollbar w-full';
+  const backgroundArray = ['#ff9066', '#56bafc', '#ab77e3', '#ff7bb6', '#46d6cd'];
   const echartsContent = [
     <ReactECharts option={totalOption} theme={themeMode} style={{ height: '120px', width: '100%' }} />,
     <ReactECharts option={cpuUsageOption} theme={themeMode} style={{ height: '120px', width: '100%' }} />,
@@ -48,11 +52,11 @@ const Dashboard: FC = () => {
     };
   });
   return (
-    <Spin spinning={loading} style={{ height: '100%' }}>
-      <Row gutter={[10, 10]} className='w-full'>
+    <Spin spinning={loading}>
+      <Row gutter={[10, 10]}>
         {echartsContent.map((item, index) => {
           return (
-            <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 6 }} key={index}>
+            <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 12 }} xl={6} key={index}>
               <div
                 className={classNames(commonStyle, 'h-full', {
                   physicDarkDashBoard: themeMode === 'dark',
@@ -63,16 +67,38 @@ const Dashboard: FC = () => {
           );
         })}
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-          <div className='flex flex-col justify-between h-full gap-2'>
+          <div className='flex flex-col justify-between gap-2'>
             <div
-              className={classNames(commonStyle, 'flex-1', {
+              className={classNames(commonStyle, {
                 physicDarkDashBoard: themeMode === 'dark',
               })}>
-              <span className='text-md font-bold'>{t('quickStart')}</span>
-              <div className='h-[150px]'></div>
+              <span className='text-md font-bold mb-2'>{t('quickStart')}</span>
+              <Row className='flex items-center min-h-[150px] justify-between gap-4'>
+                {getFirstMenuChildren(menus)
+                  ?.slice(0, 4)
+                  ?.map((item, index) => {
+                    return (
+                      <Col
+                        xs={{ span: 24 }}
+                        sm={{ span: 4 }}
+                        md={{ span: 4 }}
+                        lg={{ span: 24 }}
+                        xl={{ span: 4 }}
+                        key={item.pageID}
+                        onClick={() => navigateToPage(item)}
+                        className={classNames('flex flex-col justify-evenly items-center h-20 rounded cursor-pointer shadow')}
+                        style={{ background: backgroundArray[index] + '30' }}>
+                        <Icon
+                          name={item.pageIcon as any}
+                          props={{ className: `text-xl text-[${backgroundArray[index]}]`, style: { color: backgroundArray[index] } }}></Icon>
+                        {item.pageName}
+                      </Col>
+                    );
+                  })}
+              </Row>
             </div>
             <div
-              className={classNames(commonStyle, 'flex-1 pr-0', {
+              className={classNames(commonStyle, {
                 physicDarkDashBoard: themeMode === 'dark',
               })}>
               <span className='text-md font-bold'>
@@ -84,7 +110,7 @@ const Dashboard: FC = () => {
         </Col>
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
           <div
-            className={classNames(commonStyle, 'max-h-[520px] overflow-scroll', {
+            className={classNames(commonStyle, 'overflow-scroll no-scrollbar h-[515px]', {
               physicDarkDashBoard: themeMode === 'dark',
             })}>
             <span className='text-md font-bold'>{t('commitBlameTitle')}</span>

@@ -19,6 +19,9 @@ const request = new Request<IResponse>(import.meta.env.VITE_APP_BASE_URL, 1000 *
   },
   responseInterceptor: {
     onFulfilled: (value) => {
+      if (value.data.code > 201) {
+        message.error(value.data.msg).then((r) => r);
+      }
       return value.data;
     },
     onRejected(error) {

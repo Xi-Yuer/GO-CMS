@@ -1,12 +1,20 @@
 import { getGitCommitCountRequest, getGitCommitInfoRequest, getSystemRunTimeInfoRequest, IGitCommit, MenUsageMap } from '@/service';
 import { useEffect, useRef, useState } from 'react';
-import { EChartsOption } from 'echarts';
-import { AllMemUsageOptions, gitCommitsOptions, SystemCPUUsageOptions, SystemMemUsedSituationOptions } from '@/pages/Dashboard/options.ts';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { getMenuByPath } from '@/utils';
+import { addTabHeader } from '@/store/UIStore';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { AllMemUsageOptions, gitCommitsOptions, SystemCPUUsageOptions, SystemMemUsedSituationOptions } from '@/pages/Dashboard/options.ts';
+import { EChartsOption } from 'echarts';
+import { menuType } from '@/types/menus';
+import dayjs from 'dayjs';
 
 export const useDashBoard = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { menus } = useAppSelector((state) => state.UserStore);
   const [totalOption, setTotalOption] = useState<EChartsOption>({});
   const [cpuUsageOption, setCpuUsageOption] = useState({});
   const [allMenUsageOption, setAllMenUsageOption] = useState({});
@@ -15,6 +23,7 @@ export const useDashBoard = () => {
   const [gitCommitFrequency, setGitCommitFrequency] = useState({});
   const gitCommitsRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
+
   const getSystemInfoAction = () => {
     getSystemRunTimeInfoRequest().then((res) => {
       setTotalOption({
@@ -141,6 +150,10 @@ export const useDashBoard = () => {
     };
   }, []);
 
+  const navigateToPage = (item: menuType) => {
+    dispatch(addTabHeader(getMenuByPath(item.pagePath, menus) || ({} as menuType)));
+    navigate(item.pagePath);
+  };
   return {
     loading,
     gitCommitFrequency,
@@ -150,5 +163,6 @@ export const useDashBoard = () => {
     totalOption,
     cpuUsageOption,
     allMenUsageOption,
+    navigateToPage,
   };
 };

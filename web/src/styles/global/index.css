@@ -1,10 +1,10 @@
 .loginBg {
-    background: url('@/assets/svg/bg.svg');
-    background-size: contain;
+  background: url('@/assets/svg/bg.svg');
+  background-size: contain;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }

@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC, memo, useRef } from 'react';
 import { Image, Layout, Menu } from 'antd';
 import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
 import { useMainPage } from '@/pages/Main/hooks.tsx';
@@ -7,14 +7,17 @@ import { Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { FullscreenOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { changeFold } from '@/store/UIStore';
+import { useFullscreen } from 'ahooks';
 
 const Main: FC = () => {
+  const dispatch = useAppDispatch();
+  const fullscreenRef = useRef();
   const { Sider, Header, Content, menus, onSelect, onOpenChange, navigateHome } = useMainPage();
   const { defaultSelectedKeys, defaultOpenKeys, isFold } = useAppSelector((state) => state.UIStore);
   const { themeMode } = useTheme();
-  const dispatch = useAppDispatch();
+  const [_, { toggleFullscreen }] = useFullscreen(fullscreenRef);
 
   const changeFoldAction = () => {
     dispatch(changeFold(!isFold));
@@ -54,6 +57,9 @@ const Main: FC = () => {
               <AppBreadcrumb />
             </div>
             <div className='flex items-center'>
+              <div className='flex items-center justify-center text-xl mr-2 cursor-pointer' onClick={toggleFullscreen}>
+                <FullscreenOutlined />
+              </div>
               <ThemeBar />
               <div className='mt-3'>
                 <Translate />
@@ -63,6 +69,7 @@ const Main: FC = () => {
           <AppHeaderTab />
           <Content className='px-8 py-4'>
             <div
+              ref={fullscreenRef as any}
               className={classNames('w-full h-full min-h-[600px] overflow-y-scroll no-scrollbar p-4', {
                 physicLightCard: themeMode === 'light',
                 physicDarkCard: themeMode === 'dark',
