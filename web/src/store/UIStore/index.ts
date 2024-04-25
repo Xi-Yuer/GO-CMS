@@ -16,7 +16,7 @@ interface IUIStore {
 const useUIStoreSlice = createSlice({
   name: 'UIStore',
   initialState: {
-    isFold: false,
+    isFold: true,
     langMode: 'zh',
     themeMode: 'light',
     TabHeader: [],

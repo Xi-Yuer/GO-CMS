@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { EChartsOption } from 'echarts';
 import { AllMemUsageOptions, gitCommitsOptions, SystemCPUUsageOptions, SystemMemUsedSituationOptions } from '@/pages/Dashboard/options.ts';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 export const useDashBoard = () => {
+  const { t } = useTranslation();
   const [totalOption, setTotalOption] = useState<EChartsOption>({});
   const [cpuUsageOption, setCpuUsageOption] = useState({});
   const [allMenUsageOption, setAllMenUsageOption] = useState({});
@@ -12,14 +14,14 @@ export const useDashBoard = () => {
   const [commitCount, setCommitCount] = useState(0);
   const [gitCommitFrequency, setGitCommitFrequency] = useState({});
   const gitCommitsRef = useRef<HTMLDivElement>(null);
-
+  const [loading, setLoading] = useState(false);
   const getSystemInfoAction = () => {
     getSystemRunTimeInfoRequest().then((res) => {
       setTotalOption({
         ...SystemMemUsedSituationOptions,
         series: [
           {
-            name: '总内存',
+            name: t('memUsageTotal'),
             type: 'line',
             showSymbol: false,
             data: res.data?.map((item: any) => item.memUsage.total),
@@ -29,7 +31,7 @@ export const useDashBoard = () => {
             },
           },
           {
-            name: '已使用内存',
+            name: t('memUsageInUsed'),
             type: 'line',
             showSymbol: false,
             data: res.data?.map((item: any) => item.memUsage.used),
@@ -46,7 +48,7 @@ export const useDashBoard = () => {
                 colorStops: [
                   {
                     offset: 0,
-                    color: '#04a8fb', // 0% 处的颜色
+                    color: '#04a8fb80', // 0% 处的颜色
                   },
                   {
                     offset: 1,
@@ -104,20 +106,29 @@ export const useDashBoard = () => {
   };
 
   const getGitCommitAction = () => {
-    getGitCommitInfoRequest().then((res) => {
-      setGitCommits(res.data);
-      setGitCommitFrequency({
-        ...gitCommitsOptions,
-        series: {
-          type: 'heatmap',
-          coordinateSystem: 'calendar',
-          data: res.data?.map((item) => [dayjs(item.date).format('YYYY-MM-DD'), item.children.length]),
-        },
+    setLoading(true);
+    getGitCommitInfoRequest()
+      .then((res) => {
+        setGitCommits(res.data);
+        setGitCommitFrequency({
+          ...gitCommitsOptions,
+          series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: res.data?.map((item) => [dayjs(item.date).format('YYYY-MM-DD'), item.children.length]),
+          },
+        });
+      })
+      .finally(() => {
+        setLoading(false);
       });
-    });
-    getGitCommitCountRequest().then((res) => {
-      setCommitCount(res.data);
-    });
+    getGitCommitCountRequest()
+      .then((res) => {
+        setCommitCount(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   let timer: number;
 
@@ -131,6 +142,7 @@ export const useDashBoard = () => {
   }, []);
 
   return {
+    loading,
     gitCommitFrequency,
     gitCommitsRef,
     commitCount,

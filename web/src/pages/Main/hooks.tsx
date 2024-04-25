@@ -21,7 +21,8 @@ export const useMainPage = () => {
   }, [pathname, menus]);
 
   useEffect(() => {
-    if (menus.length) {
+    // 首页重定向
+    if (menus.length && pathname === '/') {
       navigate(getFirstMenu(menus).pagePath);
     }
   }, []);

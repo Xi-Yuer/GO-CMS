@@ -4,28 +4,34 @@ import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
 import { useMainPage } from '@/pages/Main/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { changeFold } from '@/store/UIStore';
 
 const Main: FC = () => {
   const { Sider, Header, Content, menus, onSelect, onOpenChange, navigateHome } = useMainPage();
-  const { defaultSelectedKeys, defaultOpenKeys } = useAppSelector((state) => state.UIStore);
+  const { defaultSelectedKeys, defaultOpenKeys, isFold } = useAppSelector((state) => state.UIStore);
   const { themeMode } = useTheme();
+  const dispatch = useAppDispatch();
 
+  const changeFoldAction = () => {
+    dispatch(changeFold(!isFold));
+  };
   return (
     <>
       <Layout className='h-screen overflow-hidden select-none'>
-        <Sider width='250px' theme={themeMode} className='hidden md:block'>
+        <Sider width='250px' theme={themeMode} className='hidden md:block' trigger={null} collapsible collapsed={isFold}>
           <div
-            className='h-16 bg-white dark:bg-[#001624] animate__animated animate__backInDown dark:text-white flex items-center justify-center  text-xl font-bold cursor-pointer'
+            className='h-16 bg-white truncate overflow-hidden dark:bg-[#001624] animate__animated animate__backInDown dark:text-white flex items-center justify-center text-xl font-bold cursor-pointer'
             onClick={navigateHome}>
             <Image src={Logo} width={30} preview={false} />
-            <span>Go-React-Admin</span>
+            {!isFold && <span>Go-React-Admin</span>}
           </div>
           <Menu
             onSelect={onSelect}
-            style={{ width: 260 }}
+            style={{ width: isFold ? 80 : 260 }}
             mode='inline'
             theme={themeMode}
             items={menus}
@@ -39,6 +45,11 @@ const Main: FC = () => {
         </Sider>
         <Layout>
           <Header className='flex items-center justify-between bg-white dark:bg-[#001624] dark:text-white px-6'>
+            {isFold ? (
+              <MenuUnfoldOutlined className='text-xl mr-2' onClick={changeFoldAction} />
+            ) : (
+              <MenuFoldOutlined className='text-xl mr-2' onClick={changeFoldAction} />
+            )}
             <div className='flex-1'>
               <AppBreadcrumb />
             </div>

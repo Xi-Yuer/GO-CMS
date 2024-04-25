@@ -43,7 +43,7 @@ export const SystemMemUsedSituationOptions: EChartsOption = {
       show: true,
     },
     axisTick: {
-      show: true,
+      show: false,
     },
   },
   animation: true,
@@ -110,8 +110,9 @@ export const AllMemUsageOptions: EChartsOption = {
 };
 
 export const gitCommitsOptions: EChartsOption = {
-  backgroundColor: 'transparent',
-  tooltip: {},
+  tooltip: {
+    trigger: 'item',
+  },
   calendar: {
     top: 120,
     left: 30,
@@ -139,7 +140,7 @@ export const gitCommitsOptions: EChartsOption = {
     pieces: [
       {
         value: 0,
-        color: '#ffffff',
+        color: '#e8eaee',
       },
       {
         min: 1,
@@ -147,12 +148,12 @@ export const gitCommitsOptions: EChartsOption = {
         color: '#8ce4a2',
       },
       {
-        min: 3,
+        min: 4,
         max: 6,
         color: '#2dbb60',
       },
       {
-        min: 9,
+        min: 7,
         max: 20,
         color: '#186235',
       },

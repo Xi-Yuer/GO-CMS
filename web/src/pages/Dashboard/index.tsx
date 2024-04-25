@@ -1,24 +1,26 @@
 import { FC, memo } from 'react';
-import { Col, Popover, Row, Timeline } from 'antd';
+import { Col, Popover, Row, Spin, Timeline } from 'antd';
 import ReactECharts from 'echarts-for-react';
 import { useDashBoard } from '@/pages/Dashboard/hooks.ts';
 import { useAppSelector } from '@/store';
 import { BugOutlined, SmileOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import { useTranslation } from 'react-i18next';
 
 const Dashboard: FC = () => {
+  const { t } = useTranslation();
   const { themeMode } = useAppSelector((state) => state.UIStore);
-  const { totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount, gitCommitFrequency } = useDashBoard();
+  const { loading, totalOption, cpuUsageOption, allMenUsageOption, gitCommits, commitCount, gitCommitFrequency } = useDashBoard();
 
   const commonStyle = 'bg-white dark:bg-[#110f25] rounded-md shadow-md p-4  no-scrollbar w-full';
   const echartsContent = [
-    <ReactECharts option={totalOption} theme={themeMode} style={{ height: '100%', width: '100%' }} />,
-    <ReactECharts option={cpuUsageOption} theme={themeMode} style={{ height: '100%', width: '100%' }} />,
-    <ReactECharts option={allMenUsageOption} theme={themeMode} style={{ height: '100%', width: '100%' }} />,
+    <ReactECharts option={totalOption} theme={themeMode} style={{ height: '120px', width: '100%' }} />,
+    <ReactECharts option={cpuUsageOption} theme={themeMode} style={{ height: '120px', width: '100%' }} />,
+    <ReactECharts option={allMenUsageOption} theme={themeMode} style={{ height: '120px', width: '100%' }} />,
     <div className='flex h-[100px] justify-center items-center text-2xl dark:bg-[#110f25]'>
       <span className='text-[#ff6787] text-5xl'>{commitCount}</span>
-      <span className='ml-4'>Git提交总次</span>
+      <span className='ml-4'>{t('commitCount')}</span>
     </div>,
   ];
 
@@ -46,8 +48,8 @@ const Dashboard: FC = () => {
     };
   });
   return (
-    <div>
-      <Row gutter={[10, 10]} className='h-[130px] w-full'>
+    <Spin spinning={loading} style={{ height: '100%' }}>
+      <Row gutter={[10, 10]} className='w-full'>
         {echartsContent.map((item, index) => {
           return (
             <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 6 }} key={index}>
@@ -66,12 +68,16 @@ const Dashboard: FC = () => {
               className={classNames(commonStyle, 'flex-1', {
                 physicDarkDashBoard: themeMode === 'dark',
               })}>
-              LEFT
+              <span className='text-md font-bold'>{t('quickStart')}</span>
+              <div className='h-[150px]'></div>
             </div>
             <div
               className={classNames(commonStyle, 'flex-1 pr-0', {
                 physicDarkDashBoard: themeMode === 'dark',
               })}>
+              <span className='text-md font-bold'>
+                {commitCount} {t('commitTitle')}
+              </span>
               <ReactECharts option={gitCommitFrequency} theme={themeMode} style={{ width: '100%', height: '250px' }} />
             </div>
           </div>
@@ -81,6 +87,7 @@ const Dashboard: FC = () => {
             className={classNames(commonStyle, 'max-h-[520px] overflow-scroll', {
               physicDarkDashBoard: themeMode === 'dark',
             })}>
+            <span className='text-md font-bold'>{t('commitBlameTitle')}</span>
             <Timeline
               items={TimeLine}
               mode='alternate'
@@ -94,7 +101,7 @@ const Dashboard: FC = () => {
           </div>
         </Col>
       </Row>
-    </div>
+    </Spin>
   );
 };
 
