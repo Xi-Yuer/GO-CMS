@@ -1,12 +1,13 @@
 import { FC, memo } from 'react';
 import { useUserPageHooks } from '@/pages/System/User/hooks.tsx';
-import { Button, Col, DatePicker, Form, Input, Modal, Row, Select, Table } from 'antd';
+import { Button, Col, DatePicker, Form, Input, Modal, Pagination, Row, Select, Table } from 'antd';
 import { IGetUsersParams, IUpdateUserParams } from '@/service';
 import { PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 
 const SystemUser: FC = () => {
   const {
+    total,
     columns,
     users,
     departments,
@@ -15,6 +16,9 @@ const SystemUser: FC = () => {
     editUserModalOpen,
     roles,
     isEdit,
+    limit,
+    setPage,
+    setLimit,
     onFinish,
     onReset,
     editUserConfirm,
@@ -85,7 +89,14 @@ const SystemUser: FC = () => {
         </Form>
       </div>
       <div>
-        <Table dataSource={users} columns={columns} bordered={true} rowKey='id'></Table>
+        <Table dataSource={users} columns={columns} bordered={true} pagination={false} rowKey='id'></Table>
+        <Pagination
+          total={total}
+          className='flex justify-end mt-2'
+          pageSize={limit}
+          onChange={(e) => setPage(e)}
+          showSizeChanger
+          onShowSizeChange={(_, size) => setLimit(size)}></Pagination>
       </div>
       <Modal destroyOnClose open={editUserModalOpen} title={isEdit ? t('edit') : t('add')} onOk={editUserConfirm} onCancel={() => setEditUserModalOpen(false)}>
         <Form form={editFormRef} autoComplete='off' labelAlign='right' id='editFormRef'>

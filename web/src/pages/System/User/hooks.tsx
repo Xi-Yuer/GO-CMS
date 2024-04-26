@@ -93,7 +93,10 @@ export const useUserPageHooks = () => {
   ];
 
   const [departments, setDepartments] = useState<IDepartmentResponse[]>([]);
+  const [limit, setLimit] = useState(20);
+  const [page, setPage] = useState(1);
   const [users, setUsers] = useState<IUserResponse[]>([]);
+  const [total, setTotal] = useState(0);
   const [roles, setRoles] = useState<IRoleResponse[]>([]);
   const [editUserModalOpen, setEditUserModalOpen] = useState(false);
   const [currentEditUser, setCurrentEditUser] = useState<IUserResponse | undefined>();
@@ -116,8 +119,9 @@ export const useUserPageHooks = () => {
   };
 
   const getPageData = (value?: IGetUsersParams) => {
-    getUsersRequest({ limit: 20, offset: 0, ...value }).then((res) => {
-      setUsers(res.data);
+    getUsersRequest({ limit: limit, offset: (page - 1) * limit, ...value }).then((res) => {
+      setUsers(res.data.list);
+      setTotal(res.data.total);
     });
   };
 
@@ -167,10 +171,14 @@ export const useUserPageHooks = () => {
 
   useEffect(() => {
     getPageData();
+  }, [page, limit]);
+
+  useEffect(() => {
     getRoleAction();
   }, []);
 
   return {
+    total,
     users,
     roles,
     departments,
@@ -179,6 +187,11 @@ export const useUserPageHooks = () => {
     editFormRef,
     editUserModalOpen,
     isEdit,
+    limit,
+    page,
+    getPageData,
+    setLimit,
+    setPage,
     onFinish,
     onReset,
     editUserConfirm,

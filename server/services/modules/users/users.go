@@ -52,7 +52,7 @@ func (u *userService) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
 	return repositories.UserRepositorysModules.FindUserById(id)
 }
 
-func (u *userService) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
+func (u *userService) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
 	return repositories.UserRepositorysModules.FindUserByParams(params)
 }
 

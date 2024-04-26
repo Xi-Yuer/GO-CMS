@@ -132,7 +132,24 @@ func (u *userRepository) SelectUsersByAccount(account string) bool {
 	return count > 0
 }
 
-func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
+func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	count := `SELECT count(*) FROM users`
+
+	var total int
+	rows, err := db.DB.Query(count)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
 	query := `
 		SELECT 
 			id, account,nickname, status,GROUP_CONCAT(ur.role_id), is_admin, department_id, status, create_time, update_time 
@@ -196,7 +213,7 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 
 		}
 	}(stmt)
-	rows, err := stmt.Query(queryParams...)
+	rows, err = stmt.Query(queryParams...)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +242,10 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		return nil, err
 	}
 
-	return users, nil
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
 }
 
 func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {

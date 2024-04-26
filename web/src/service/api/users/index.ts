@@ -27,6 +27,11 @@ export interface IUserResponse {
   status: '0' | '1';
 }
 
+export interface IHasTotalResponse<T> {
+  total: number;
+  list: T;
+}
+
 export interface IUpdateUserParams {
   id: string;
   account?: string;
@@ -38,7 +43,7 @@ export interface IUpdateUserParams {
 }
 
 export const getUsersRequest = (params: IGetUsersParams) => {
-  return request.post<AxiosResponse<IUserResponse[]>>({
+  return request.post<AxiosResponse<IHasTotalResponse<IUserResponse[]>>>({
     url: '/users/query',
     data: params,
   });
