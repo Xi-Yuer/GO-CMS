@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { cache } from '@/utils';
 import { constants } from '@/constant';
 import { menuType } from '@/types/menus';
+import { LoginUserResponseType } from '@/service';
 
 interface IUserStore {
   token: string | null;
-  userInfo: any;
+  userInfo: LoginUserResponseType | undefined;
   menus: menuType[];
 }
 
@@ -13,7 +14,7 @@ const UserStoreSlice = createSlice({
   name: 'UserStore',
   initialState: {
     token: null,
-    userInfo: null,
+    userInfo: undefined,
     menus: [],
   } as IUserStore,
   reducers: {

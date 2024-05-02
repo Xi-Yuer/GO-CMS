@@ -2,6 +2,7 @@ import Request from '@/service/request/lib';
 import { IResponse } from '@/service/request/lib/type.ts';
 import { cache, message } from '@/utils';
 import { constants } from '@/constant';
+import router from '@/router';
 
 const request = new Request<IResponse>(import.meta.env.VITE_APP_BASE_URL, 1000 * 60, {
   requestInterceptor: {
@@ -20,6 +21,11 @@ const request = new Request<IResponse>(import.meta.env.VITE_APP_BASE_URL, 1000 *
     onFulfilled: (value) => {
       if (value.data.code > 201) {
         message.error(value.data.msg);
+      }
+      if (value.data.code == 401) {
+        cache.clear();
+        router.push({ path: '/Login' });
+        return;
       }
       return value.data;
     },

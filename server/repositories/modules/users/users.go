@@ -176,7 +176,7 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) (*dto.Ha
 		queryParams = append(queryParams, params.StartTime)
 	}
 	if params.EndTime != "" {
-		query += " AND create_time <= ?"
+		query += " AND update_time <= ?"
 		queryParams = append(queryParams, params.EndTime)
 	}
 

@@ -19,7 +19,7 @@ func (u *userAndRolesService) FindRoleById(id string) error {
 	return nil
 }
 
-func (u *userAndRolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+func (u *userAndRolesService) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalResponseData, error) {
 	return repositories.RoleRepositorysModules.GetRoles(params)
 }
 

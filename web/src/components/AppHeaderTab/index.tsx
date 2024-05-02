@@ -9,7 +9,7 @@ const AppHeaderTab: FC = () => {
   return (
     <div className='flex py-4 min-h-[55px] bg-white border-t px-8 dark:bg-[#001624] dark:border-[#a6aeb3] overflow-y-scroll no-scrollbar'>
       {!!TabHeader.length &&
-        TabHeader.map((item, index) => {
+        TabHeader?.map((item, index) => {
           return (
             <Popover placement='bottomLeft' key={item.pageID} trigger={'contextMenu'} content={() => content(item, index)}>
               <Tag

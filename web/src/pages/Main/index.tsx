@@ -1,15 +1,16 @@
 import { FC, memo, useRef } from 'react';
-import { Image, Layout, Menu } from 'antd';
+import { Image, Layout, Menu, Popover } from 'antd';
 import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
 import { useMainPage } from '@/pages/Main/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
-import { ExpandOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import { DownOutlined, ExpandOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { changeFold } from '@/store/UIStore';
 import { useFullscreen } from 'ahooks';
+import { cache } from '@/utils';
 
 const Main: FC = () => {
   const dispatch = useAppDispatch();
@@ -17,10 +18,17 @@ const Main: FC = () => {
   const { Sider, Header, Content, menus, onSelect, onOpenChange, navigateHome } = useMainPage();
   const { defaultSelectedKeys, defaultOpenKeys, isFold } = useAppSelector((state) => state.UIStore);
   const { themeMode } = useTheme();
+  const navigate = useNavigate();
+  const { userInfo } = useAppSelector((state) => state.UserStore);
   const [_, { toggleFullscreen }] = useFullscreen(fullscreenRef);
 
   const changeFoldAction = () => {
     dispatch(changeFold(!isFold));
+  };
+
+  const logOutAction = () => {
+    cache.clear();
+    navigate('/Login');
   };
   return (
     <>
@@ -57,12 +65,24 @@ const Main: FC = () => {
               <AppBreadcrumb />
             </div>
             <div className='flex items-center'>
-              <div className='flex items-center justify-center text-xl mr-2 cursor-pointer' onClick={toggleFullscreen}>
+              <div className='flex items-center justify-center text-xl mr-4 cursor-pointer' onClick={toggleFullscreen}>
                 <ExpandOutlined />
               </div>
               <ThemeBar />
-              <div className='mt-3'>
+              <div className='mt-3 mx-2'>
                 <Translate />
+              </div>
+              <div className='mx-6 cursor-pointer'>
+                <Popover
+                  content={
+                    <div className='cursor-pointer hover:text-[#00b0f0]' onClick={logOutAction}>
+                      退出登录
+                    </div>
+                  }
+                  trigger='hover'>
+                  <span>{userInfo?.nickname}</span>
+                  <DownOutlined className='mx-2 text-gray-500 dark:text-gray-50' />
+                </Popover>
               </div>
             </div>
           </Header>

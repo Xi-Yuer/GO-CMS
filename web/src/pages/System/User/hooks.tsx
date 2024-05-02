@@ -1,4 +1,4 @@
-import { Form, TableProps, Tag } from 'antd';
+import { DatePicker, Form, Input, Select, TableProps, Tag } from 'antd';
 import {
   createUsersRequest,
   deleteUsersRequest,
@@ -13,7 +13,7 @@ import {
   IUserResponse,
   updateUsersRequest,
 } from '@/service';
-import { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { Md5 } from 'ts-md5';
 import { useTranslation } from 'react-i18next';
@@ -25,9 +25,10 @@ export const useUserPageHooks = () => {
   const { t } = useTranslation();
   const columns: TableProps<IUserResponse>['columns'] = [
     {
-      title: t('id'),
-      dataIndex: 'id',
-      key: 'id',
+      title: t('index'),
+      width: '80',
+      align: 'center',
+      render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
       title: t('account'),
@@ -65,6 +66,7 @@ export const useUserPageHooks = () => {
       title: t('createTime'),
       dataIndex: 'createTime',
       key: 'createTime',
+      align: 'center',
       render: (_, { createTime }) => {
         return <span>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
@@ -73,6 +75,7 @@ export const useUserPageHooks = () => {
       title: t('updateTime'),
       dataIndex: 'updateTime',
       key: 'updateTime',
+      align: 'center',
       render: (_, { updateTime }) => {
         return <span>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
@@ -95,12 +98,60 @@ export const useUserPageHooks = () => {
   const [departments, setDepartments] = useState<IDepartmentResponse[]>([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState<React.Key[]>([]);
   const [users, setUsers] = useState<IUserResponse[]>([]);
   const [total, setTotal] = useState(0);
   const [roles, setRoles] = useState<IRoleResponse[]>([]);
   const [editUserModalOpen, setEditUserModalOpen] = useState(false);
   const [currentEditUser, setCurrentEditUser] = useState<IUserResponse | undefined>();
   const [isEdit, setIsEdit] = useState(true);
+  const searchConfig: { label: string; name: keyof IGetUsersParams; component: ReactNode }[] = [
+    {
+      label: t('account'),
+      name: 'account',
+      component: <Input allowClear />,
+    },
+    {
+      label: t('nickName'),
+      name: 'nickname',
+      component: <Input allowClear />,
+    },
+    {
+      label: t('department'),
+      name: 'departmentID',
+      component: (
+        <Select allowClear>
+          {departments?.map((item) => {
+            return (
+              <Select.Option key={item.id} value={item.id}>
+                {item.departmentName}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      ),
+    },
+    {
+      label: t('status'),
+      name: 'status',
+      component: (
+        <Select allowClear>
+          <Select.Option value='1'>{t('on')}</Select.Option>
+          <Select.Option value='0'>{t('off')}</Select.Option>
+        </Select>
+      ),
+    },
+    {
+      label: t('createTime'),
+      name: 'startTime',
+      component: <DatePicker allowClear style={{ width: '220px' }} />,
+    },
+    {
+      label: t('updateTime'),
+      name: 'endTime',
+      component: <DatePicker allowClear style={{ width: '220px' }} />,
+    },
+  ];
 
   const onFinish = (values: any) => getPageData(values);
   const newUserParams = {
@@ -143,7 +194,7 @@ export const useUserPageHooks = () => {
     const { data: user } = id ? await getUserRequest(id) : ({ data: newUserParams as any } as AxiosResponse<IUserResponse>);
     const { data: roles } = await getRolesRequest();
     setIsEdit(!!id);
-    setRoles(roles);
+    setRoles(roles.list);
     setCurrentEditUser(user);
     setEditUserModalOpen(true);
   };
@@ -183,12 +234,14 @@ export const useUserPageHooks = () => {
     roles,
     departments,
     columns,
-    searchFormRef,
     editFormRef,
     editUserModalOpen,
     isEdit,
     limit,
     page,
+    selected,
+    searchConfig,
+    setSelected,
     getPageData,
     setLimit,
     setPage,

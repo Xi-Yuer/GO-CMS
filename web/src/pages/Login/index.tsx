@@ -85,7 +85,7 @@ const Login: FC = () => {
             <div className='mt-10 ml-[-40px] hidden lg:flex'>
               <Image src={Logo} preview={false} className='animate__animated animate__backInUp' />
               <div className='w-full mt-10'>
-                <p className='text-xl font-bold'>{t('slogan')}</p>
+                <p className='text-xl font-bold hidden lg:block'>{t('slogan')}</p>
                 <p className='mt-2 text-sm text-[#6c727f] dark:text-[#fff] tran'>{t('description')}</p>
               </div>
             </div>

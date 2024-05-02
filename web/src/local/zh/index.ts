@@ -48,5 +48,8 @@ export default {
     off: '禁用',
     normalMan: '普通用户',
     superMan: '管理员',
+    roleName: '角色名称',
+    roleDescription: '角色描述',
+    index: '序号',
   },
 };

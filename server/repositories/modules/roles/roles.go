@@ -69,7 +69,8 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 
 }
 
-func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalResponseData, error) {
+	countQuery := "SELECT COUNT(*) FROM roles"
 	query := `
 	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id),GROUP_CONCAT(roles_interfaces.interface_id), create_time, update_time
 	FROM roles
@@ -78,6 +79,22 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 	WHERE delete_time IS NULL
 	`
 
+	var total int
+
+	rows, err := db.DB.Query(countQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
 	var queryParams []interface{}
 
 	if params.ID != "" {
@@ -100,7 +117,7 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 	}
 
 	if params.EndTime != "" {
-		query += " AND create_time <= ?"
+		query += " AND update_time <= ?"
 		queryParams = append(queryParams, params.EndTime)
 	}
 
@@ -121,7 +138,7 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 	if err != nil {
 		return nil, err
 	}
-	rows, err := stmt.Query(queryParams...)
+	rows, err = stmt.Query(queryParams...)
 	if err != nil {
 		return nil, err
 	}
@@ -150,7 +167,10 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleR
 		roles = append(roles, role)
 	}
 
-	return roles, nil
+	return &dto.HasTotalResponseData{
+		List:  roles,
+		Total: total,
+	}, nil
 }
 
 func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {

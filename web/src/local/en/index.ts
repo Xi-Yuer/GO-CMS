@@ -48,5 +48,8 @@ export default {
     off: 'Off',
     normalMan: 'Normal',
     superMan: 'Admin',
+    roleName: 'roleName',
+    roleDescription: 'Description',
+    index: 'Index',
   },
 };

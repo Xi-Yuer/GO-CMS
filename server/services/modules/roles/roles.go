@@ -43,7 +43,7 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	return err
 
 }
-func (r *rolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+func (r *rolesService) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalResponseData, error) {
 	return repositories.RoleRepositorysModules.GetRoles(params)
 }
 
