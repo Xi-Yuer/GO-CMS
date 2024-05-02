@@ -1,18 +1,18 @@
-import { deleteRolesRequest, getRolesRequest, IQueryRoleParams, IRoleResponse } from '@/service';
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, DatePicker, Input, TableProps } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import { deleteRolesRequest, exportRolesRequest, getRolesRequest, IQueryRoleParams, IRoleResponse } from '@/service';
 import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
-import { DownloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 export const useRolePageHooks = () => {
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<React.Key[]>([]);
   const [roles, setRoles] = useState<IRoleResponse[]>([]);
-
   const { t } = useTranslation();
   const searchConfig: { label: string; name: keyof IQueryRoleParams; component: ReactNode }[] = [
     {
@@ -46,21 +46,25 @@ export const useRolePageHooks = () => {
     onNewRecordFn: () => {},
     formItems: searchConfig,
     operateComponent: !!selected.length && (
-      <Button type='primary' icon={<DownloadOutlined />}>
+      <Button type='primary' icon={<DownloadOutlined />} onClick={() => exportRolesRequest(selected)}>
         导出
       </Button>
     ),
   });
 
   const getPageData = (values?: IRoleResponse) => {
-    getRolesRequest({ limit, offset: (page - 1) * limit, ...values } as IQueryRoleParams).then((res) => {
-      setRoles(res.data.list);
-      setTotal(res.data.total);
-    });
+    setLoading(true);
+    getRolesRequest({ limit, offset: (page - 1) * limit, ...values } as IQueryRoleParams)
+      .then((res) => {
+        setRoles(res.data.list);
+        setTotal(res.data.total);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const deleteRoleAction = (id: string) => {
-    console.log('dd');
     deleteRolesRequest(id).then(() => getPageData());
   };
 
@@ -128,6 +132,7 @@ export const useRolePageHooks = () => {
     searchConfig,
     SearchFormComponent,
     selected,
+    loading,
     setSelected,
     getPageData,
     setPage,

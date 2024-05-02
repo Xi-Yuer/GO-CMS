@@ -96,7 +96,7 @@ func (r *roleController) UpdateRole(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /roles [get]
+// @Router /roles/query [post]
 func (r *roleController) GetRoles(context *gin.Context) {
 	var params dto.QueryRolesParams
 	err := context.ShouldBind(&params)

@@ -8,7 +8,7 @@ var JWTPAYLOAD = `JwtPayload`
 
 var PermissionMap = map[string]string{
 	// 用户管理
-	"^GET:" + config.Config.APP.BASEURL + "/users$":            `GET:/users`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/query$":     `POST:/users/query`,
 	"^POST:" + config.Config.APP.BASEURL + "/users$":           `POST:/users`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/roles/\\d+$": `GET:/users/roles/:id`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":       `GET:/users/:id`,
@@ -17,7 +17,7 @@ var PermissionMap = map[string]string{
 	"^POST:" + config.Config.APP.BASEURL + "/users/export$":    `POST:/users/export`,
 
 	// 角色管理
-	"^GET:" + config.Config.APP.BASEURL + "/roles$":           `GET:/roles`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/query$":    `POST:/roles/query`,
 	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$": `GET:/users/role/:id`,
 	"^POST:" + config.Config.APP.BASEURL + "/roles$":          `POST:/roles`,
 	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `PATCH:/roles/:id`,

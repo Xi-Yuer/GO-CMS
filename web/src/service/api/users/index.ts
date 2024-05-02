@@ -1,5 +1,7 @@
 import request from '@/service/request';
 import { AxiosResponse } from 'axios';
+import { saveAs } from 'file-saver';
+import React from 'react';
 
 export interface IGetUsersParams {
   id?: string;
@@ -73,4 +75,18 @@ export const createUsersRequest = (params: IUpdateUserParams) => {
     url: '/users',
     data: params,
   });
+};
+
+export const exportUsersRequest = (ids: React.Key[]) => {
+  return request
+    .post({
+      url: '/users/export',
+      data: {
+        ids,
+      },
+      responseType: 'blob',
+    })
+    .then((res: any) => {
+      saveAs(new Blob([res]), '用户表.xlsx');
+    });
 };

@@ -1,6 +1,8 @@
 import request from '@/service/request';
 import { AxiosResponse } from 'axios';
 import { IHasTotalResponse } from '@/service';
+import React from 'react';
+import { saveAs } from 'file-saver';
 
 export interface IRoleResponse {
   id: string;
@@ -35,4 +37,18 @@ export const deleteRolesRequest = (id: string) => {
   return request.delete({
     url: `/roles/${id}`,
   });
+};
+
+export const exportRolesRequest = (ids: React.Key[]) => {
+  return request
+    .post({
+      url: '/roles/export',
+      data: {
+        ids,
+      },
+      responseType: 'blob',
+    })
+    .then((res: any) => {
+      saveAs(new Blob([res]), '角色表.xlsx');
+    });
 };

@@ -3,7 +3,7 @@ import { useRolePageHooks } from '@/pages/System/Role/hooks.tsx';
 import { Pagination, Table } from 'antd';
 
 const SystemRole: FC = () => {
-  const { roles, columns, SearchFormComponent, total, limit, setPage, setLimit, setSelected } = useRolePageHooks();
+  const { roles, columns, SearchFormComponent, total, limit, loading, setPage, setLimit, setSelected } = useRolePageHooks();
   return (
     <>
       {SearchFormComponent}
@@ -14,6 +14,7 @@ const SystemRole: FC = () => {
             setSelected(selectedRowKeys);
           },
         }}
+        loading={loading}
         columns={columns}
         bordered={true}
         pagination={false}

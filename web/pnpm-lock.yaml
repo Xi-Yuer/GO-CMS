@@ -41,6 +41,9 @@ importers:
       echarts-for-react:
         specifier: ^3.0.2
         version: 3.0.2(echarts@5.5.0)(react@18.2.0)
+      file-saver:
+        specifier: ^2.0.5
+        version: 2.0.5
       i18next:
         specifier: ^23.11.2
         version: 23.11.2
@@ -72,6 +75,9 @@ importers:
         specifier: ^1.3.1
         version: 1.3.1
     devDependencies:
+      '@types/file-saver':
+        specifier: ^2.0.7
+        version: 2.0.7
       '@types/react':
         specifier: ^18.2.66
         version: 18.2.79
@@ -643,6 +649,9 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==, tarball: https://registry.npmmirror.com/@types/estree/-/estree-1.0.5.tgz}
 
+  '@types/file-saver@2.0.7':
+    resolution: {integrity: sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==, tarball: https://registry.npmmirror.com/@types/file-saver/-/file-saver-2.0.7.tgz}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==, tarball: https://registry.npmmirror.com/@types/json-schema/-/json-schema-7.0.15.tgz}
 
@@ -1062,6 +1071,9 @@ packages:
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==, tarball: https://registry.npmmirror.com/file-entry-cache/-/file-entry-cache-6.0.1.tgz}
     engines: {node: ^10.12.0 || >=12.0.0}
+
+  file-saver@2.0.5:
+    resolution: {integrity: sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==, tarball: https://registry.npmmirror.com/file-saver/-/file-saver-2.0.5.tgz}
 
   fill-range@7.0.1:
     resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==, tarball: https://registry.npmmirror.com/fill-range/-/fill-range-7.0.1.tgz}
@@ -2550,6 +2562,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/file-saver@2.0.7': {}
+
   '@types/json-schema@7.0.15': {}
 
   '@types/prop-types@15.7.12': {}
@@ -3081,6 +3095,8 @@ snapshots:
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
+
+  file-saver@2.0.5: {}
 
   fill-range@7.0.1:
     dependencies:

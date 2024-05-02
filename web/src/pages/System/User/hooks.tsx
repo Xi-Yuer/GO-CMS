@@ -2,6 +2,7 @@ import { DatePicker, Form, Input, Select, TableProps, Tag } from 'antd';
 import {
   createUsersRequest,
   deleteUsersRequest,
+  exportUsersRequest,
   getDepartmentRequest,
   getRolesRequest,
   getUserRequest,
@@ -98,6 +99,7 @@ export const useUserPageHooks = () => {
   const [departments, setDepartments] = useState<IDepartmentResponse[]>([]);
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<React.Key[]>([]);
   const [users, setUsers] = useState<IUserResponse[]>([]);
   const [total, setTotal] = useState(0);
@@ -144,12 +146,12 @@ export const useUserPageHooks = () => {
     {
       label: t('createTime'),
       name: 'startTime',
-      component: <DatePicker allowClear style={{ width: '220px' }} />,
+      component: <DatePicker allowClear style={{ width: '100%' }} />,
     },
     {
       label: t('updateTime'),
       name: 'endTime',
-      component: <DatePicker allowClear style={{ width: '220px' }} />,
+      component: <DatePicker allowClear style={{ width: '100%' }} />,
     },
   ];
 
@@ -170,10 +172,15 @@ export const useUserPageHooks = () => {
   };
 
   const getPageData = (value?: IGetUsersParams) => {
-    getUsersRequest({ limit: limit, offset: (page - 1) * limit, ...value }).then((res) => {
-      setUsers(res.data.list);
-      setTotal(res.data.total);
-    });
+    setLoading(true);
+    getUsersRequest({ limit: limit, offset: (page - 1) * limit, ...value })
+      .then((res) => {
+        setUsers(res.data.list);
+        setTotal(res.data.total);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const getRoleAction = () => {
@@ -188,6 +195,10 @@ export const useUserPageHooks = () => {
 
   const deleteUsersAction = (id: string) => {
     deleteUsersRequest(id).then(() => getPageData());
+  };
+
+  const exportUsersAction = async () => {
+    await exportUsersRequest(selected);
   };
 
   const editUserAction = async (id?: string) => {
@@ -241,6 +252,8 @@ export const useUserPageHooks = () => {
     page,
     selected,
     searchConfig,
+    loading,
+    exportUsersAction,
     setSelected,
     getPageData,
     setLimit,

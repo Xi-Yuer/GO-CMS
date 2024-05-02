@@ -26,14 +26,14 @@ export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormPr
         <Row gutter={[10, 10]}>
           {formItems.map((item) => {
             return (
-              <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 6 }} key={item.name as string}>
+              <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 6 }} key={item.name as string}>
                 <Form.Item name={item.name as any} label={item.label}>
                   {item.component}
                 </Form.Item>
               </Col>
             );
           })}
-          <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 6 }}>
+          <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
             <div className='flex flex-nowrap'>
               <Button type='primary' className='mx-2' htmlType='reset' icon={<RedoOutlined />}>
                 {t('reset')}

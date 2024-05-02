@@ -19,6 +19,8 @@ const SystemUser: FC = () => {
     limit,
     searchConfig,
     selected,
+    loading,
+    exportUsersAction,
     setSelected,
     getPageData,
     setPage,
@@ -33,7 +35,7 @@ const SystemUser: FC = () => {
     onNewRecordFn: editUserAction,
     formItems: searchConfig,
     operateComponent: !!selected.length && (
-      <Button type='primary' icon={<DownloadOutlined />}>
+      <Button type='primary' icon={<DownloadOutlined />} onClick={exportUsersAction}>
         导出
       </Button>
     ),
@@ -43,6 +45,7 @@ const SystemUser: FC = () => {
       {SearchFormComponent}
       <Table
         dataSource={users}
+        loading={loading}
         columns={columns}
         rowSelection={{
           onChange: (selectedRowKeys: React.Key[]) => {
