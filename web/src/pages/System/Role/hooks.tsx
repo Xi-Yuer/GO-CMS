@@ -1,18 +1,34 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Button, DatePicker, Input, TableProps } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { deleteRolesRequest, exportRolesRequest, getRolesRequest, IQueryRoleParams, IRoleResponse } from '@/service';
+import {
+  deleteRolesRequest,
+  exportRolesRequest,
+  getAllMenusRequest,
+  getRolesRequest,
+  IQueryRoleParams,
+  IRoleResponse,
+  IUpdateRoleParams,
+  updateRoleRequest,
+} from '@/service';
 import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
 import dayjs from 'dayjs';
+import { useForm } from 'antd/es/form/Form';
+import { menuType } from '@/types/menus';
 
 export const useRolePageHooks = () => {
+  const [formRef] = useForm();
   const [limit, setLimit] = useState(20);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<React.Key[]>([]);
   const [roles, setRoles] = useState<IRoleResponse[]>([]);
+  const [menus, setMenus] = useState<menuType[]>([]);
+  const [currentEditRole, setCurrentEditRole] = useState<IRoleResponse>();
+  const [isEdit, setIsEdit] = useState(false);
+  const [editRoleModalOpen, setEditRoleModalOpen] = useState(false);
   const { t } = useTranslation();
   const searchConfig: { label: string; name: keyof IQueryRoleParams; component: ReactNode }[] = [
     {
@@ -43,7 +59,10 @@ export const useRolePageHooks = () => {
   ];
   const { SearchFormComponent } = useSearchFrom({
     getDataRequestFn: (values) => getPageData(values),
-    onNewRecordFn: () => {},
+    onNewRecordFn: () => {
+      setIsEdit(false);
+      setEditRoleModalOpen(true);
+    },
     formItems: searchConfig,
     operateComponent: !!selected.length && (
       <Button type='primary' icon={<DownloadOutlined />} onClick={() => exportRolesRequest(selected)}>
@@ -66,6 +85,23 @@ export const useRolePageHooks = () => {
 
   const deleteRoleAction = (id: string) => {
     deleteRolesRequest(id).then(() => getPageData());
+  };
+
+  const editRoleAction = async (row: IRoleResponse) => {
+    const menusResult = await getAllMenusRequest();
+    setMenus(menusResult.data);
+    setCurrentEditRole(row);
+    setIsEdit(true);
+    setEditRoleModalOpen(true);
+  };
+
+  const onFinish = () => {
+    formRef.validateFields().then((values) => {
+      updateRoleRequest({ ...currentEditRole, ...values } as IUpdateRoleParams).then(() => {
+        setEditRoleModalOpen(false);
+        getPageData();
+      });
+    });
   };
 
   const columns: TableProps<IRoleResponse>['columns'] = [
@@ -107,11 +143,11 @@ export const useRolePageHooks = () => {
       title: t('operate'),
       key: 'action',
       align: 'center',
-      render: (_, { id }) => {
+      render: (_, row) => {
         return (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
-            <span onClick={() => {}}>{t('edit')}</span>
-            <span className='text-red-500' onClick={() => deleteRoleAction(id)}>
+            <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
+            <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
               {t('delete')}
             </span>
           </div>
@@ -119,6 +155,12 @@ export const useRolePageHooks = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    if (editRoleModalOpen && isEdit) {
+      formRef.setFieldsValue(currentEditRole);
+    }
+  }, [editRoleModalOpen]);
 
   useEffect(() => {
     getPageData();
@@ -133,6 +175,13 @@ export const useRolePageHooks = () => {
     SearchFormComponent,
     selected,
     loading,
+    editRoleModalOpen,
+    isEdit,
+    formRef,
+    menus,
+    currentEditRole,
+    onFinish,
+    setEditRoleModalOpen,
     setSelected,
     getPageData,
     setPage,

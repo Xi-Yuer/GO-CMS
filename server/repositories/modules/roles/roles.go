@@ -174,7 +174,7 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalR
 }
 
 func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {
-	query := "SELECT role_id, role_name, description, create_time, update_time FROM roles WHERE role_id = ? AND delete_time IS NULL"
+	query := "SELECT role_id, role_name, description, can_edit, create_time, update_time FROM roles WHERE role_id = ? AND delete_time IS NULL"
 	rows, err := db.DB.Query(query, id)
 	if err != nil {
 		return nil
@@ -187,7 +187,7 @@ func (r *rolesRepository) FindRoleById(id string) *dto.SingleRoleResponse {
 	}(rows)
 	role := &dto.SingleRoleResponse{}
 	for rows.Next() {
-		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CreateTime, &role.UpdateTime)
+		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &role.CanEdit, &role.CreateTime, &role.UpdateTime)
 		if err != nil {
 			utils.Log.Error(err)
 		}

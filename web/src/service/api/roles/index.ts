@@ -26,6 +26,14 @@ export type IQueryRoleParams = Partial<Omit<IRoleResponse, 'createTime' | 'updat
   endTime: string;
 };
 
+export interface IUpdateRoleParams {
+  id: string;
+  roleName: string;
+  description: string;
+  pageID: string[];
+  interfaceID: string[];
+}
+
 export const getRolesRequest = (params?: IQueryRoleParams & Page) => {
   return request.post<AxiosResponse<IHasTotalResponse<IRoleResponse[]>>>({
     url: '/roles/query',
@@ -39,16 +47,20 @@ export const deleteRolesRequest = (id: string) => {
   });
 };
 
-export const exportRolesRequest = (ids: React.Key[]) => {
-  return request
-    .post({
-      url: '/roles/export',
-      data: {
-        ids,
-      },
-      responseType: 'blob',
-    })
-    .then((res: any) => {
-      saveAs(new Blob([res]), '角色表.xlsx');
-    });
+export const exportRolesRequest = async (ids: React.Key[]) => {
+  const res = await request.post({
+    url: '/roles/export',
+    data: {
+      ids,
+    },
+    responseType: 'blob',
+  });
+  saveAs(new Blob([res]), '角色表.xlsx');
+};
+
+export const updateRoleRequest = (data: IUpdateRoleParams) => {
+  return request.patch({
+    url: `/roles/${data.id}`,
+    data,
+  });
 };

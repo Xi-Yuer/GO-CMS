@@ -28,6 +28,7 @@ type SingleRoleResponse struct {
 	ID           string   `json:"id"`
 	RoleName     string   `json:"roleName"`
 	Description  string   `json:"description"`
+	CanEdit      int      `json:"canEdit"`
 	PagesID      []string `json:"pagesID"`
 	InterfacesID []string `json:"interfacesID"`
 	CreateTime   string   `json:"createTime"`

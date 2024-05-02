@@ -24,6 +24,9 @@ func (r *rolesService) DeleteRole(id string) error {
 	if singleRoleResponse == nil {
 		return errors.New("资源不存在")
 	}
+	if singleRoleResponse.CanEdit == 0 {
+		return errors.New("该角色无法删除")
+	}
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
 
@@ -31,6 +34,9 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse == nil {
 		return errors.New("资源不存在")
+	}
+	if singleRoleResponse.CanEdit == 0 {
+		return errors.New("该角色无法编辑")
 	}
 	var err error
 	// 更新角色权限

@@ -7,3 +7,9 @@ export const getUserMenusRequest = () => {
     url: '/pages/menus',
   });
 };
+
+export const getAllMenusRequest = () => {
+  return request.get<AxiosResponse<menuType[]>>({
+    url: '/pages',
+  });
+};
