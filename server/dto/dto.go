@@ -143,3 +143,5 @@ type UploadFinishRequest = uploadResponsiesModules.UploadFinishRequest
 type UploadRecordResponse = uploadResponsiesModules.UploadRecordResponse
 
 type HasTotalResponseData = commonResponsiesModules.HasTotalResponseData
+
+type AllInterfaceResponse = interfaceResponsiesModules.AllInterfaceResponse

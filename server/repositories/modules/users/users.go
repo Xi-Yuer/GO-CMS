@@ -7,7 +7,6 @@ import (
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
 	"strings"
-	"time"
 )
 
 var UserRepository = &userRepository{}
@@ -133,7 +132,7 @@ func (u *userRepository) SelectUsersByAccount(account string) bool {
 }
 
 func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
-	count := `SELECT count(*) FROM users`
+	count := `SELECT count(*) FROM users WHERE delete_time IS NULL`
 
 	var total int
 	rows, err := db.DB.Query(count)
@@ -284,8 +283,7 @@ func (u *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool
 }
 
 func (u *userRepository) DeleteUser(id string) error {
-	now := time.Now()
-	stmt, err := db.DB.Prepare(`UPDATE users SET delete_time = ? WHERE id = ?`)
+	stmt, err := db.DB.Prepare(`DELETE  FROM users WHERE id = ?`)
 	if err != nil {
 		return err
 	}
@@ -295,7 +293,7 @@ func (u *userRepository) DeleteUser(id string) error {
 
 		}
 	}(stmt)
-	_, err = stmt.Exec(now, id)
+	_, err = stmt.Exec(id)
 	if err != nil {
 		return err
 	}

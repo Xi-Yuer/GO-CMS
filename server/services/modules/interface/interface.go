@@ -31,3 +31,7 @@ func (i *interfaceService) DeleteInterfaceByID(id string) error {
 	}
 	return repositories.InterfaceRepository.DeleteInterfaceByID(id)
 }
+
+func (i *interfaceService) GetAllInterface() ([]*dto.AllInterfaceResponse, error) {
+	return repositories.InterfaceRepository.GetAllInterface()
+}

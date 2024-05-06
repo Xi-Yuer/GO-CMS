@@ -2,12 +2,18 @@ package unique
 
 // RemoveDuplicatesAndEmpty 移除数组中重复元素
 func RemoveDuplicatesAndEmpty(a []string) (ret []string) {
-	aLen := len(a)
-	for i := 0; i < aLen; i++ {
-		if (i > 0 && a[i-1] == a[i]) || len(a[i]) == 0 {
-			continue
+	ret = make([]string, 0)
+	for i := 0; i < len(a); i++ {
+		repeat := false
+		for j := i + 1; j < len(a); j++ {
+			if a[i] == a[j] {
+				repeat = true
+				break
+			}
 		}
-		ret = append(ret, a[i])
+		if !repeat {
+			ret = append(ret, a[i])
+		}
 	}
 	return
 }

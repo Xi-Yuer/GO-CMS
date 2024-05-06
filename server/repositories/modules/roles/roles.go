@@ -7,7 +7,6 @@ import (
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
 	"strings"
-	"time"
 )
 
 var RolesRepository = &rolesRepository{}
@@ -25,8 +24,8 @@ func (r *rolesRepository) CreateRole(role *dto.CreateRoleParams) int64 {
 }
 
 func (r *rolesRepository) DeleteRole(id string) error {
-	query := "UPDATE roles SET delete_time = ? WHERE role_id = ?"
-	_, err := db.DB.Exec(query, time.Now(), id)
+	query := "DELETE FROM roles WHERE role_id = ?"
+	_, err := db.DB.Exec(query, id)
 	if err != nil {
 		return err
 	}
@@ -70,9 +69,9 @@ func (r *rolesRepository) UpdateRole(role *dto.UpdateRoleParams, id string) erro
 }
 
 func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalResponseData, error) {
-	countQuery := "SELECT COUNT(*) FROM roles"
+	countQuery := "SELECT COUNT(*) FROM roles WHERE delete_time IS NULL"
 	query := `
-	SELECT roles.role_id, role_name, description,GROUP_CONCAT(roles_pages.page_id),GROUP_CONCAT(roles_interfaces.interface_id), create_time, update_time
+	SELECT roles.role_id, role_name, description,GROUP_CONCAT(DISTINCT roles_pages.page_id),GROUP_CONCAT(DISTINCT roles_interfaces.interface_id), create_time, update_time
 	FROM roles
 	LEFT JOIN roles_pages ON roles.role_id = roles_pages.role_id
 	LEFT JOIN roles_interfaces ON roles.role_id = roles_interfaces.role_id
@@ -80,7 +79,6 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalR
 	`
 
 	var total int
-
 	rows, err := db.DB.Query(countQuery)
 	if err != nil {
 		return nil, err
@@ -152,17 +150,17 @@ func (r *rolesRepository) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalR
 	roles := make([]*dto.SingleRoleResponse, 0)
 	for rows.Next() {
 		role := &dto.SingleRoleResponse{}
-		var rolesID []uint8
+		var pagesID []uint8
 		var interfaceID []uint8
-		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &rolesID, &interfaceID, &role.CreateTime, &role.UpdateTime)
+		err := rows.Scan(&role.ID, &role.RoleName, &role.Description, &pagesID, &interfaceID, &role.CreateTime, &role.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
-		if rolesID != nil {
-			role.PagesID = strings.Split(string(rolesID), ",")
+		if pagesID != nil {
+			role.PageID = strings.Split(string(pagesID), ",")
 		}
 		if interfaceID != nil {
-			role.InterfacesID = strings.Split(string(interfaceID), ",")
+			role.InterfaceID = strings.Split(string(interfaceID), ",")
 		}
 		roles = append(roles, role)
 	}

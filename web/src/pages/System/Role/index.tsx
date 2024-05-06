@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { useRolePageHooks } from '@/pages/System/Role/hooks.tsx';
-import { Form, Input, Modal, Pagination, Table } from 'antd';
+import { Button, Drawer, Form, Input, Modal, Pagination, Space, Table, Tabs, Tree } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { IUpdateRoleParams } from '@/service';
 
@@ -8,6 +8,7 @@ const SystemRole: FC = () => {
   const {
     roles,
     columns,
+    menus,
     SearchFormComponent,
     total,
     limit,
@@ -15,11 +16,19 @@ const SystemRole: FC = () => {
     editRoleModalOpen,
     isEdit,
     formRef,
+    roleInterfaceSelected,
+    editRolePermissionOpen,
+    onPageTreeCheck,
+    allInterface,
+    roleMenusSelected,
+    onInterfaceTreeCheck,
+    setEditRolePermissionOpen,
     setPage,
     setLimit,
     setSelected,
     setEditRoleModalOpen,
     onFinish,
+    editPermissionConfirm,
   } = useRolePageHooks();
   const { t } = useTranslation();
   return (
@@ -54,6 +63,59 @@ const SystemRole: FC = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <Drawer
+        title={t('permissionEdit')}
+        destroyOnClose
+        onClose={() => setEditRolePermissionOpen(false)}
+        open={editRolePermissionOpen}
+        extra={
+          <Space>
+            <Button onClick={() => setEditRolePermissionOpen(false)}>{t('cancel')}</Button>
+            <Button type='primary' onClick={editPermissionConfirm}>
+              {t('confirm')}
+            </Button>
+          </Space>
+        }>
+        <Tabs
+          size='small'
+          style={{ marginTop: '-20px' }}
+          items={[
+            {
+              label: t('menusPermission'),
+              key: '1',
+              children: (
+                <>
+                  <Tree
+                    treeData={menus}
+                    checkable
+                    defaultExpandedKeys={roleMenusSelected}
+                    defaultSelectedKeys={roleMenusSelected}
+                    defaultCheckedKeys={roleMenusSelected}
+                    multiple
+                    selectable={false}
+                    onCheck={onPageTreeCheck}></Tree>
+                </>
+              ),
+            },
+            {
+              label: t('resourcePermission'),
+              key: '2',
+              children: (
+                <>
+                  <Tree
+                    treeData={allInterface}
+                    defaultExpandedKeys={roleInterfaceSelected}
+                    defaultSelectedKeys={roleInterfaceSelected}
+                    defaultCheckedKeys={roleInterfaceSelected}
+                    multiple
+                    checkable
+                    selectable={false}
+                    onCheck={onInterfaceTreeCheck}></Tree>
+                </>
+              ),
+            },
+          ]}></Tabs>
+      </Drawer>
     </>
   );
 };

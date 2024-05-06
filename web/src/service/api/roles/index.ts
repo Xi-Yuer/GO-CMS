@@ -8,8 +8,8 @@ export interface IRoleResponse {
   id: string;
   roleName: string;
   description: string;
-  pagesID: null | string;
-  interfacesID: null | string;
+  pageID: null | string[];
+  interfaceID: null | string[];
   createTime: string;
   updateTime: string;
 }
@@ -61,6 +61,13 @@ export const exportRolesRequest = async (ids: React.Key[]) => {
 export const updateRoleRequest = (data: IUpdateRoleParams) => {
   return request.patch({
     url: `/roles/${data.id}`,
+    data,
+  });
+};
+
+export const createRoleRequest = (data: IUpdateRoleParams) => {
+  return request.post({
+    url: '/roles',
     data,
   });
 };

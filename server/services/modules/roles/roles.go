@@ -25,7 +25,7 @@ func (r *rolesService) DeleteRole(id string) error {
 		return errors.New("资源不存在")
 	}
 	if singleRoleResponse.CanEdit == 0 {
-		return errors.New("该角色无法删除")
+		return errors.New("该角色禁止删除")
 	}
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
@@ -36,7 +36,7 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 		return errors.New("资源不存在")
 	}
 	if singleRoleResponse.CanEdit == 0 {
-		return errors.New("该角色无法编辑")
+		return errors.New("该角色禁止编辑")
 	}
 	var err error
 	// 更新角色权限
@@ -59,13 +59,13 @@ func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermiss
 		return errors.New("资源不存在")
 	}
 	// 检查页面是否存在
-	if params.PageID != nil {
+	if params.PageID != nil && len(params.PageID) > 0 {
 		if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
 			return errors.New("资源不存在")
 		}
 	}
 
-	if params.InterfaceID != nil {
+	if params.InterfaceID != nil && len(params.InterfaceID) > 0 {
 		if err := repositories.InterfaceRepository.CheckInterfacesExistence(params.InterfaceID); err != nil {
 			return errors.New("资源不存在")
 		}

@@ -63,11 +63,11 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 	}
 	// 超级管理员无法修改
 	if user.IsAdmin == 1 {
-		return errors.New("超级管理员无法修改")
+		return errors.New("系统账号禁止修改")
 	}
-	if params.RoleID != nil {
+	if params.RolesID != nil && len(params.RolesID) > 0 {
 		// 给用户分配角色信息
-		err := repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID)
+		err := repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RolesID)
 		if err != nil {
 			return err
 		}
@@ -81,7 +81,7 @@ func (u *userService) DeleteUser(id string) error {
 		return errors.New("资源不存在")
 	}
 	if user.IsAdmin == 1 {
-		return errors.New("超级管理员无法删除")
+		return errors.New("系统账号禁止删除")
 	}
 	return repositories.UserRepositorysModules.DeleteUser(id)
 }

@@ -105,7 +105,6 @@ func (u *userController) UpdateUser(context *gin.Context) {
 		return
 	}
 	jwtPayload, exist := context.Get(constant.JWTPAYLOAD)
-
 	// 判断是否为管理员或者用户自己
 	if jwtPayload.(*dto.JWTPayload).IsAdmin == 1 || jwtPayload.(*dto.JWTPayload).ID == id {
 		err = services.UserService.UpdateUser(&user, id)

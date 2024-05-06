@@ -4,6 +4,7 @@ import { builderMenuRoutes } from '@/utils';
 import { useEffect } from 'react';
 import routes from '@/router';
 import NotFont from '@/pages/NotFont';
+import { constants } from '@/constant';
 
 export const Router = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const Router = () => {
   });
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      navigate(constants.routePath.login, { replace: true });
     }
   }, []);
   return useRoutes(routes);

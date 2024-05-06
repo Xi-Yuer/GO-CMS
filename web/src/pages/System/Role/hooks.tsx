@@ -1,7 +1,8 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import { Button, DatePicker, Input, TableProps } from 'antd';
+import { Key, ReactNode, useEffect, useState } from 'react';
+import { Button, DatePicker, Input, TableProps, TreeDataNode, TreeProps } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
+  createRoleRequest,
   deleteRolesRequest,
   exportRolesRequest,
   getAllMenusRequest,
@@ -15,7 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
 import dayjs from 'dayjs';
 import { useForm } from 'antd/es/form/Form';
-import { menuType } from '@/types/menus';
+import { buildInterfaceToAntdTree, buildMenuToAntdTree, getAllChildrenMenusID, getAllInterfaceKeys } from '@/utils';
+import { getInterfaceAllListRequest } from '@/service/api/interface';
 
 export const useRolePageHooks = () => {
   const [formRef] = useForm();
@@ -23,12 +25,16 @@ export const useRolePageHooks = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [selected, setSelected] = useState<React.Key[]>([]);
+  const [selected, setSelected] = useState<Key[]>([]);
+  const [roleMenusSelected, setRoleMenusSelected] = useState<string[]>([]);
+  const [roleInterfaceSelected, setRoleInterfaceSelected] = useState<string[]>([]);
   const [roles, setRoles] = useState<IRoleResponse[]>([]);
-  const [menus, setMenus] = useState<menuType[]>([]);
+  const [menus, setMenus] = useState<TreeDataNode[]>([]);
+  const [allInterface, setAllInterface] = useState<TreeDataNode[]>([]);
   const [currentEditRole, setCurrentEditRole] = useState<IRoleResponse>();
   const [isEdit, setIsEdit] = useState(false);
   const [editRoleModalOpen, setEditRoleModalOpen] = useState(false);
+  const [editRolePermissionOpen, setEditRolePermissionOpen] = useState(false);
   const { t } = useTranslation();
   const searchConfig: { label: string; name: keyof IQueryRoleParams; component: ReactNode }[] = [
     {
@@ -88,8 +94,6 @@ export const useRolePageHooks = () => {
   };
 
   const editRoleAction = async (row: IRoleResponse) => {
-    const menusResult = await getAllMenusRequest();
-    setMenus(menusResult.data);
     setCurrentEditRole(row);
     setIsEdit(true);
     setEditRoleModalOpen(true);
@@ -97,10 +101,57 @@ export const useRolePageHooks = () => {
 
   const onFinish = () => {
     formRef.validateFields().then((values) => {
-      updateRoleRequest({ ...currentEditRole, ...values } as IUpdateRoleParams).then(() => {
-        setEditRoleModalOpen(false);
-        getPageData();
-      });
+      // 编辑
+      if (isEdit) {
+        updateRoleRequest({ ...currentEditRole, ...values } as IUpdateRoleParams).then(() => {
+          setEditRoleModalOpen(false);
+          getPageData();
+        });
+      } else {
+        // 新增
+        createRoleRequest(values).then(() => {
+          setEditRoleModalOpen(false);
+          getPageData();
+        });
+      }
+    });
+  };
+
+  const [allInterfaceKeys, setAllInterfaceKeys] = useState<string[]>([]);
+  const editRolePermissionAction = async (row: IRoleResponse) => {
+    const allMenusResult = await getAllMenusRequest();
+    const allInterfaceResult = await getInterfaceAllListRequest();
+    const menus = buildMenuToAntdTree(allMenusResult.data);
+    const interfaceToAntdTree = buildInterfaceToAntdTree(allInterfaceResult.data);
+    setAllInterfaceKeys(getAllInterfaceKeys(allInterfaceResult.data));
+    setAllInterface(interfaceToAntdTree);
+    setMenus(menus);
+    const allChildrenMenuID = getAllChildrenMenusID(allMenusResult.data);
+    // 过滤父级菜单
+    setRoleMenusSelected(row.pageID?.filter((item) => allChildrenMenuID.includes(item)) || []);
+    setRoleInterfaceSelected(row.interfaceID || []);
+    setCurrentEditRole(row);
+    setEditRolePermissionOpen(true);
+  };
+
+  const [menuSelectsIsChanged, setMenuSelectsIsChanged] = useState(false);
+  const onPageTreeCheck: TreeProps['onCheck'] = (checked, e) => {
+    setMenuSelectsIsChanged(true);
+    setRoleMenusSelected([...(checked as string[]), ...(e.halfCheckedKeys as string[])] as string[]);
+  };
+
+  const onInterfaceTreeCheck: TreeProps['onCheck'] = (checkedKeysValue) => {
+    setRoleInterfaceSelected(checkedKeysValue as string[]);
+  };
+
+  const editPermissionConfirm = () => {
+    updateRoleRequest({
+      ...currentEditRole,
+      pageID: menuSelectsIsChanged ? roleMenusSelected : currentEditRole?.pageID,
+      interfaceID: roleInterfaceSelected.filter((item) => !allInterfaceKeys.includes(item)),
+    } as IUpdateRoleParams).then(() => {
+      setEditRolePermissionOpen(false);
+      getPageData();
     });
   };
 
@@ -146,6 +197,7 @@ export const useRolePageHooks = () => {
       render: (_, row) => {
         return (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
+            <span onClick={() => editRolePermissionAction(row)}>{t('permissionEdit')}</span>
             <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
             <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
               {t('delete')}
@@ -171,20 +223,24 @@ export const useRolePageHooks = () => {
     total,
     columns,
     roles,
-    searchConfig,
     SearchFormComponent,
-    selected,
+    roleMenusSelected,
+    roleInterfaceSelected,
     loading,
     editRoleModalOpen,
     isEdit,
     formRef,
     menus,
-    currentEditRole,
+    editRolePermissionOpen,
+    allInterface,
+    onPageTreeCheck,
+    onInterfaceTreeCheck,
     onFinish,
     setEditRoleModalOpen,
     setSelected,
-    getPageData,
     setPage,
     setLimit,
+    setEditRolePermissionOpen,
+    editPermissionConfirm,
   };
 };

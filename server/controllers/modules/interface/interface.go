@@ -118,3 +118,19 @@ func (i *interfaceControllerModules) GetInterfacesByRoleID(context *gin.Context)
 	}
 	utils.Response.Success(context, interfaceResponses)
 }
+
+// GetAllInterface 获取接口（所有页面）
+// @Summary 获取接口（所有页面）
+// @Description 获取接口（所有页面）
+// @Tags 接口管理
+// @Accept json
+// @Produce json
+// @Router /interface [get]
+func (i *interfaceControllerModules) GetAllInterface(context *gin.Context) {
+	allInterface, err := services.InterfaceService.GetAllInterface()
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, allInterface)
+}

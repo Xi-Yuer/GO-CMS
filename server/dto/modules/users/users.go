@@ -31,7 +31,7 @@ type CreateUserParams struct {
 type UpdateUserParams struct {
 	Nickname     string   `form:"nickname"`
 	Password     string   `form:"password"`
-	RoleID       []string `form:"rolesID"`
+	RolesID      []string `form:"rolesID"`
 	Status       string   `form:"status"`
 	DepartmentID string   `form:"departmentID"`
 }

@@ -24,7 +24,7 @@ const request = new Request<IResponse>(import.meta.env.VITE_APP_BASE_URL, 1000 *
       }
       if (value.data.code == 401) {
         cache.clear();
-        router.push({ path: '/Login' });
+        router.push({ path: constants.routePath.login });
         return;
       }
       return value.data;

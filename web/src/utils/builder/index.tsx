@@ -9,6 +9,8 @@ import Test from '@/pages/Test';
 import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
 import NotFont from '@/pages/NotFont';
+import { TreeDataNode } from 'antd';
+import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
@@ -146,4 +148,70 @@ export const getFirstMenuChildren: (menus: menuType[]) => menuType[] = (menus: m
 
   recursionMenu(menus);
   return firstMenuChildren;
+};
+
+export const buildMenuToAntdTree: (menus: menuType[]) => TreeDataNode[] = (menus: menuType[]) => {
+  function recursionMenu(menus: menuType[]): TreeDataNode[] {
+    const treeData: TreeDataNode[] = [];
+    menus?.forEach((item) => {
+      treeData.push({
+        title: item.pageName,
+        key: item.pageID,
+        children: recursionMenu(item.children),
+      });
+    });
+    return treeData;
+  }
+
+  return recursionMenu(menus);
+};
+
+export const getAllChildrenMenusID: (menus: menuType[]) => string[] = (menus: menuType[]) => {
+  const treeData: string[] = [];
+
+  function recursionMenu(menus: menuType[]) {
+    menus?.forEach((item) => {
+      if (item.children && item.children.length > 0) {
+        recursionMenu(item.children);
+      } else {
+        treeData.push(item.pageID);
+      }
+    });
+  }
+
+  recursionMenu(menus);
+
+  return treeData;
+};
+
+export const buildInterfaceToAntdTree: (interfaces: IAllPageInterfaceListResponse[]) => TreeDataNode[] = (interfaces: IAllPageInterfaceListResponse[]) => {
+  const treeData: TreeDataNode[] = [];
+  interfaces.forEach((item) => {
+    treeData.push({
+      title: item.key,
+      key: item.key,
+      selectable: false,
+      children: mapInterface(item.children),
+    });
+  });
+
+  function mapInterface(interfaces: IInterfaceResponse[]): TreeDataNode[] {
+    return interfaces.map((item) => {
+      return {
+        title: item.interfaceName,
+        key: item.id,
+        children: [],
+      };
+    });
+  }
+
+  return treeData;
+};
+
+export const getAllInterfaceKeys = (interfaces: IAllPageInterfaceListResponse[]): string[] => {
+  const treeData: string[] = [];
+  interfaces.forEach((item) => {
+    treeData.push(item.key);
+  });
+  return treeData;
 };
