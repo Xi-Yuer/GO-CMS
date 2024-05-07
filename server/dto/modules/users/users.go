@@ -59,11 +59,12 @@ type SingleUserByRoleIDResponse struct {
 	Account      string     `json:"account"` // 账号
 	Nickname     string     `json:"nickname"`
 	Avatar       *string    `json:"avatar"`
+	IsAdmin      int        `json:"isAdmin"`
 	RolesID      []string   `json:"rolesID"`
 	DepartmentID *string    `json:"departmentID"`
 	CreateTime   *time.Time `json:"createTime"`
 	UpdateTime   *time.Time `json:"updateTime"`
-	Status       int        `json:"status"`
+	Status       string     `json:"status"`
 }
 
 type SingleUserResponseHasPassword struct {

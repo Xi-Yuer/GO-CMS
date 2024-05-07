@@ -3,6 +3,7 @@ import Main from '@/pages/Main';
 import NotFont from '@/pages/NotFont';
 import { Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
+import { Spin } from 'antd';
 
 export const routes: RouteObject[] = [
   {
@@ -12,7 +13,12 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <Spin spinning={true} fullscreen={true}>
+            Loading...
+          </Spin>
+        }>
         <Main></Main>
       </Suspense>
     ),

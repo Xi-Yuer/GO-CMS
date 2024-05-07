@@ -8,13 +8,13 @@ var JWTPAYLOAD = `JwtPayload`
 
 var PermissionMap = map[string]string{
 	// 用户管理
-	"^POST:" + config.Config.APP.BASEURL + "/users/query$":     `POST:/users/query`,
-	"^POST:" + config.Config.APP.BASEURL + "/users$":           `POST:/users`,
-	"^GET:" + config.Config.APP.BASEURL + "/users/roles/\\d+$": `GET:/users/roles/:id`,
-	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":       `GET:/users/:id`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":     `PATCH:/users/:id`,
-	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":    `DELETE:/users/:id`,
-	"^POST:" + config.Config.APP.BASEURL + "/users/export$":    `POST:/users/export`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/query$":    `POST:/users/query`,
+	"^POST:" + config.Config.APP.BASEURL + "/users$":          `POST:/users`,
+	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$": `GET:/users/role/:id`,
+	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":      `GET:/users/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":    `PATCH:/users/:id`,
+	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":   `DELETE:/users/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/export$":   `POST:/users/export`,
 
 	// 角色管理
 	"^POST:" + config.Config.APP.BASEURL + "/roles/query$":    `POST:/roles/query`,

@@ -44,6 +44,11 @@ export interface IUpdateUserParams {
   departmentID?: string;
 }
 
+export interface IPage {
+  limit: number;
+  offset: number;
+}
+
 export const getUsersRequest = (params: IGetUsersParams) => {
   return request.post<AxiosResponse<IHasTotalResponse<IUserResponse[]>>>({
     url: '/users/query',
@@ -77,16 +82,23 @@ export const createUsersRequest = (params: IUpdateUserParams) => {
   });
 };
 
-export const exportUsersRequest = (ids: React.Key[]) => {
-  return request
-    .post({
-      url: '/users/export',
-      data: {
-        ids,
-      },
-      responseType: 'blob',
-    })
-    .then((res: any) => {
-      saveAs(new Blob([res]), '用户表.xlsx');
-    });
+export const exportUsersRequest = async (ids: React.Key[]) => {
+  const res = await request.post({
+    url: '/users/export',
+    data: {
+      ids,
+    },
+    responseType: 'blob',
+  });
+  saveAs(new Blob([res]), '用户表.xlsx');
+};
+
+export const getUserByRoleIDRequest = (params: { roleID: string } & IPage) => {
+  return request.get<AxiosResponse<IUserResponse[]>>({
+    url: `/users/role/${params.roleID}`,
+    params: {
+      limit: params.limit,
+      offset: params.offset,
+    },
+  });
 };

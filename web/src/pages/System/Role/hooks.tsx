@@ -1,5 +1,5 @@
 import { Key, ReactNode, useEffect, useState } from 'react';
-import { Button, DatePicker, Input, TableProps, TreeDataNode, TreeProps } from 'antd';
+import { Button, DatePicker, Input, TableProps, Tag, TreeDataNode, TreeProps } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
   createRoleRequest,
@@ -7,9 +7,11 @@ import {
   exportRolesRequest,
   getAllMenusRequest,
   getRolesRequest,
+  getUserByRoleIDRequest,
   IQueryRoleParams,
   IRoleResponse,
   IUpdateRoleParams,
+  IUserResponse,
   updateRoleRequest,
 } from '@/service';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +37,7 @@ export const useRolePageHooks = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [editRoleModalOpen, setEditRoleModalOpen] = useState(false);
   const [editRolePermissionOpen, setEditRolePermissionOpen] = useState(false);
+  const [editRoleUnderUserOpen, setEditRoleUnderUserOpen] = useState(false);
   const { t } = useTranslation();
   const searchConfig: { label: string; name: keyof IQueryRoleParams; component: ReactNode }[] = [
     {
@@ -155,7 +158,89 @@ export const useRolePageHooks = () => {
     });
   };
 
-  const columns: TableProps<IRoleResponse>['columns'] = [
+  const [roleUnderUsersList, setRoleUnderUsersList] = useState<IUserResponse[]>([]);
+  const editRoleUnderUserAction = async (row: IRoleResponse) => {
+    const userResponse = await getUserByRoleIDRequest({ roleID: row.id, limit: 20, offset: 0 });
+    setRoleUnderUsersList(userResponse.data);
+    setCurrentEditRole(row);
+    setEditRoleUnderUserOpen(true);
+  };
+
+  const userColumns: TableProps<IUserResponse>['columns'] = [
+    {
+      title: t('index'),
+      width: '80',
+      align: 'center',
+      render: (_, __, index) => (page - 1) * limit + index + 1,
+    },
+    {
+      title: t('account'),
+      dataIndex: 'account',
+      key: 'account',
+    },
+    {
+      title: t('nickName'),
+      dataIndex: 'nickname',
+      key: 'nickname',
+    },
+    {
+      title: t('role'),
+      dataIndex: 'isAdmin',
+      key: 'isAdmin',
+      align: 'center',
+      render: (_, { isAdmin }) => {
+        return <Tag color={isAdmin ? 'gold' : 'green'}>{isAdmin ? t('superMan') : t('normalMan')}</Tag>;
+      },
+    },
+    {
+      title: t('status'),
+      dataIndex: 'status',
+      key: 'status',
+      align: 'center',
+      render: (_, { status }) => {
+        return (
+          <Tag color={status ? 'green' : 'red'} className='cursor-pointer'>
+            {status === '1' ? t('on') : t('off')}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: t('createTime'),
+      dataIndex: 'createTime',
+      key: 'createTime',
+      align: 'center',
+      render: (_, { createTime }) => {
+        return <span>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+      },
+    },
+    {
+      title: t('updateTime'),
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      align: 'center',
+      render: (_, { updateTime }) => {
+        return <span>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+      },
+    },
+    {
+      title: t('operate'),
+      key: 'action',
+      align: 'center',
+      render: (_, { id }) => (
+        <div className='gap-2 flex text-red-500 items-center cursor-pointer justify-center'>
+          <span
+            onClick={() => {
+              console.log(id);
+            }}>
+            移除
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const roleColumns: TableProps<IRoleResponse>['columns'] = [
     {
       title: t('index'),
       width: '80',
@@ -198,6 +283,7 @@ export const useRolePageHooks = () => {
         return (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
             <span onClick={() => editRolePermissionAction(row)}>{t('permissionEdit')}</span>
+            <span onClick={() => editRoleUnderUserAction(row)}>授权用户</span>
             <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
             <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
               {t('delete')}
@@ -221,7 +307,8 @@ export const useRolePageHooks = () => {
   return {
     limit,
     total,
-    columns,
+    roleColumns,
+    userColumns,
     roles,
     SearchFormComponent,
     roleMenusSelected,
@@ -232,7 +319,9 @@ export const useRolePageHooks = () => {
     formRef,
     menus,
     editRolePermissionOpen,
+    editRoleUnderUserOpen,
     allInterface,
+    roleUnderUsersList,
     onPageTreeCheck,
     onInterfaceTreeCheck,
     onFinish,
@@ -241,6 +330,7 @@ export const useRolePageHooks = () => {
     setPage,
     setLimit,
     setEditRolePermissionOpen,
+    setEditRoleUnderUserOpen,
     editPermissionConfirm,
   };
 };

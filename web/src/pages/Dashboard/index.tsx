@@ -58,7 +58,7 @@ const Dashboard: FC = () => {
           return (
             <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 12 }} xl={6} key={index}>
               <div
-                className={classNames(commonStyle, 'h-full', {
+                className={classNames(commonStyle, 'h-full animate__animated animate__fadeInRight', {
                   physicDarkDashBoard: themeMode === 'dark',
                 })}>
                 {item}
@@ -67,7 +67,7 @@ const Dashboard: FC = () => {
           );
         })}
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
-          <div className='flex flex-col justify-between gap-2'>
+          <div className='flex flex-col justify-between gap-2 animate__animated animate__fadeInRight'>
             <div
               className={classNames(commonStyle, {
                 physicDarkDashBoard: themeMode === 'dark',
@@ -110,7 +110,7 @@ const Dashboard: FC = () => {
         </Col>
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 12 }}>
           <div
-            className={classNames(commonStyle, 'overflow-scroll no-scrollbar h-[515px]', {
+            className={classNames(commonStyle, 'overflow-scroll no-scrollbar h-[515px] animate__animated animate__fadeInRight', {
               physicDarkDashBoard: themeMode === 'dark',
             })}>
             <span className='text-md font-bold'>{t('commitBlameTitle')}</span>

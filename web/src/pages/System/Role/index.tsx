@@ -7,22 +7,26 @@ import { IUpdateRoleParams } from '@/service';
 const SystemRole: FC = () => {
   const {
     roles,
-    columns,
+    roleColumns,
+    userColumns,
     menus,
     SearchFormComponent,
     total,
     limit,
     loading,
-    editRoleModalOpen,
     isEdit,
     formRef,
     roleInterfaceSelected,
+    editRoleModalOpen,
     editRolePermissionOpen,
+    editRoleUnderUserOpen,
     onPageTreeCheck,
     allInterface,
     roleMenusSelected,
     onInterfaceTreeCheck,
+    roleUnderUsersList,
     setEditRolePermissionOpen,
+    setEditRoleUnderUserOpen,
     setPage,
     setLimit,
     setSelected,
@@ -42,7 +46,7 @@ const SystemRole: FC = () => {
           },
         }}
         loading={loading}
-        columns={columns}
+        columns={roleColumns}
         bordered={true}
         pagination={false}
         rowKey='id'></Table>
@@ -115,6 +119,9 @@ const SystemRole: FC = () => {
               ),
             },
           ]}></Tabs>
+      </Drawer>
+      <Drawer open={editRoleUnderUserOpen} title='授权用户' width='70%' destroyOnClose onClose={() => setEditRoleUnderUserOpen(false)}>
+        <Table dataSource={roleUnderUsersList} columns={userColumns} pagination={false} rowKey='id' bordered></Table>
       </Drawer>
     </>
   );
