@@ -33,7 +33,7 @@ const Login: FC = () => {
   };
 
   const form: FieldType = {
-    account: '何杰',
+    account: 'admin',
     password: '123',
     captcha: '',
   };

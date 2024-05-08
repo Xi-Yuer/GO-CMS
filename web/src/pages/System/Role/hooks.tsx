@@ -3,6 +3,7 @@ import { Button, DatePicker, Input, TableProps, Tag, TreeDataNode, TreeProps } f
 import { DownloadOutlined } from '@ant-design/icons';
 import {
   createRoleRequest,
+  deBindUserRequest,
   deleteRolesRequest,
   exportRolesRequest,
   getAllMenusRequest,
@@ -159,11 +160,33 @@ export const useRolePageHooks = () => {
   };
 
   const [roleUnderUsersList, setRoleUnderUsersList] = useState<IUserResponse[]>([]);
+  const [roleUnderUserListTotal, setRoleUnderUserListTotal] = useState(0);
+  const [roleUnderUserLimit, setRoleUnderUserLimit] = useState(10);
+  const [roleUnderUserPage, setRoleUnderUserPage] = useState(1);
+
   const editRoleUnderUserAction = async (row: IRoleResponse) => {
-    const userResponse = await getUserByRoleIDRequest({ roleID: row.id, limit: 20, offset: 0 });
-    setRoleUnderUsersList(userResponse.data);
     setCurrentEditRole(row);
+    setRoleUnderUserPage(1);
+    setRoleUnderUserLimit(10);
+    await getUnderRoleUsersAction(row, 1, 10);
     setEditRoleUnderUserOpen(true);
+  };
+  const getUnderRoleUsersAction = async (row: IRoleResponse, page: number, pageSize: number) => {
+    const userResponse = await getUserByRoleIDRequest({ roleID: row.id, limit: pageSize, offset: (page - 1) * pageSize });
+    setRoleUnderUsersList(userResponse.data.list);
+    setRoleUnderUserListTotal(userResponse.data.total);
+  };
+  const deBindRoleUnderUserAction = async (row: IUserResponse) => {
+    if (!currentEditRole?.id) return;
+    await deBindUserRequest({ userID: row.id, roleID: currentEditRole!.id });
+    await getUnderRoleUsersAction(currentEditRole, roleUnderUserPage, roleUnderUserLimit);
+  };
+
+  const roleUnderUserPageChange = async (page: number, pageSize: number) => {
+    if (!currentEditRole?.id) return;
+    setRoleUnderUserPage(page);
+    setRoleUnderUserLimit(pageSize);
+    await getUnderRoleUsersAction(currentEditRole, page, pageSize);
   };
 
   const userColumns: TableProps<IUserResponse>['columns'] = [
@@ -171,7 +194,7 @@ export const useRolePageHooks = () => {
       title: t('index'),
       width: '80',
       align: 'center',
-      render: (_, __, index) => (page - 1) * limit + index + 1,
+      render: (_, __, index) => (roleUnderUserPage - 1) * roleUnderUserLimit + index + 1,
     },
     {
       title: t('account'),
@@ -227,14 +250,9 @@ export const useRolePageHooks = () => {
       title: t('operate'),
       key: 'action',
       align: 'center',
-      render: (_, { id }) => (
+      render: (_, row) => (
         <div className='gap-2 flex text-red-500 items-center cursor-pointer justify-center'>
-          <span
-            onClick={() => {
-              console.log(id);
-            }}>
-            移除
-          </span>
+          <span onClick={() => deBindRoleUnderUserAction(row)}>{t('remove')}</span>
         </div>
       ),
     },
@@ -283,7 +301,7 @@ export const useRolePageHooks = () => {
         return (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
             <span onClick={() => editRolePermissionAction(row)}>{t('permissionEdit')}</span>
-            <span onClick={() => editRoleUnderUserAction(row)}>授权用户</span>
+            <span onClick={() => editRoleUnderUserAction(row)}>{t('authUser')}</span>
             <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
             <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
               {t('delete')}
@@ -306,7 +324,9 @@ export const useRolePageHooks = () => {
 
   return {
     limit,
+    roleUnderUserLimit,
     total,
+    roleUnderUserListTotal,
     roleColumns,
     userColumns,
     roles,
@@ -329,6 +349,7 @@ export const useRolePageHooks = () => {
     setSelected,
     setPage,
     setLimit,
+    roleUnderUserPageChange,
     setEditRolePermissionOpen,
     setEditRoleUnderUserOpen,
     editPermissionConfirm,

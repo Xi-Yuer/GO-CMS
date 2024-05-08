@@ -21,7 +21,7 @@ export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormPr
   };
 
   const SearchFormComponent = (
-    <div className='bg-white p-4 pt-10 mb-4 rounded dark:bg-[#141414]'>
+    <div className='bg-white p-4 pt-10 mb-4 rounded dark:bg-[#001620]'>
       <Form form={searchFormRef} onReset={onReset} onFinish={onFinish} autoComplete='off' name='searchFormRef'>
         <Row gutter={[10, 10]}>
           {formItems.map((item) => {

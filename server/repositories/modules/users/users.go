@@ -366,8 +366,24 @@ func (u *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 
 }
 
-func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) (*dto.HasTotalResponseData, error) {
 	var users []*dto.SingleUserByRoleIDResponse
+	countQuery := "SELECT COUNT(*) FROM users_roles WHERE role_id = ? "
+	count, err := db.DB.Query(countQuery, roleID)
+	if err != nil {
+		return nil, err
+	}
+	defer func(count *sql.Rows) {
+		_ = count.Close()
+	}(count)
+
+	var total int
+	if count.Next() {
+		if err := count.Scan(&total); err != nil {
+			return nil, err
+		}
+	}
+
 	query := `
     SELECT u.id,
        u.account,
@@ -421,7 +437,10 @@ func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto
 		users = append(users, &user)
 	}
 
-	return users, nil
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
 }
 
 func (u *userRepository) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.UsersSingleResponse, error) {

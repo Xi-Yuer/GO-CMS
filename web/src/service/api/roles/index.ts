@@ -71,3 +71,15 @@ export const createRoleRequest = (data: IUpdateRoleParams) => {
     data,
   });
 };
+
+export interface IDeBindUserParams {
+  userID: string;
+  roleID: string;
+}
+
+export const deBindUserRequest = (data: IDeBindUserParams) => {
+  return request.post({
+    url: '/roles/deBindUser',
+    data,
+  });
+};

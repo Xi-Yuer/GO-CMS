@@ -56,5 +56,7 @@ export default {
     permissionEdit: '权限编辑',
     menusPermission: '菜单权限',
     resourcePermission: '资源权限',
+    authUser: '授权用户',
+    remove: '移除',
   },
 };

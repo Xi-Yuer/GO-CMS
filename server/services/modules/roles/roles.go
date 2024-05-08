@@ -89,5 +89,12 @@ func (r *rolesService) CreateOneRecord(params *dto.CreateOneRecord) error {
 }
 
 func (r *rolesService) DeleteOneRecord(params *dto.DeleteOneRecord) error {
+	user, b := repositories.UserRepositorysModules.FindUserById(params.UserID)
+	if !b {
+		return errors.New("资源不存在")
+	}
+	if user.IsAdmin == 1 {
+		return errors.New("系统资源，禁止删除")
+	}
 	return repositories.UsersAndRolesRepositorys.DeleteOneRecord(params)
 }

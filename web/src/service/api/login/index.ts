@@ -23,7 +23,7 @@ export interface LoginUserResponseType {
 }
 
 export const loginRequest = (data: LoginParamsType) => {
-  return request.post<AxiosResponse<LoginUserResponseType & { token: string }>>({
+  return request.post<AxiosResponse<{ user: LoginUserResponseType } & { token: string }>>({
     url: '/auth/login',
     data: {
       ...data,

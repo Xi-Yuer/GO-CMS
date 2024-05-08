@@ -94,7 +94,7 @@ export const exportUsersRequest = async (ids: React.Key[]) => {
 };
 
 export const getUserByRoleIDRequest = (params: { roleID: string } & IPage) => {
-  return request.get<AxiosResponse<IUserResponse[]>>({
+  return request.get<AxiosResponse<IHasTotalResponse<IUserResponse[]>>>({
     url: `/users/role/${params.roleID}`,
     params: {
       limit: params.limit,

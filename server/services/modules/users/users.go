@@ -90,7 +90,7 @@ func (u *userService) FindUserByAccount(account string) (*dto.SingleUserResponse
 	return repositories.UserRepositorysModules.FindUserByAccount(account)
 }
 
-func (u *userService) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+func (u *userService) GetUserByRoleID(roleID string, params dto.Page) (*dto.HasTotalResponseData, error) {
 	if err := usersAndRolesServiceModules.UserAndRolesService.FindRoleById(roleID); err != nil {
 		return nil, err
 	}

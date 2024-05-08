@@ -12,7 +12,9 @@ const SystemRole: FC = () => {
     menus,
     SearchFormComponent,
     total,
+    roleUnderUserListTotal,
     limit,
+    roleUnderUserLimit,
     loading,
     isEdit,
     formRef,
@@ -29,6 +31,7 @@ const SystemRole: FC = () => {
     setEditRoleUnderUserOpen,
     setPage,
     setLimit,
+    roleUnderUserPageChange,
     setSelected,
     setEditRoleModalOpen,
     onFinish,
@@ -122,6 +125,12 @@ const SystemRole: FC = () => {
       </Drawer>
       <Drawer open={editRoleUnderUserOpen} title='授权用户' width='70%' destroyOnClose onClose={() => setEditRoleUnderUserOpen(false)}>
         <Table dataSource={roleUnderUsersList} columns={userColumns} pagination={false} rowKey='id' bordered></Table>
+        <Pagination
+          total={roleUnderUserListTotal}
+          className='flex justify-end mt-2'
+          pageSize={roleUnderUserLimit}
+          onChange={(page, pageSize) => roleUnderUserPageChange(page, pageSize)}
+          showSizeChanger></Pagination>
       </Drawer>
     </>
   );
