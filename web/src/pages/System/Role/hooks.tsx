@@ -1,7 +1,8 @@
-import { Key, ReactNode, useEffect, useState } from 'react';
+import { Key, ReactNode, useEffect, useRef, useState } from 'react';
 import { Button, DatePicker, Input, TableProps, Tag, TreeDataNode, TreeProps } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import {
+  bindUserRequest,
   createRoleRequest,
   deBindUserRequest,
   deleteRolesRequest,
@@ -21,10 +22,12 @@ import dayjs from 'dayjs';
 import { useForm } from 'antd/es/form/Form';
 import { buildInterfaceToAntdTree, buildMenuToAntdTree, getAllChildrenMenusID, getAllInterfaceKeys } from '@/utils';
 import { getInterfaceAllListRequest } from '@/service/api/interface';
+import { IUserPageRefProps } from '@/pages/System/User/hooks.tsx';
 
 export const useRolePageHooks = () => {
+  const userPageRef = useRef<IUserPageRefProps>(null);
   const [formRef] = useForm();
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -79,6 +82,7 @@ export const useRolePageHooks = () => {
         导出
       </Button>
     ),
+    formName: 'roleSearchUserForm',
   });
 
   const getPageData = (values?: IRoleResponse) => {
@@ -180,6 +184,7 @@ export const useRolePageHooks = () => {
     if (!currentEditRole?.id) return;
     await deBindUserRequest({ userID: row.id, roleID: currentEditRole!.id });
     await getUnderRoleUsersAction(currentEditRole, roleUnderUserPage, roleUnderUserLimit);
+    userPageRef?.current?.getPageData();
   };
 
   const roleUnderUserPageChange = async (page: number, pageSize: number) => {
@@ -189,10 +194,41 @@ export const useRolePageHooks = () => {
     await getUnderRoleUsersAction(currentEditRole, page, pageSize);
   };
 
+  const addRoleUnderUserAction = async (row: IUserResponse) => {
+    await bindUserRequest({ userID: row.id, roleID: currentEditRole!.id });
+    await getUnderRoleUsersAction(currentEditRole!, roleUnderUserPage, roleUnderUserLimit);
+  };
   const userColumns: TableProps<IUserResponse>['columns'] = [
     {
       title: t('index'),
-      width: '80',
+      align: 'center',
+      render: (_, __, index) => (roleUnderUserPage - 1) * roleUnderUserLimit + index + 1,
+    },
+    {
+      title: t('account'),
+      dataIndex: 'account',
+      key: 'account',
+    },
+    {
+      title: t('nickName'),
+      dataIndex: 'nickname',
+      key: 'nickname',
+    },
+    {
+      title: t('operate'),
+      key: 'action',
+      align: 'center',
+      render: (_, row) => (
+        <div className='gap-2 flex text-red-500 items-center cursor-pointer justify-center'>
+          <span onClick={() => deBindRoleUnderUserAction(row)}>{t('remove')}</span>
+        </div>
+      ),
+    },
+  ];
+
+  const unSelectedUserColumns: TableProps<IUserResponse>['columns'] = [
+    {
+      title: t('index'),
       align: 'center',
       render: (_, __, index) => (roleUnderUserPage - 1) * roleUnderUserLimit + index + 1,
     },
@@ -234,7 +270,7 @@ export const useRolePageHooks = () => {
       key: 'createTime',
       align: 'center',
       render: (_, { createTime }) => {
-        return <span>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+        return <span className='text-[12px]'>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
     },
     {
@@ -243,7 +279,7 @@ export const useRolePageHooks = () => {
       key: 'updateTime',
       align: 'center',
       render: (_, { updateTime }) => {
-        return <span>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+        return <span className='text-[12px]'>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
     },
     {
@@ -251,8 +287,8 @@ export const useRolePageHooks = () => {
       key: 'action',
       align: 'center',
       render: (_, row) => (
-        <div className='gap-2 flex text-red-500 items-center cursor-pointer justify-center'>
-          <span onClick={() => deBindRoleUnderUserAction(row)}>{t('remove')}</span>
+        <div className='gap-2 flex text-[#48ade9] items-center cursor-pointer justify-center'>
+          <span onClick={() => deBindRoleUnderUserAction(row)}>添加</span>
         </div>
       ),
     },
@@ -261,7 +297,6 @@ export const useRolePageHooks = () => {
   const roleColumns: TableProps<IRoleResponse>['columns'] = [
     {
       title: t('index'),
-      width: '80',
       align: 'center',
       render: (_, __, index) => (page - 1) * limit + index + 1,
     },
@@ -281,7 +316,7 @@ export const useRolePageHooks = () => {
       key: 'createTime',
       align: 'center',
       render: (_, { createTime }) => {
-        return <span>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+        return <span className='text-sm'>{dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
     },
     {
@@ -290,7 +325,7 @@ export const useRolePageHooks = () => {
       key: 'updateTime',
       align: 'center',
       render: (_, { updateTime }) => {
-        return <span>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
+        return <span className='text-sm'>{dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}</span>;
       },
     },
     {
@@ -323,12 +358,14 @@ export const useRolePageHooks = () => {
   }, [limit, page]);
 
   return {
+    userPageRef,
     limit,
     roleUnderUserLimit,
     total,
     roleUnderUserListTotal,
     roleColumns,
     userColumns,
+    unSelectedUserColumns,
     roles,
     SearchFormComponent,
     roleMenusSelected,
@@ -338,10 +375,12 @@ export const useRolePageHooks = () => {
     isEdit,
     formRef,
     menus,
+    currentEditRole,
     editRolePermissionOpen,
     editRoleUnderUserOpen,
     allInterface,
     roleUnderUsersList,
+    addRoleUnderUserAction,
     onPageTreeCheck,
     onInterfaceTreeCheck,
     onFinish,

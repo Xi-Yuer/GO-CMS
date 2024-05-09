@@ -57,6 +57,9 @@ export default {
     menusPermission: 'MenusPermission',
     resourcePermission: 'ResourcePermission',
     authUser: 'AuthUser',
+    auth: 'Auth',
+    readyAuthUser: 'ReadyAuthUser',
+    notAuthUser: 'NotAuthUser',
     remove: 'Remove',
   },
 };

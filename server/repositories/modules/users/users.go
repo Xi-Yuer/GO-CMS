@@ -247,6 +247,139 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) (*dto.Ha
 	}, nil
 }
 
+func (u *userRepository) FindUserByParamsAndOutRoleID(roleId string, params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	count := `
+			SELECT count(*) FROM users WHERE delete_time IS NULL AND users.id NOT IN (
+				SELECT
+					user_id
+				FROM
+					users_roles
+				WHERE
+					role_id = ?)
+					`
+
+	var total int
+	rows, err := db.DB.Query(count, roleId)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
+	query := `
+		SELECT
+			id, account,nickname, status,GROUP_CONCAT(ur.role_id), is_admin, department_id, status, create_time, update_time
+		FROM
+			users
+				LEFT JOIN users_roles ur ON users.id = ur.user_id
+		WHERE
+			users.id NOT IN (
+				SELECT
+					user_id
+				FROM
+					users_roles
+				WHERE
+					role_id = ?
+    )
+		`
+	var queryParams []interface{}
+	queryParams = append(queryParams, roleId)
+	if params.ID != "" {
+		query += " AND id = ?"
+		queryParams = append(queryParams, params.ID)
+	}
+	if params.Nickname != "" {
+		query += " AND nickname LIKE ?"
+		queryParams = append(queryParams, "%"+params.Nickname+"%")
+	}
+	if params.Status != "" {
+		query += " AND status = ?"
+		queryParams = append(queryParams, params.Status)
+	}
+	if params.StartTime != "" {
+		query += " AND create_time >= ?"
+		queryParams = append(queryParams, params.StartTime)
+	}
+	if params.EndTime != "" {
+		query += " AND update_time <= ?"
+		queryParams = append(queryParams, params.EndTime)
+	}
+
+	if params.DepartmentID != "" {
+		query += " AND department_id = ?"
+		queryParams = append(queryParams, params.DepartmentID)
+	}
+
+	if params.Account != "" {
+		query += " AND account LIKE ?"
+		queryParams = append(queryParams, "%"+params.Account+"%")
+	}
+
+	query += " GROUP BY users.id"
+	query += ` LIMIT ?, ?`
+	if params.Offset != 0 {
+		queryParams = append(queryParams, params.Offset)
+	} else {
+		queryParams = append(queryParams, 0)
+	}
+	if params.Limit != 0 {
+		queryParams = append(queryParams, params.Limit)
+	} else {
+		queryParams = append(queryParams, 10)
+	}
+	// 准备查询语句
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
+		if err != nil {
+
+		}
+	}(stmt)
+	rows, err = stmt.Query(queryParams...)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+
+		}
+	}(rows)
+
+	// 解析查询结果
+	var users []dto.UsersSingleResponse
+	for rows.Next() {
+		var user dto.UsersSingleResponse
+		var rolesID []uint8
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &rolesID, &user.IsAdmin, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		if rolesID != nil {
+			user.RolesID = strings.Split(string(rolesID), ",")
+		}
+		users = append(users, user)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
+}
+
 func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
 	if account == "" {
 		return nil, false

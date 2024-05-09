@@ -13,6 +13,7 @@ func UseUserRoutes(r *gin.RouterGroup) {
 		group.POST("", controllers.UserController.CreateUser)
 		group.GET("/:id", controllers.UserController.GetUser)
 		group.POST("/query", controllers.UserController.GetUsers)
+		group.POST("/query/role/:id", controllers.UserController.FindUserByParamsAndOutRoleID)
 		group.GET("/role/:id", controllers.UserController.GetUserByRoleID)
 		group.PATCH("/:id", controllers.UserController.UpdateUser)
 		group.DELETE("/:id", controllers.UserController.DeleteUser)

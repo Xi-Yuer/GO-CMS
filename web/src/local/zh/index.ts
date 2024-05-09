@@ -57,6 +57,9 @@ export default {
     menusPermission: '菜单权限',
     resourcePermission: '资源权限',
     authUser: '授权用户',
+    auth: '授权',
+    readyAuthUser: '已授权用户',
+    notAuthUser: '未授权用户',
     remove: '移除',
   },
 };

@@ -83,3 +83,10 @@ export const deBindUserRequest = (data: IDeBindUserParams) => {
     data,
   });
 };
+
+export const bindUserRequest = (data: IDeBindUserParams) => {
+  return request.post({
+    url: '/roles/bindUser',
+    data,
+  });
+};

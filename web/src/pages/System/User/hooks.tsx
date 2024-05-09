@@ -1,9 +1,11 @@
+import React, { ReactNode, useEffect, useImperativeHandle, useState } from 'react';
 import { DatePicker, Form, Input, Select, TableProps, Tag } from 'antd';
 import {
   createUsersRequest,
   deleteUsersRequest,
   exportUsersRequest,
   getDepartmentRequest,
+  getOutRoleUsersRequest,
   getRolesRequest,
   getUserRequest,
   getUsersRequest,
@@ -14,21 +16,31 @@ import {
   IUserResponse,
   updateUsersRequest,
 } from '@/service';
-import React, { ReactNode, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
-import { Md5 } from 'ts-md5';
 import { useTranslation } from 'react-i18next';
 import { AxiosResponse } from 'axios';
+import { constants } from '@/constant';
+import { Md5 } from 'ts-md5';
+import dayjs from 'dayjs';
 
-export const useUserPageHooks = () => {
+export interface IUserPageHooks {
+  module?: string;
+  context?: string;
+  operation: (val: IUserResponse) => Promise<void>;
+}
+
+export interface IUserPageRefProps {
+  getPageData: (params?: IGetUsersParams) => Promise<AxiosResponse<any>>;
+}
+
+export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
   const [searchFormRef] = Form.useForm();
   const [editFormRef] = Form.useForm();
   const { t } = useTranslation();
   const columns: TableProps<IUserResponse>['columns'] = [
     {
       title: t('index'),
-      width: '80',
       align: 'center',
+      hidden: props?.module === constants.module.ROLE,
       render: (_, __, index) => (page - 1) * limit + index + 1,
     },
     {
@@ -85,19 +97,30 @@ export const useUserPageHooks = () => {
       title: t('operate'),
       key: 'action',
       align: 'center',
-      render: (_, { id }) => (
-        <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
-          <span onClick={() => editUserAction(id)}>{t('edit')}</span>
-          <span className='text-red-500' onClick={() => deleteUsersAction(id)}>
-            {t('delete')}
-          </span>
-        </div>
-      ),
+      render: (_, row) =>
+        props?.module !== constants.module.ROLE ? (
+          <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
+            <span onClick={() => editUserAction(row.id)}>{t('edit')}</span>
+            <span className='text-red-500' onClick={() => deleteUsersAction(row.id)}>
+              {t('delete')}
+            </span>
+          </div>
+        ) : (
+          <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
+            <span
+              onClick={() =>
+                props?.operation(row).then(() => {
+                  getPageData();
+                })
+              }>
+              {t('auth')}
+            </span>
+          </div>
+        ),
     },
   ];
-
   const [departments, setDepartments] = useState<IDepartmentResponse[]>([]);
-  const [limit, setLimit] = useState(20);
+  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<React.Key[]>([]);
@@ -173,7 +196,19 @@ export const useUserPageHooks = () => {
 
   const getPageData = (value?: IGetUsersParams) => {
     setLoading(true);
-    getUsersRequest({ limit: limit, offset: (page - 1) * limit, ...value })
+    const getUsersRequestFn =
+      props?.module === constants.module.ROLE
+        ? () =>
+            getOutRoleUsersRequest(
+              {
+                limit: limit,
+                offset: (page - 1) * limit,
+                ...value,
+              },
+              props?.context,
+            )
+        : () => getUsersRequest({ limit: limit, offset: (page - 1) * limit, ...value });
+    getUsersRequestFn()
       .then((res) => {
         setUsers(res.data.list);
         setTotal(res.data.total);
@@ -239,7 +274,12 @@ export const useUserPageHooks = () => {
     getRoleAction();
   }, []);
 
+  useImperativeHandle(userPageRef, () => ({
+    getPageData,
+  }));
+
   return {
+    userPageRef,
     total,
     users,
     roles,

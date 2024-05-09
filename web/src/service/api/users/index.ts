@@ -93,12 +93,19 @@ export const exportUsersRequest = async (ids: React.Key[]) => {
   saveAs(new Blob([res]), '用户表.xlsx');
 };
 
-export const getUserByRoleIDRequest = (params: { roleID: string } & IPage) => {
+export const getUserByRoleIDRequest = (params: { roleID?: string } & IPage) => {
   return request.get<AxiosResponse<IHasTotalResponse<IUserResponse[]>>>({
     url: `/users/role/${params.roleID}`,
     params: {
       limit: params.limit,
       offset: params.offset,
     },
+  });
+};
+
+export const getOutRoleUsersRequest = (data: IGetUsersParams, id?: string) => {
+  return request.post<AxiosResponse<IHasTotalResponse<IUserResponse[]>>>({
+    url: `/users/query/role/${id}`,
+    data,
   });
 };

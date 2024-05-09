@@ -84,6 +84,38 @@ func (u *userController) GetUsers(context *gin.Context) {
 	utils.Response.Success(context, users)
 }
 
+// FindUserByParamsAndOutRoleID 查询角色以外的用户
+// @Summary 查询角色以外的用户
+// @Description 查询角色以外的用户
+// @Tags 用户管理
+// @Accept json
+// @Produce json
+// @Body
+// @Router /users/query/role/:id [post]
+func (u *userController) FindUserByParamsAndOutRoleID(context *gin.Context) {
+	id := context.Param("id")
+	if id == "" {
+		utils.Response.ParameterTypeError(context, "id不能为空")
+		return
+	}
+	var params dto.QueryUsersParams
+	err := context.ShouldBind(&params)
+	if err != nil {
+		utils.Response.ParameterTypeError(context, err.Error())
+		return
+	}
+	if params.Limit > 100 || params.Limit < 0 {
+		utils.Response.ParameterTypeError(context, "limit参数不正确")
+		return
+	}
+	users, err := services.UserService.FindUserByParamsAndOutRoleID(id, &params)
+	if err != nil {
+		utils.Response.ServerError(context, err.Error())
+		return
+	}
+	utils.Response.Success(context, users)
+}
+
 // UpdateUser 更新用户
 // @Summary 更新用户信息
 // @Description 更新现有用户的信息

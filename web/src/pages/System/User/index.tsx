@@ -1,13 +1,15 @@
-import React, { FC, memo } from 'react';
-import { useUserPageHooks } from '@/pages/System/User/hooks.tsx';
-import { Button, Form, Input, Modal, Pagination, Select, Table } from 'antd';
+import { IUserPageHooks, IUserPageRefProps, useUserPageHooks } from '@/pages/System/User/hooks.tsx';
 import { IUpdateUserParams } from '@/service';
+import { Button, Form, Input, Modal, Pagination, Select, Table } from 'antd';
+import { forwardRef, Key, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
 import { DownloadOutlined } from '@ant-design/icons';
+import { constants } from '@/constant';
 
-const SystemUser: FC = () => {
+const SystemUser = (props: IUserPageHooks, ref: any) => {
   const {
+    userPageRef,
     total,
     columns,
     users,
@@ -28,7 +30,7 @@ const SystemUser: FC = () => {
     editUserConfirm,
     setEditUserModalOpen,
     editUserAction,
-  } = useUserPageHooks();
+  } = useUserPageHooks(ref, props);
   const { t } = useTranslation();
   const { SearchFormComponent } = useSearchFrom({
     getDataRequestFn: getPageData,
@@ -39,16 +41,18 @@ const SystemUser: FC = () => {
         导出
       </Button>
     ),
+    formName: 'userSearchForm',
+    showAddBtn: props.module !== constants.module.ROLE,
   });
   return (
-    <>
+    <div ref={userPageRef}>
       {SearchFormComponent}
       <Table
         dataSource={users}
         loading={loading}
         columns={columns}
         rowSelection={{
-          onChange: (selectedRowKeys: React.Key[]) => {
+          onChange: (selectedRowKeys: Key[]) => {
             setSelected(selectedRowKeys);
           },
         }}
@@ -105,8 +109,8 @@ const SystemUser: FC = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </>
+    </div>
   );
 };
 
-export default memo(SystemUser);
+export default memo(forwardRef<IUserPageRefProps, IUserPageHooks>(SystemUser));

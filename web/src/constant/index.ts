@@ -15,4 +15,7 @@ export const constants = {
     login: '/Login',
     main: '/',
   },
+  module: {
+    ROLE: 'role',
+  },
 };

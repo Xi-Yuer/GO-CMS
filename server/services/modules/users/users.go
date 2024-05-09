@@ -55,6 +55,9 @@ func (u *userService) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
 func (u *userService) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
 	return repositories.UserRepositorysModules.FindUserByParams(params)
 }
+func (u *userService) FindUserByParamsAndOutRoleID(id string, params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	return repositories.UserRepositorysModules.FindUserByParamsAndOutRoleID(id, params)
+}
 
 func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error {
 	user, exist := u.FindUserById(id)

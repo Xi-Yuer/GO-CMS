@@ -8,10 +8,12 @@ interface SearchFormProps<T extends Record<string, any>> {
   onNewRecordFn: () => void;
   formItems: { label: string; name: keyof T; component: ReactNode }[];
   operateComponent?: ReactNode;
+  formName: string;
+  showAddBtn?: boolean;
 }
 
 export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormProps<T>) => {
-  const { getDataRequestFn, onNewRecordFn, formItems, operateComponent } = props;
+  const { getDataRequestFn, onNewRecordFn, formItems, operateComponent, formName, showAddBtn = true } = props;
   const [searchFormRef] = Form.useForm();
   const { t } = useTranslation();
   const onFinish = () => getDataRequestFn(searchFormRef.getFieldsValue() as T);
@@ -22,7 +24,7 @@ export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormPr
 
   const SearchFormComponent = (
     <div className='bg-white p-4 pt-10 mb-4 rounded dark:bg-[#001620]'>
-      <Form form={searchFormRef} onReset={onReset} onFinish={onFinish} autoComplete='off' name='searchFormRef'>
+      <Form form={searchFormRef} onReset={onReset} onFinish={onFinish} autoComplete='off' name={formName}>
         <Row gutter={[10, 10]}>
           {formItems.map((item) => {
             return (
@@ -41,9 +43,11 @@ export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormPr
               <Button type='primary' className='mx-2' htmlType='submit' icon={<SearchOutlined />}>
                 {t('search')}
               </Button>
-              <Button type='primary' className='mx-2' htmlType='button' icon={<PlusOutlined />} onClick={() => onNewRecordFn()}>
-                {t('add')}
-              </Button>
+              {showAddBtn && (
+                <Button type='primary' className='mx-2' htmlType='button' icon={<PlusOutlined />} onClick={() => onNewRecordFn()}>
+                  {t('add')}
+                </Button>
+              )}
               {operateComponent}
             </div>
           </Col>

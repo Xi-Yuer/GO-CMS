@@ -1,11 +1,15 @@
 import React, { FC, memo } from 'react';
 import { useRolePageHooks } from '@/pages/System/Role/hooks.tsx';
-import { Button, Drawer, Form, Input, Modal, Pagination, Space, Table, Tabs, Tree } from 'antd';
+import { Button, Card, Drawer, Form, Input, Modal, Pagination, Space, Table, Tabs, Tree } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { IUpdateRoleParams } from '@/service';
+import { SwapOutlined } from '@ant-design/icons';
+import User from '@/pages/System/User';
+import { constants } from '@/constant';
 
 const SystemRole: FC = () => {
   const {
+    userPageRef,
     roles,
     roleColumns,
     userColumns,
@@ -19,6 +23,7 @@ const SystemRole: FC = () => {
     isEdit,
     formRef,
     roleInterfaceSelected,
+    currentEditRole,
     editRoleModalOpen,
     editRolePermissionOpen,
     editRoleUnderUserOpen,
@@ -27,6 +32,7 @@ const SystemRole: FC = () => {
     roleMenusSelected,
     onInterfaceTreeCheck,
     roleUnderUsersList,
+    addRoleUnderUserAction,
     setEditRolePermissionOpen,
     setEditRoleUnderUserOpen,
     setPage,
@@ -123,14 +129,24 @@ const SystemRole: FC = () => {
             },
           ]}></Tabs>
       </Drawer>
-      <Drawer open={editRoleUnderUserOpen} title='授权用户' width='70%' destroyOnClose onClose={() => setEditRoleUnderUserOpen(false)}>
-        <Table dataSource={roleUnderUsersList} columns={userColumns} pagination={false} rowKey='id' bordered></Table>
-        <Pagination
-          total={roleUnderUserListTotal}
-          className='flex justify-end mt-2'
-          pageSize={roleUnderUserLimit}
-          onChange={(page, pageSize) => roleUnderUserPageChange(page, pageSize)}
-          showSizeChanger></Pagination>
+      <Drawer open={editRoleUnderUserOpen} title={t('authUser')} width='80%' destroyOnClose onClose={() => setEditRoleUnderUserOpen(false)}>
+        <div className='flex gap-2 justify-between'>
+          <Card title={t('readyAuthUser')} style={{ width: '50%' }}>
+            <Table dataSource={roleUnderUsersList} columns={userColumns} pagination={false} rowKey='id' bordered></Table>
+            <Pagination
+              total={roleUnderUserListTotal}
+              className='flex justify-end mt-2'
+              pageSize={roleUnderUserLimit}
+              onChange={(page, pageSize) => roleUnderUserPageChange(page, pageSize)}
+              showSizeChanger></Pagination>
+          </Card>
+          <div className='my-auto'>
+            <SwapOutlined />
+          </div>
+          <Card title={t('notAuthUser')}>
+            <User ref={userPageRef} module={constants.module.ROLE} context={currentEditRole?.id} operation={addRoleUnderUserAction}></User>
+          </Card>
+        </div>
       </Drawer>
     </>
   );
