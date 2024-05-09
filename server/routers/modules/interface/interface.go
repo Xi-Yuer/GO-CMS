@@ -10,6 +10,7 @@ func UseInterfaceRouter(r *gin.RouterGroup) {
 	{
 
 		group.POST("", controllers.InterfaceController.CreateInterface)
+		group.GET("", controllers.InterfaceController.GetAllInterface)
 		group.DELETE("/:id", controllers.InterfaceController.DeleteInterface)
 		group.PATCH("/:id", controllers.InterfaceController.UpdateInterface)
 		group.GET("/page/:id", controllers.InterfaceController.GetInterfaceByPageID)

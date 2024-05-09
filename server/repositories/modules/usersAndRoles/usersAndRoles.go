@@ -32,7 +32,6 @@ func (u *usersAndRolesRepositorys) CreateRecords(userID string, roleID []string)
 		query += fmt.Sprintf("('%s', '%s'),", userID, roleID)
 	}
 	query = query[:len(query)-1] // Remove the last comma and space
-
 	_, err = db.DB.Exec(query)
 	if err != nil {
 		err := tx.Rollback()

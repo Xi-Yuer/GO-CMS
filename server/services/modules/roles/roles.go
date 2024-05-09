@@ -24,6 +24,9 @@ func (r *rolesService) DeleteRole(id string) error {
 	if singleRoleResponse == nil {
 		return errors.New("资源不存在")
 	}
+	if singleRoleResponse.CanEdit == 0 {
+		return errors.New("该角色禁止删除")
+	}
 	return repositories.RoleRepositorysModules.DeleteRole(id)
 }
 
@@ -31,6 +34,9 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	singleRoleResponse := repositories.RoleRepositorysModules.FindRoleById(id)
 	if singleRoleResponse == nil {
 		return errors.New("资源不存在")
+	}
+	if singleRoleResponse.CanEdit == 0 {
+		return errors.New("该角色禁止编辑")
 	}
 	var err error
 	// 更新角色权限
@@ -43,7 +49,7 @@ func (r *rolesService) UpdateRole(role *dto.UpdateRoleParams, id string) error {
 	return err
 
 }
-func (r *rolesService) GetRoles(params *dto.QueryRolesParams) ([]*dto.SingleRoleResponse, error) {
+func (r *rolesService) GetRoles(params *dto.QueryRolesParams) (*dto.HasTotalResponseData, error) {
 	return repositories.RoleRepositorysModules.GetRoles(params)
 }
 
@@ -53,13 +59,13 @@ func (r *rolesService) CreateRolePermissionsRecord(params *dto.CreateRolePermiss
 		return errors.New("资源不存在")
 	}
 	// 检查页面是否存在
-	if params.PageID != nil {
+	if params.PageID != nil && len(params.PageID) > 0 {
 		if err := repositories.PageRepositorysModules.CheckPagesExistence(params.PageID); err != nil {
 			return errors.New("资源不存在")
 		}
 	}
 
-	if params.InterfaceID != nil {
+	if params.InterfaceID != nil && len(params.InterfaceID) > 0 {
 		if err := repositories.InterfaceRepository.CheckInterfacesExistence(params.InterfaceID); err != nil {
 			return errors.New("资源不存在")
 		}
@@ -83,5 +89,12 @@ func (r *rolesService) CreateOneRecord(params *dto.CreateOneRecord) error {
 }
 
 func (r *rolesService) DeleteOneRecord(params *dto.DeleteOneRecord) error {
+	user, b := repositories.UserRepositorysModules.FindUserById(params.UserID)
+	if !b {
+		return errors.New("资源不存在")
+	}
+	if user.IsAdmin == 1 {
+		return errors.New("系统资源，禁止删除")
+	}
 	return repositories.UsersAndRolesRepositorys.DeleteOneRecord(params)
 }

@@ -16,9 +16,9 @@ type GetInterfaceResponse struct {
 	InterfacePageID string `json:"interfacePageID" `
 	InterfacePath   string `json:"interfacePath" `
 	InterfaceDesc   string `json:"interfaceDesc"`
+	InterfaceDic    string `json:"interfaceDic"`
 	CreateTime      string `json:"createTime"`
 	UpdateTime      string `json:"updateTime"`
-	InterfaceDic    string `json:"interfaceDic"`
 }
 
 type UpdateInterfaceRequest struct {
@@ -28,4 +28,9 @@ type UpdateInterfaceRequest struct {
 	InterfacePath   string `form:"interfacePath" binding:"required"`
 	InterfaceDesc   string `form:"interfaceDesc" binding:"required"`
 	InterfaceDic    string `form:"interfaceDic" binding:"required"`
+}
+
+type AllInterfaceResponse struct {
+	Key      string                  `json:"key"`
+	Children []*GetInterfaceResponse `json:"children"`
 }

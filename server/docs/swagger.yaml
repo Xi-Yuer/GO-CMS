@@ -105,6 +105,16 @@ paths:
       tags:
       - 部门管理
   /interface:
+    get:
+      consumes:
+      - application/json
+      description: 获取接口（所有页面）
+      produces:
+      - application/json
+      responses: {}
+      summary: 获取接口（所有页面）
+      tags:
+      - 接口管理
     post:
       consumes:
       - application/json
@@ -173,6 +183,21 @@ paths:
       summary: 获取Git提交记录
       tags:
       - 日志管理
+  /log/commits/count:
+    get:
+      consumes:
+      - application/json
+      description: 获取Git提交次数
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取Git提交次数
+      tags:
+      - 日志管理
   /log/system:
     get:
       consumes:
@@ -230,7 +255,22 @@ paths:
       summary: 更新菜单
       tags:
       - 菜单管理
-  /pages/menu:
+  /pages/role/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取角色菜单
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取角色菜单
+      tags:
+      - 获取角色菜单
+  /pages/user:
     get:
       consumes:
       - application/json
@@ -246,20 +286,6 @@ paths:
       tags:
       - 菜单管理
   /roles:
-    get:
-      consumes:
-      - application/json
-      description: 获取角色
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code":200,"data":{},"msg":"ok"}'
-          schema:
-            type: string
-      summary: 获取角色
-      tags:
-      - 角色管理
     post:
       consumes:
       - application/json
@@ -340,6 +366,21 @@ paths:
       - application/json
       responses: {}
       summary: 导出角色
+      tags:
+      - 角色管理
+  /roles/query:
+    post:
+      consumes:
+      - application/json
+      description: 获取角色
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 获取角色
       tags:
       - 角色管理
   /system:
@@ -503,16 +544,6 @@ paths:
       tags:
       - 文件管理
   /users:
-    get:
-      consumes:
-      - application/json
-      description: 根据查询参数查询用户信息
-      produces:
-      - application/json
-      responses: {}
-      summary: 查询用户
-      tags:
-      - 用户管理
     post:
       consumes:
       - application/json
@@ -585,6 +616,28 @@ paths:
       - application/json
       responses: {}
       summary: 导出用户
+      tags:
+      - 用户管理
+  /users/query:
+    post:
+      consumes:
+      - application/json
+      description: 根据查询参数查询用户信息
+      produces:
+      - application/json
+      responses: {}
+      summary: 查询用户
+      tags:
+      - 用户管理
+  /users/query/role/:id:
+    post:
+      consumes:
+      - application/json
+      description: 查询角色以外的用户
+      produces:
+      - application/json
+      responses: {}
+      summary: 查询角色以外的用户
       tags:
       - 用户管理
   /users/role/{id}:

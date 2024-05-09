@@ -52,18 +52,25 @@ func (u *userService) FindUserById(id string) (*dto.UsersSingleResponse, bool) {
 	return repositories.UserRepositorysModules.FindUserById(id)
 }
 
-func (u *userService) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
+func (u *userService) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
 	return repositories.UserRepositorysModules.FindUserByParams(params)
+}
+func (u *userService) FindUserByParamsAndOutRoleID(id string, params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	return repositories.UserRepositorysModules.FindUserByParamsAndOutRoleID(id, params)
 }
 
 func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error {
-	_, exist := u.FindUserById(id)
+	user, exist := u.FindUserById(id)
 	if !exist {
 		return errors.New("资源不存在")
 	}
-	if params.RoleID != nil {
+	// 超级管理员无法修改
+	if user.IsAdmin == 1 {
+		return errors.New("系统账号禁止修改")
+	}
+	if params.RolesID != nil && len(params.RolesID) > 0 {
 		// 给用户分配角色信息
-		err := repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RoleID)
+		err := repositories.UsersAndRolesRepositorys.CreateRecords(id, params.RolesID)
 		if err != nil {
 			return err
 		}
@@ -72,9 +79,12 @@ func (u *userService) UpdateUser(params *dto.UpdateUserRequest, id string) error
 }
 
 func (u *userService) DeleteUser(id string) error {
-	_, exist := u.FindUserById(id)
+	user, exist := u.FindUserById(id)
 	if !exist {
 		return errors.New("资源不存在")
+	}
+	if user.IsAdmin == 1 {
+		return errors.New("系统账号禁止删除")
 	}
 	return repositories.UserRepositorysModules.DeleteUser(id)
 }
@@ -83,7 +93,7 @@ func (u *userService) FindUserByAccount(account string) (*dto.SingleUserResponse
 	return repositories.UserRepositorysModules.FindUserByAccount(account)
 }
 
-func (u *userService) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+func (u *userService) GetUserByRoleID(roleID string, params dto.Page) (*dto.HasTotalResponseData, error) {
 	if err := usersAndRolesServiceModules.UserAndRolesService.FindRoleById(roleID); err != nil {
 		return nil, err
 	}

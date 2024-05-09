@@ -7,7 +7,6 @@ import (
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
 	"strings"
-	"time"
 )
 
 var UserRepository = &userRepository{}
@@ -16,7 +15,7 @@ type userRepository struct{}
 
 func (u *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
-	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id),u.is_admin, u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.id = ? AND u.delete_time IS NULL
@@ -37,7 +36,7 @@ func (u *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 	var rolesID []uint8
 
 	for rows.Next() {
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.IsAdmin, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
@@ -54,11 +53,11 @@ func (u *userRepository) GetUser(id string) (*dto.UsersSingleResponse, error) {
 
 func (u *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, error) {
 	rows, err := db.DB.Query(`
-	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.avatar,u.status,u.department_id, u.create_time, u.update_time
+	SELECT u.id, u.account, u.nickname, GROUP_CONCAT(ur.role_id), u.is_admin, u.avatar,u.status,u.department_id, u.create_time, u.update_time
 	FROM users u
 	LEFT JOIN users_roles ur ON u.id = ur.user_id
 	WHERE u.delete_time IS NULL
-	GROUP BY u.id, u.account, u.nickname, u.avatar,u.department_id, u.create_time, u.update_time, u.status
+	GROUP BY u.id, u.account, u.nickname, u.is_admin, u.avatar,u.department_id, u.create_time, u.update_time, u.status
 	LIMIT ?, ?
 `, page.Offset, page.Limit)
 	if err != nil {
@@ -76,7 +75,7 @@ func (u *userRepository) GetUsers(page dto.Page) ([]dto.UsersSingleResponse, err
 	for rows.Next() {
 		user := &dto.UsersSingleResponse{}
 		var rolesID []uint8
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &rolesID, &user.IsAdmin, &user.Avatar, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
@@ -132,10 +131,27 @@ func (u *userRepository) SelectUsersByAccount(account string) bool {
 	return count > 0
 }
 
-func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.UsersSingleResponse, error) {
+func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	count := `SELECT count(*) FROM users WHERE delete_time IS NULL`
+
+	var total int
+	rows, err := db.DB.Query(count)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
 	query := `
 		SELECT 
-			id, account,nickname, status,GROUP_CONCAT(ur.role_id), department_id, status, create_time, update_time 
+			id, account,nickname, status,GROUP_CONCAT(ur.role_id), is_admin, department_id, status, create_time, update_time 
 		FROM 
 			users 
 		LEFT JOIN users_roles ur ON users.id = ur.user_id
@@ -159,7 +175,7 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		queryParams = append(queryParams, params.StartTime)
 	}
 	if params.EndTime != "" {
-		query += " AND create_time <= ?"
+		query += " AND update_time <= ?"
 		queryParams = append(queryParams, params.EndTime)
 	}
 
@@ -196,7 +212,7 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 
 		}
 	}(stmt)
-	rows, err := stmt.Query(queryParams...)
+	rows, err = stmt.Query(queryParams...)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +228,7 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 	for rows.Next() {
 		var user dto.UsersSingleResponse
 		var rolesID []uint8
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &rolesID, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &rolesID, &user.IsAdmin, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
@@ -225,7 +241,143 @@ func (u *userRepository) FindUserByParams(params *dto.QueryUsersParams) ([]dto.U
 		return nil, err
 	}
 
-	return users, nil
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
+}
+
+func (u *userRepository) FindUserByParamsAndOutRoleID(roleId string, params *dto.QueryUsersParams) (*dto.HasTotalResponseData, error) {
+	count := `
+			SELECT count(*) FROM users WHERE delete_time IS NULL AND users.id NOT IN (
+				SELECT
+					user_id
+				FROM
+					users_roles
+				WHERE
+					role_id = ?)
+					`
+
+	var total int
+	rows, err := db.DB.Query(count, roleId)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		_ = rows.Close()
+
+	}(rows)
+	if rows.Next() {
+		err := rows.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
+	query := `
+		SELECT
+			id, account,nickname, status,GROUP_CONCAT(ur.role_id), is_admin, department_id, status, create_time, update_time
+		FROM
+			users
+				LEFT JOIN users_roles ur ON users.id = ur.user_id
+		WHERE
+			users.id NOT IN (
+				SELECT
+					user_id
+				FROM
+					users_roles
+				WHERE
+					role_id = ?
+    )
+		`
+	var queryParams []interface{}
+	queryParams = append(queryParams, roleId)
+	if params.ID != "" {
+		query += " AND id = ?"
+		queryParams = append(queryParams, params.ID)
+	}
+	if params.Nickname != "" {
+		query += " AND nickname LIKE ?"
+		queryParams = append(queryParams, "%"+params.Nickname+"%")
+	}
+	if params.Status != "" {
+		query += " AND status = ?"
+		queryParams = append(queryParams, params.Status)
+	}
+	if params.StartTime != "" {
+		query += " AND create_time >= ?"
+		queryParams = append(queryParams, params.StartTime)
+	}
+	if params.EndTime != "" {
+		query += " AND update_time <= ?"
+		queryParams = append(queryParams, params.EndTime)
+	}
+
+	if params.DepartmentID != "" {
+		query += " AND department_id = ?"
+		queryParams = append(queryParams, params.DepartmentID)
+	}
+
+	if params.Account != "" {
+		query += " AND account LIKE ?"
+		queryParams = append(queryParams, "%"+params.Account+"%")
+	}
+
+	query += " GROUP BY users.id"
+	query += ` LIMIT ?, ?`
+	if params.Offset != 0 {
+		queryParams = append(queryParams, params.Offset)
+	} else {
+		queryParams = append(queryParams, 0)
+	}
+	if params.Limit != 0 {
+		queryParams = append(queryParams, params.Limit)
+	} else {
+		queryParams = append(queryParams, 10)
+	}
+	// 准备查询语句
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	defer func(stmt *sql.Stmt) {
+		err := stmt.Close()
+		if err != nil {
+
+		}
+	}(stmt)
+	rows, err = stmt.Query(queryParams...)
+	if err != nil {
+		return nil, err
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+
+		}
+	}(rows)
+
+	// 解析查询结果
+	var users []dto.UsersSingleResponse
+	for rows.Next() {
+		var user dto.UsersSingleResponse
+		var rolesID []uint8
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Status, &rolesID, &user.IsAdmin, &user.DepartmentID, &user.Status, &user.CreateTime, &user.UpdateTime)
+		if err != nil {
+			return nil, err
+		}
+		if rolesID != nil {
+			user.RolesID = strings.Split(string(rolesID), ",")
+		}
+		users = append(users, user)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
 }
 
 func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserResponseHasPassword, bool) {
@@ -233,7 +385,7 @@ func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserRespo
 		return nil, false
 	}
 	user := &dto.SingleUserResponseHasPassword{}
-	query := "SELECT id, account, nickname, password, status,department_id, create_time, update_time, status FROM users WHERE account = ? AND delete_time IS NULL"
+	query := "SELECT id, account, nickname, password, is_admin, status,department_id, create_time, update_time, status FROM users WHERE account = ? AND delete_time IS NULL"
 	rows, err := db.DB.Query(query, account)
 	if err != nil {
 		return nil, false
@@ -242,7 +394,7 @@ func (u *userRepository) FindUserByAccount(account string) (*dto.SingleUserRespo
 		_ = rows.Close()
 	}(rows)
 	if rows.Next() {
-		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime, &user.Status)
+		err := rows.Scan(&user.ID, &user.Account, &user.Nickname, &user.Password, &user.IsAdmin, &user.Status, &user.DepartmentID, &user.CreateTime, &user.UpdateTime, &user.Status)
 		if err != nil {
 			return nil, false
 		}
@@ -264,8 +416,7 @@ func (u *userRepository) FindUserById(id string) (*dto.UsersSingleResponse, bool
 }
 
 func (u *userRepository) DeleteUser(id string) error {
-	now := time.Now()
-	stmt, err := db.DB.Prepare(`UPDATE users SET delete_time = ? WHERE id = ?`)
+	stmt, err := db.DB.Prepare(`DELETE  FROM users WHERE id = ?`)
 	if err != nil {
 		return err
 	}
@@ -275,7 +426,7 @@ func (u *userRepository) DeleteUser(id string) error {
 
 		}
 	}(stmt)
-	_, err = stmt.Exec(now, id)
+	_, err = stmt.Exec(id)
 	if err != nil {
 		return err
 	}
@@ -348,13 +499,30 @@ func (u *userRepository) UpdateUser(params *dto.UpdateUserRequest, id string) er
 
 }
 
-func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto.SingleUserByRoleIDResponse, error) {
+func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) (*dto.HasTotalResponseData, error) {
 	var users []*dto.SingleUserByRoleIDResponse
+	countQuery := "SELECT COUNT(*) FROM users_roles WHERE role_id = ? "
+	count, err := db.DB.Query(countQuery, roleID)
+	if err != nil {
+		return nil, err
+	}
+	defer func(count *sql.Rows) {
+		_ = count.Close()
+	}(count)
+
+	var total int
+	if count.Next() {
+		if err := count.Scan(&total); err != nil {
+			return nil, err
+		}
+	}
+
 	query := `
     SELECT u.id,
        u.account,
        u.nickname,
        u.avatar,
+       u.is_admin,
        u.create_time,
        u.update_time,
        u.status,
@@ -385,6 +553,7 @@ func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto
 			&user.Account,
 			&user.Nickname,
 			&user.Avatar,
+			&user.IsAdmin,
 			&user.CreateTime,
 			&user.UpdateTime,
 			&user.Status,
@@ -401,7 +570,10 @@ func (u *userRepository) GetUserByRoleID(roleID string, params dto.Page) ([]*dto
 		users = append(users, &user)
 	}
 
-	return users, nil
+	return &dto.HasTotalResponseData{
+		Total: total,
+		List:  users,
+	}, nil
 }
 
 func (u *userRepository) ExportExcel(params *dto.ExportExcelResponse) ([]*dto.UsersSingleResponse, error) {

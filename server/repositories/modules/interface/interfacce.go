@@ -1,6 +1,7 @@
 package interfaceRepositoryModules
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
@@ -32,6 +33,51 @@ func (i *interfaceRepository) GetInterfaceByPageID(id string) []*dto.GetInterfac
 		interfaces = append(interfaces, &interfaceInfo)
 	}
 	return interfaces
+}
+
+func (i *interfaceRepository) GetAllInterface() ([]*dto.AllInterfaceResponse, error) {
+	query := `
+			SELECT
+				JSON_OBJECT(
+						'key', p.page_name,
+						'children', JSON_ARRAYAGG(
+								JSON_OBJECT(
+										'ID', i.interface_id,
+										'interfaceName', i.interface_name,
+										'interfaceDic', i.interface_dic,
+										'interfaceMethod', i.interface_method,
+										'interfacePageId', i.interface_page_id,
+										'interfacePath', i.interface_path,
+										'createTime', i.create_time,
+										'updateTime', i.update_time
+								)
+									  )
+				) AS page_interfaces
+			FROM
+				pages p
+					JOIN
+				interfaces i ON p.page_id = i.interface_page_id
+			GROUP BY
+				p.page_name;
+	`
+	rows, err := db.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	var interfaceResponses []*dto.AllInterfaceResponse
+	for rows.Next() {
+		var interfaceResponse string
+		var interfaceUnmarshalResponse *dto.AllInterfaceResponse
+		if err := rows.Scan(&interfaceResponse); err != nil {
+			return nil, err
+		}
+		if err := json.Unmarshal([]byte(interfaceResponse), &interfaceUnmarshalResponse); err != nil {
+			return nil, err
+		}
+		interfaceResponses = append(interfaceResponses, interfaceUnmarshalResponse)
+	}
+	return interfaceResponses, nil
 }
 
 func (i *interfaceRepository) GetInterfaceByID(id string) (inter *dto.GetInterfaceResponse, exist bool) {
@@ -66,7 +112,6 @@ func (i *interfaceRepository) CheckInterfacesExistence(interfaceID []string) err
 		args = append(args, id)
 	}
 	query := "SELECT COUNT(*) FROM interfaces WHERE interface_id IN (" + strings.Join(placeholders, ",") + ") "
-
 	row := db.DB.QueryRow(query, args...)
 	var count int
 	err := row.Scan(&count)

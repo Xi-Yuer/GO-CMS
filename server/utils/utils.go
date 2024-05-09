@@ -31,3 +31,5 @@ var Contain = contain.StringInSlice
 var ExportExcel = exportExcel.ExportExcel
 var TimeTask = timeTask.TimeTask
 var File = file.File
+var FormatCommits = buildTree.FormatCommits
+var GroupCommitsByDate = buildTree.GroupCommitsByDate

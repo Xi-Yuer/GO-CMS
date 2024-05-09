@@ -96,7 +96,7 @@ func (r *roleController) UpdateRole(context *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /roles [get]
+// @Router /roles/query [post]
 func (r *roleController) GetRoles(context *gin.Context) {
 	var params dto.QueryRolesParams
 	err := context.ShouldBind(&params)
@@ -139,7 +139,7 @@ func (r *roleController) ExportExcel(context *gin.Context) {
 	var data [][]interface{}
 	data = append(data, []interface{}{"ID", "角色名", "接口ID", "描述", "创建时间", "更新时间"})
 	for _, response := range responses {
-		data = append(data, []interface{}{response.ID, response.RoleName, response.InterfacesID, response.Description, response.CreateTime, response.UpdateTime})
+		data = append(data, []interface{}{response.ID, response.RoleName, response.InterfaceID, response.Description, response.CreateTime, response.UpdateTime})
 	}
 	if err := utils.ExportExcel(context, data, "角色表"); err != nil {
 		utils.Response.ServerError(context, err.Error())

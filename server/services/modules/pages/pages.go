@@ -1,10 +1,12 @@
 package pagesServiceModules
 
 import (
+	"fmt"
 	"github.com/Xi-Yuer/cms/dto"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
 	"github.com/Xi-Yuer/cms/utils"
+	"sort"
 )
 
 var PageService = &pageService{}
@@ -32,7 +34,8 @@ func (p *pageService) GetPages() ([]*dto.SinglePageResponse, error) {
 func (p *pageService) GetUserMenus(id string) ([]*pagesResponsiesModules.SinglePageResponse, error) {
 	// 查找用户角色ID
 	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(id)
-	// 查找用户页面权限
+	fmt.Println("rolesID", rolesID)
+	// 查找角色页面权限
 	var pagesID []string
 	for _, roleID := range rolesID {
 		page, err := repositories.RolesAndPagesRepository.GetRecordsByRoleID(roleID)
@@ -43,6 +46,7 @@ func (p *pageService) GetUserMenus(id string) ([]*pagesResponsiesModules.SingleP
 	}
 	// pagesID 去重
 	pagesID = utils.Unique(pagesID)
+	sort.Strings(pagesID)
 	// 获取页面详情
 	var pagesDetail []*dto.SinglePageResponse
 	for _, pageID := range pagesID {
@@ -54,6 +58,24 @@ func (p *pageService) GetUserMenus(id string) ([]*pagesResponsiesModules.SingleP
 	}
 	menu := utils.BuildPages(pagesDetail)
 	return menu, nil
+}
+
+func (p *pageService) GetPagesByRoleID(id string) ([]*pagesResponsiesModules.SinglePageResponse, error) {
+	pageIDs, err := repositories.RolesAndPagesRepository.GetRecordsByRoleID(id)
+	if err != nil {
+		return nil, err
+	}
+	pageIDs = utils.Unique(pageIDs)
+	// 获取页面详情
+	var pagesDetail []*dto.SinglePageResponse
+	for _, pageID := range pageIDs {
+		pageDetail, err := repositories.PageRepositorysModules.FindPageByID(pageID)
+		if err != nil {
+			return nil, err
+		}
+		pagesDetail = append(pagesDetail, pageDetail)
+	}
+	return utils.BuildPages(pagesDetail), nil
 }
 
 func (p *pageService) UpdatePage(id string, params *dto.UpdatePageRequest) error {

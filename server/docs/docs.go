@@ -173,6 +173,20 @@ const docTemplate = `{
             }
         },
         "/interface": {
+            "get": {
+                "description": "获取接口（所有页面）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "接口管理"
+                ],
+                "summary": "获取接口（所有页面）",
+                "responses": {}
+            },
             "post": {
                 "description": "创建接口",
                 "consumes": [
@@ -273,6 +287,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/log/commits/count": {
+            "get": {
+                "description": "获取Git提交次数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "日志管理"
+                ],
+                "summary": "获取Git提交次数",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/log/system": {
             "get": {
                 "description": "获取系统日志",
@@ -319,7 +356,30 @@ const docTemplate = `{
                 "responses": {}
             }
         },
-        "/pages/menu": {
+        "/pages/role/{id}": {
+            "get": {
+                "description": "获取角色菜单",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "获取角色菜单"
+                ],
+                "summary": "获取角色菜单",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pages/user": {
             "get": {
                 "description": "获取用户菜单",
                 "consumes": [
@@ -380,27 +440,6 @@ const docTemplate = `{
             }
         },
         "/roles": {
-            "get": {
-                "description": "获取角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "角色管理"
-                ],
-                "summary": "获取角色",
-                "responses": {
-                    "200": {
-                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "创建角色",
                 "consumes": [
@@ -478,6 +517,29 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {}
+            }
+        },
+        "/roles/query": {
+            "post": {
+                "description": "获取角色",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "获取角色",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/roles/{id}": {
@@ -769,20 +831,6 @@ const docTemplate = `{
             }
         },
         "/users": {
-            "get": {
-                "description": "根据查询参数查询用户信息",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户管理"
-                ],
-                "summary": "查询用户",
-                "responses": {}
-            },
             "post": {
                 "description": "创建新用户并将其添加到系统中",
                 "consumes": [
@@ -820,6 +868,38 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
+                "responses": {}
+            }
+        },
+        "/users/query": {
+            "post": {
+                "description": "根据查询参数查询用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "查询用户",
+                "responses": {}
+            }
+        },
+        "/users/query/role/:id": {
+            "post": {
+                "description": "查询角色以外的用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "查询角色以外的用户",
                 "responses": {}
             }
         },
