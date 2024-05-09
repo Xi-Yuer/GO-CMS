@@ -8,21 +8,24 @@ var JWTPAYLOAD = `JwtPayload`
 
 var PermissionMap = map[string]string{
 	// 用户管理
-	"^POST:" + config.Config.APP.BASEURL + "/users/query$":    `POST:/users/query`,
-	"^POST:" + config.Config.APP.BASEURL + "/users$":          `POST:/users`,
-	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$": `GET:/users/role/:id`,
-	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":      `GET:/users/:id`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":    `PATCH:/users/:id`,
-	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":   `DELETE:/users/:id`,
-	"^POST:" + config.Config.APP.BASEURL + "/users/export$":   `POST:/users/export`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/query$":           `POST:/users/query`,
+	"^POST:" + config.Config.APP.BASEURL + "/users$":                 `POST:/users`,
+	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$":        `GET:/users/role/:id`,
+	"^GET:" + config.Config.APP.BASEURL + "/users/\\d+$":             `GET:/users/:id`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/users/\\d+$":           `PATCH:/users/:id`,
+	"^DELETE:" + config.Config.APP.BASEURL + "/users/\\d+$":          `DELETE:/users/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/export$":          `POST:/users/export`,
+	"^POST:" + config.Config.APP.BASEURL + "/users/query/role/\\d+$": `POST:/users/query/role/:id`,
 
 	// 角色管理
-	"^POST:" + config.Config.APP.BASEURL + "/roles/query$":    `POST:/roles/query`,
-	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$": `GET:/users/role/:id`,
-	"^POST:" + config.Config.APP.BASEURL + "/roles$":          `POST:/roles`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `PATCH:/roles/:id`,
-	"^DELETE:" + config.Config.APP.BASEURL + "/roles/\\d+$":   `DELETE:/roles/:id`,
-	"^POST:" + config.Config.APP.BASEURL + "/roles/export$":   `POST:/roles/export`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/query$":     `POST:/roles/query`,
+	"^GET:" + config.Config.APP.BASEURL + "/users/role/\\d+$":  `GET:/users/role/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles$":           `POST:/roles`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/roles/\\d+$":     `PATCH:/roles/:id`,
+	"^DELETE:" + config.Config.APP.BASEURL + "/roles/\\d+$":    `DELETE:/roles/:id`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/export$":    `POST:/roles/export`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/bindUser$":  `POST:/roles/bindUser`,
+	"^POST:" + config.Config.APP.BASEURL + "/roles/deBindUser": `POST:/roles/deBindUser`,
 
 	// 部门管理
 	"^GET:" + config.Config.APP.BASEURL + "/department$":         `GET:/department`,
@@ -31,11 +34,13 @@ var PermissionMap = map[string]string{
 	"^DELETE:" + config.Config.APP.BASEURL + "/department/\\d+$": `DELETE:/department/:id`,
 
 	// 菜单管理
-	"^GET:" + config.Config.APP.BASEURL + "/pages$":         `GET:/pages`,
-	"^POST:" + config.Config.APP.BASEURL + "/pages$":        `POST:/pages`,
-	"^PATCH:" + config.Config.APP.BASEURL + "/pages/\\d+$":  `PATCH:/pages/:id`,
-	"^DELETE:" + config.Config.APP.BASEURL + "/pages/\\d+$": `DELETE:/pages/:id`,
-	//"^GET:" + config.Config.APP.BASEURL + "/pages/menus$":   `GET:/pages/menus`,
+	"^GET:" + config.Config.APP.BASEURL + "/pages$":           `GET:/pages`,
+	"^POST:" + config.Config.APP.BASEURL + "/pages$":          `POST:/pages`,
+	"^PATCH:" + config.Config.APP.BASEURL + "/pages/\\d+$":    `PATCH:/pages/:id`,
+	"^DELETE:" + config.Config.APP.BASEURL + "/pages/\\d+$":   `DELETE:/pages/:id`,
+	"^GET:" + config.Config.APP.BASEURL + "/pages$":           `GET:/pages`,
+	"^GET:" + config.Config.APP.BASEURL + "/pages/user":       `GET:/pages/user`,
+	"^GET:" + config.Config.APP.BASEURL + "/pages/role:\\d+$": `GET:/pages/role/id`,
 
 	// 接口管理
 	"^POST:" + config.Config.APP.BASEURL + "/interface$":          `POST:/interface`,
