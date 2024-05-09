@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 export interface IUserPageHooks {
   module?: string;
   context?: string;
-  operation: (val: IUserResponse) => Promise<void>;
+  operation?: (val: IUserResponse) => Promise<void>;
 }
 
 export interface IUserPageRefProps {
@@ -109,6 +109,7 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
             <span
               onClick={() =>
+                props?.operation &&
                 props?.operation(row).then(() => {
                   getPageData();
                 })

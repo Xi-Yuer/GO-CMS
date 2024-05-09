@@ -7,7 +7,7 @@ import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
 import { DownloadOutlined } from '@ant-design/icons';
 import { constants } from '@/constant';
 
-const SystemUser = (props: IUserPageHooks, ref: any) => {
+const SystemUser = (props?: IUserPageHooks, ref?: any) => {
   const {
     userPageRef,
     total,
@@ -42,7 +42,7 @@ const SystemUser = (props: IUserPageHooks, ref: any) => {
       </Button>
     ),
     formName: 'userSearchForm',
-    showAddBtn: props.module !== constants.module.ROLE,
+    showAddBtn: props?.module !== constants.module.ROLE,
   });
   return (
     <div ref={userPageRef}>

@@ -1,16 +1,16 @@
 import { FC, memo, useRef } from 'react';
-import { Image, Layout, Menu, Popover } from 'antd';
-import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
+import { useFullscreen } from 'ahooks';
 import { useMainPage } from '@/pages/Main/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { Image, Layout, Menu, Popover } from 'antd';
+import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/store';
-import Logo from '@/assets/svg/logo.svg';
-import classNames from 'classnames';
 import { DownOutlined, ExpandOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { changeFold } from '@/store/UIStore';
-import { useFullscreen } from 'ahooks';
 import { cache } from '@/utils';
+import Logo from '@/assets/svg/logo.svg';
+import classNames from 'classnames';
 
 const Main: FC = () => {
   const dispatch = useAppDispatch();
