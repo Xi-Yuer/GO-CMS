@@ -67,13 +67,13 @@ const SystemUser = (props?: IUserPageHooks, ref?: any) => {
         showSizeChanger
         onShowSizeChange={(_, size) => setLimit(size)}></Pagination>
       <Modal destroyOnClose open={editUserModalOpen} title={isEdit ? t('edit') : t('add')} onOk={editUserConfirm} onCancel={() => setEditUserModalOpen(false)}>
-        <Form form={editFormRef} autoComplete='off' labelAlign='right' id='editFormRef'>
+        <Form form={editFormRef} autoComplete='off' labelAlign='left' labelCol={{ span: 6 }} id='editFormRef'>
           {!isEdit && (
             <Form.Item<IUpdateUserParams> name='account' label={t('account')} rules={[{ required: !isEdit }]}>
               <Input />
             </Form.Item>
           )}
-          <Form.Item<IUpdateUserParams> name='nickname' label={t('nickName')} rules={[{ required: !isEdit }]}>
+          <Form.Item<IUpdateUserParams> name='nickname' label={t('nickName')} rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item<IUpdateUserParams> name='password' label={t('password')} rules={[{ required: !isEdit }]}>

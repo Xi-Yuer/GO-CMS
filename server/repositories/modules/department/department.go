@@ -5,7 +5,6 @@ import (
 	"github.com/Xi-Yuer/cms/db"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/utils"
-	"time"
 )
 
 var DepartmentRepository = &departmentRepository{}
@@ -13,20 +12,10 @@ var DepartmentRepository = &departmentRepository{}
 type departmentRepository struct{}
 
 func (d *departmentRepository) CreateDepartment(params *dto.CreateDepartmentRequest) error {
-	var (
-		query  string
-		values []interface{}
-	)
+
 	id := utils.GenID()
-
-	if params.ParentDepartment == "" {
-		query = "INSERT INTO department (id,department_name,department_order) VALUES (?,?,?)"
-		values = append(values, id, params.DepartmentName, params.DepartmentOrder)
-	} else {
-		query = "INSERT INTO department (id,department_name,parent_department,department_order) VALUES (?,?,?,?)"
-		values = append(values, id, params.DepartmentName, params.ParentDepartment, params.DepartmentOrder)
-	}
-
+	query := "INSERT INTO department (id,department_name, description, parent_department, department_order) VALUES (?,?,?,?,?)"
+	values := []interface{}{id, params.DepartmentName, params.DepartmentDescription, params.ParentDepartment, params.DepartmentOrder}
 	if _, err := db.DB.Exec(query, values...); err != nil {
 		return err
 	}
@@ -34,13 +23,13 @@ func (d *departmentRepository) CreateDepartment(params *dto.CreateDepartmentRequ
 }
 
 func (d *departmentRepository) DeleteDepartment(id string) error {
-	query := "UPDATE department SET delete_time = ? WHERE id = ?"
-	_, err := db.DB.Exec(query, time.Now(), id)
+	query := "DELETE FROM department WHERE id = ?"
+	_, err := db.DB.Exec(query, id)
 	return err
 }
 
 func (d *departmentRepository) GetDepartments() ([]*dto.DepartmentResponse, error) {
-	query := "SELECT id,department_name,parent_department,department_order,create_time,update_time FROM department WHERE delete_time IS NULL"
+	query := "SELECT id,department_name,parent_department,description,department_order, create_time,update_time FROM department WHERE delete_time IS NULL"
 	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
@@ -54,7 +43,7 @@ func (d *departmentRepository) GetDepartments() ([]*dto.DepartmentResponse, erro
 	var departments []*dto.DepartmentResponse
 	for rows.Next() {
 		var department dto.DepartmentResponse
-		err := rows.Scan(&department.ID, &department.DepartmentName, &department.ParentDepartment, &department.DepartmentOrder, &department.CreateTime, &department.UpdateTime)
+		err := rows.Scan(&department.ID, &department.DepartmentName, &department.ParentDepartment, &department.DepartmentDescription, &department.DepartmentOrder, &department.CreateTime, &department.UpdateTime)
 		if err != nil {
 			return nil, err
 		}
@@ -77,6 +66,11 @@ func (d *departmentRepository) UpdateDepartment(id string, params *dto.UpdateDep
 	if params.ParentDepartment != "" {
 		query += "parent_department = ?,"
 		queryParams = append(queryParams, params.ParentDepartment)
+		hasSet = true
+	}
+	if params.DepartmentDescription != "" {
+		query += "description = ?,"
+		queryParams = append(queryParams, params.DepartmentDescription)
 		hasSet = true
 	}
 	if params.DepartmentOrder != 0 {
