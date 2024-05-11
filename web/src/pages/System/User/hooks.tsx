@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useImperativeHandle, useState } from 'react';
-import { DatePicker, Form, Input, Select, TableProps, Tag } from 'antd';
+import { DatePicker, Form, Input, Select, TableProps, Tag, TreeSelect } from 'antd';
 import {
   createUsersRequest,
   deleteUsersRequest,
@@ -65,6 +65,7 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
     {
       title: t('status'),
       dataIndex: 'status',
+      hidden: props?.module === constants.module.ROLE,
       key: 'status',
       align: 'center',
       render: (_, { status, id }) => {
@@ -120,7 +121,7 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
         ),
     },
   ];
-  const [departments, setDepartments] = useState<IDepartmentResponse[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -145,17 +146,7 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
     {
       label: t('department'),
       name: 'departmentID',
-      component: (
-        <Select allowClear>
-          {departments?.map((item) => {
-            return (
-              <Select.Option key={item.id} value={item.id}>
-                {item.departmentName}
-              </Select.Option>
-            );
-          })}
-        </Select>
-      ),
+      component: <TreeSelect allowClear treeData={departments}></TreeSelect>,
     },
     {
       label: t('status'),
@@ -221,9 +212,22 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
 
   const getRoleAction = () => {
     getDepartmentRequest().then((res) => {
-      setDepartments(res.data);
+      setDepartments(mapInterface(res.data));
     });
   };
+
+  function mapInterface(department: IDepartmentResponse[]): any[] {
+    return (
+      department?.map((item) => {
+        return {
+          title: item.departmentName,
+          key: item.id,
+          value: item.id,
+          children: (item.children && mapInterface(item.children)) || [],
+        };
+      }) || []
+    );
+  }
 
   const updateUserAction = (params: IUpdateUserParams) => {
     updateUsersRequest(params).then(() => getPageData());

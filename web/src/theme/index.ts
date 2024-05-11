@@ -13,11 +13,6 @@ export const useTheme: () => [ThemeConfig] = () => {
         colorBgContainer: themeMode === 'dark' ? '#001624' : '#fff',
         colorBgElevated: themeMode === 'dark' ? '#0c1d27' : '#fff',
       },
-      components: {
-        Table: {
-          borderColor: themeMode === 'dark' ? '#004259' : '#eee',
-        },
-      },
     },
   ];
 };

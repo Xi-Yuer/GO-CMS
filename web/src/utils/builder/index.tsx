@@ -5,12 +5,12 @@ import SystemUser from '@/pages/System/User';
 import SystemRole from '@/pages/System/Role';
 import SystemDepartment from '@/pages/System/Department';
 import SystemMenu from '@/pages/System/Menu';
-import Test from '@/pages/Test';
 import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
 import NotFont from '@/pages/NotFont';
 import { TreeDataNode } from 'antd';
 import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
+import Iframe from '@/pages/Iframe';
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
@@ -18,7 +18,6 @@ const pagesMap: Record<string, React.ReactNode | null> = {
   '/system/role': <SystemRole />,
   '/system/department': <SystemDepartment />,
   '/system/menu': <SystemMenu />,
-  '/test/test2': <Test />,
 };
 
 // 返回所有 Main 下的路由
@@ -30,10 +29,17 @@ export const builderMenuRoutes = (menus: menuType[]) => {
       if (item.children?.length) {
         recursionMenu(item.children);
       } else {
-        mainChildrenRoutes.push({
-          path: item.pagePath,
-          element: pagesMap[item.pagePath] ? pagesMap[item.pagePath] : <NotFont />,
-        });
+        if (item.isOutSite) {
+          mainChildrenRoutes.push({
+            path: item.pagePath,
+            element: <Iframe src={item.outSiteLink}></Iframe>,
+          });
+        } else {
+          mainChildrenRoutes.push({
+            path: item.pagePath,
+            element: pagesMap[item.pagePath] ? pagesMap[item.pagePath] : <NotFont />,
+          });
+        }
       }
     });
   }
@@ -195,18 +201,18 @@ export const buildInterfaceToAntdTree: (interfaces: IAllPageInterfaceListRespons
     });
   });
 
-  function mapInterface(interfaces: IInterfaceResponse[]): TreeDataNode[] {
-    return interfaces.map((item) => {
-      return {
-        title: item.interfaceName,
-        key: item.id,
-        children: [],
-      };
-    });
-  }
-
   return treeData;
 };
+
+export function mapInterface(interfaces: IInterfaceResponse[]): TreeDataNode[] {
+  return interfaces.map((item) => {
+    return {
+      title: item.interfaceName,
+      key: item.id,
+      children: [],
+    };
+  });
+}
 
 export const getAllInterfaceKeys = (interfaces: IAllPageInterfaceListResponse[]): string[] => {
   const treeData: string[] = [];

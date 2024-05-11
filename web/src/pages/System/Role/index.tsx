@@ -78,6 +78,7 @@ const SystemRole: FC = () => {
       </Modal>
       <Drawer
         title={t('permissionEdit')}
+        width='40%'
         destroyOnClose
         onClose={() => setEditRolePermissionOpen(false)}
         open={editRolePermissionOpen}
@@ -91,7 +92,6 @@ const SystemRole: FC = () => {
         }>
         <Tabs
           size='small'
-          style={{ marginTop: '-20px' }}
           items={[
             {
               label: t('menusPermission'),

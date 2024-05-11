@@ -1,6 +1,6 @@
 import { IUserPageHooks, IUserPageRefProps, useUserPageHooks } from '@/pages/System/User/hooks.tsx';
 import { IUpdateUserParams } from '@/service';
-import { Button, Form, Input, Modal, Pagination, Select, Table } from 'antd';
+import { Button, Form, Input, Modal, Pagination, Select, Table, TreeSelect } from 'antd';
 import { forwardRef, Key, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
@@ -12,8 +12,8 @@ const SystemUser = (props?: IUserPageHooks, ref?: any) => {
     userPageRef,
     total,
     columns,
-    users,
     departments,
+    users,
     editFormRef,
     editUserModalOpen,
     roles,
@@ -80,15 +80,7 @@ const SystemUser = (props?: IUserPageHooks, ref?: any) => {
             <Input.Password />
           </Form.Item>
           <Form.Item<IUpdateUserParams> name='departmentID' label={t('department')} rules={[{ required: !isEdit }]}>
-            <Select allowClear>
-              {departments?.map((item) => {
-                return (
-                  <Select.Option key={item.id} value={item.id}>
-                    {item.departmentName}
-                  </Select.Option>
-                );
-              })}
-            </Select>
+            <TreeSelect allowClear treeData={departments}></TreeSelect>
           </Form.Item>
           <Form.Item<IUpdateUserParams> name='rolesID' label={t('role')} rules={[{ required: !isEdit }]}>
             <Select allowClear mode='multiple'>

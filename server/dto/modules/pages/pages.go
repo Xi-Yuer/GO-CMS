@@ -2,12 +2,12 @@ package pagesResponsiesModules
 
 type CreatePageParams struct {
 	PageName      string  `form:"pageName" binding:"required"`
-	PagePath      string  `form:"pagePath" binding:"required"`
-	PageIcon      string  `form:"pageIcon"`
+	PagePath      string  `form:"pagePath"`
+	PageIcon      string  `form:"pageIcon" binding:"required"`
 	PageComponent string  `form:"pageComponent"`
 	ParentPage    string  `form:"parentPage"`
-	PageOrder     int     `form:"pageOrder"`
-	IsOutSite     *int    `form:"isOutSite"`
+	PageOrder     *int    `form:"pageOrder" binding:"required"`
+	IsOutSite     bool    `form:"isOutSite"`
 	OutSiteLink   *string `form:"outSiteLink"`
 }
 
@@ -21,7 +21,7 @@ type SinglePageResponse struct {
 	Children      []*SinglePageResponse `json:"children"`
 	PageOrder     int                   `json:"pageOrder"`
 	CanEdit       int                   `json:"canEdit"`
-	IsOutSite     *int                  `json:"isOutSite"`
+	IsOutSite     bool                  `json:"isOutSite"`
 	OutSiteLink   *string               `json:"outSiteLink"`
 	CreatedTime   string                `json:"createdAt"`
 	UpdateTime    string                `json:"updateTime"`
@@ -29,10 +29,10 @@ type SinglePageResponse struct {
 
 type UpdatePageRequest struct {
 	PageName      string  `form:"pageName" binding:"required"`
-	PagePath      string  `form:"pagePath" binding:"required"`
+	PagePath      string  `form:"pagePath"`
 	PageIcon      string  `form:"pageIcon" binding:"required"`
-	PageComponent string  `form:"pageComponent" binding:"required"`
+	PageComponent string  `form:"pageComponent"`
 	PageOrder     int     `form:"pageOrder" binding:"required"`
-	IsOutSite     *int    `form:"isOutSite"`
+	IsOutSite     bool    `form:"isOutSite"`
 	OutSiteLink   *string `form:"outSiteLink"`
 }

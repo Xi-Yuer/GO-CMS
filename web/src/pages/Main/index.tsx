@@ -72,14 +72,14 @@ const Main: FC = () => {
               <div className='mt-3 mx-2'>
                 <Translate />
               </div>
-              <div className='mx-6 cursor-pointer'>
+              <div className='mx-2 cursor-pointer'>
                 <Popover
                   content={
                     <div className='cursor-pointer hover:text-[#00b0f0]' onClick={logOutAction}>
                       退出登录
                     </div>
                   }
-                  trigger='hover'>
+                  trigger='click'>
                   <span>{userInfo?.nickname}</span>
                   <DownOutlined className='mx-2 text-gray-500 dark:text-gray-50' />
                 </Popover>

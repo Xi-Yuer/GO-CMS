@@ -20,20 +20,9 @@ const SystemDepartment: FC = () => {
 
   const columns: TableColumnsType<IDepartmentResponse> = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-    },
-    {
       title: t('departmentName'),
       dataIndex: 'departmentName',
       key: 'departmentName',
-    },
-    {
-      title: t('parentDepartment'),
-      align: 'center',
-      dataIndex: 'parentDepartment',
-      key: 'parentDepartment',
     },
     {
       title: t('order'),
@@ -140,14 +129,14 @@ const SystemDepartment: FC = () => {
       <Table columns={columns} dataSource={departmentList} bordered key='departmentTable' rowKey='id' />
       <Modal open={modalOpen} onCancel={() => setModalOpen(false)} title={isEdit ? t('edit') : t('add')} onOk={onOk}>
         <Form form={form} labelAlign='left' labelCol={{ span: 6 }} autoComplete='off'>
-          <Form.Item name='departmentName' label={t('departmentName')} rules={[{ required: true, message: t('pleaseEnter') }]}>
+          <Form.Item name='departmentName' label={t('departmentName')} rules={[{ required: true }]}>
             <Input placeholder={t('pleaseEnter')} />
           </Form.Item>
-          <Form.Item name='departmentDescription' label={t('departmentDescription')} rules={[{ required: true, message: t('pleaseEnter') }]}>
+          <Form.Item name='departmentDescription' label={t('departmentDescription')} rules={[{ required: true }]}>
             <Input placeholder={t('pleaseEnter')} />
           </Form.Item>
-          <Form.Item name='departmentOrder' label={t('order')} rules={[{ required: true, message: t('pleaseEnter') }]}>
-            <InputNumber style={{ width: '100%' }} placeholder={t('pleaseEnter')} />
+          <Form.Item name='departmentOrder' label={t('order')} rules={[{ required: true }]}>
+            <InputNumber style={{ width: '100%' }} type='number' placeholder={t('pleaseEnter')} />
           </Form.Item>
         </Form>
       </Modal>
