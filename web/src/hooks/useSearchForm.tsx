@@ -2,6 +2,8 @@ import { Button, Col, Form, Row } from 'antd';
 import { ReactNode } from 'react';
 import { PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 interface SearchFormProps<T extends Record<string, any>> {
   getDataRequestFn: (values: any) => void;
@@ -44,9 +46,11 @@ export const useSearchFrom = <T extends Record<string, any>>(props: SearchFormPr
                 {t('search')}
               </Button>
               {showAddBtn && (
-                <Button type='primary' className='mx-2' htmlType='button' icon={<PlusOutlined />} onClick={() => onNewRecordFn()}>
-                  {t('add')}
-                </Button>
+                <Auth permission={[constants.permissionDicMap.ADD_USER, constants.permissionDicMap.ADD_ROLE]}>
+                  <Button type='primary' className='mx-2' htmlType='button' icon={<PlusOutlined />} onClick={() => onNewRecordFn()}>
+                    {t('add')}
+                  </Button>
+                </Auth>
               )}
               {operateComponent}
             </div>

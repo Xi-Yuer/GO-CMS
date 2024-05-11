@@ -221,3 +221,19 @@ export const getAllInterfaceKeys = (interfaces: IAllPageInterfaceListResponse[])
   });
   return treeData;
 };
+
+export const getAllInterfaceDic = (inter: IAllPageInterfaceListResponse[]): string[] => {
+  const treeData: string[] = [];
+
+  function _recursionInterface(interfaces: IAllPageInterfaceListResponse[]) {
+    interfaces.forEach((item) => {
+      item.children.forEach((child) => {
+        treeData.push(child.interfaceDic);
+      });
+    });
+  }
+
+  _recursionInterface(inter);
+
+  return treeData;
+};

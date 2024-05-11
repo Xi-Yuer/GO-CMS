@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
 import { DownloadOutlined } from '@ant-design/icons';
 import { constants } from '@/constant';
+import Auth from '@/components/Auth';
 
 const SystemUser = (props?: IUserPageHooks, ref?: any) => {
   const {
@@ -37,9 +38,11 @@ const SystemUser = (props?: IUserPageHooks, ref?: any) => {
     onNewRecordFn: editUserAction,
     formItems: searchConfig,
     operateComponent: !!selected.length && (
-      <Button type='primary' icon={<DownloadOutlined />} onClick={exportUsersAction}>
-        导出
-      </Button>
+      <Auth permission={constants.permissionDicMap.EXPORT_USER}>
+        <Button type='primary' icon={<DownloadOutlined />} onClick={exportUsersAction}>
+          {t('export')}
+        </Button>
+      </Auth>
     ),
     formName: 'userSearchForm',
     showAddBtn: props?.module !== constants.module.ROLE,

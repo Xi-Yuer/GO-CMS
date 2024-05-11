@@ -54,6 +54,7 @@ export default {
     index: 'Index',
     confirm: 'Confirm',
     cancel: 'Cancel',
+    export: 'Export',
     permissionEdit: 'PermissionEdit',
     menusPermission: 'MenusPermission',
     resourcePermission: 'ResourcePermission',

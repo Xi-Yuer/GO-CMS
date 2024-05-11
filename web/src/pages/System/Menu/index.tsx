@@ -14,6 +14,8 @@ import {
   IInterfaceResponse,
   updateInterfaceRequest,
 } from '@/service/api/interface';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 const SystemMenu: FC = () => {
   const { t } = useTranslation();
@@ -117,42 +119,50 @@ const SystemMenu: FC = () => {
       render: (_, row) => {
         return (
           <div className='text-[#00b0f0] flex gap-2 items-center justify-center cursor-pointer'>
-            <span
-              onClick={() => {
-                setEditCurrentMenu(row);
-                setIsEdit(true);
-                setModalOpen(true);
-                form.setFieldsValue(row);
-              }}>
-              {t('edit')}
-            </span>
-            <span
-              onClick={() => {
-                setEditCurrentMenu(row);
-                setIsEdit(false);
-                setModalOpen(true);
-                form.resetFields();
-              }}>
-              {t('addMenu')}
-            </span>
-            {!row?.children?.length && (
+            <Auth permission={constants.permissionDicMap.UPDATE_MENU}>
               <span
-                onClick={async () => {
+                onClick={() => {
                   setEditCurrentMenu(row);
-                  await getPageInterfaceAction(row.pageID);
-                  setEditResourceOpen(true);
+                  setIsEdit(true);
+                  setModalOpen(true);
+                  form.setFieldsValue(row);
                 }}>
-                {t('resource')}
+                {t('edit')}
               </span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.ADD_MENU}>
+              <span
+                onClick={() => {
+                  setEditCurrentMenu(row);
+                  setIsEdit(false);
+                  setModalOpen(true);
+                  form.resetFields();
+                }}>
+                {t('addMenu')}
+              </span>
+            </Auth>
+            {!row?.children?.length && (
+              <Auth permission={constants.permissionDicMap.GET_PAGE_INTERFACE}>
+                <span
+                  onClick={async () => {
+                    setEditCurrentMenu(row);
+                    await getPageInterfaceAction(row.pageID);
+                    setEditResourceOpen(true);
+                  }}>
+                  {t('resource')}
+                </span>
+              </Auth>
             )}
-            <span
-              className='text-red-500'
-              onClick={async () => {
-                await deleteMenuRequest(row.pageID);
-                await getPageData();
-              }}>
-              {t('delete')}
-            </span>
+            <Auth permission={constants.permissionDicMap.UPDATE_MENU}>
+              <span
+                className='text-red-500'
+                onClick={async () => {
+                  await deleteMenuRequest(row.pageID);
+                  await getPageData();
+                }}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         );
       },
@@ -218,23 +228,27 @@ const SystemMenu: FC = () => {
       render: (_, row) => {
         return (
           <div className='text-[#00b0f0] flex gap-2 items-center justify-center cursor-pointer'>
-            <span
-              onClick={() => {
-                setIsEditResource(true);
-                setEditCurrentResource(row);
-                setResourceModalOpen(true);
-                resourceFormRef.setFieldsValue(row);
-              }}>
-              {t('edit')}
-            </span>
-            <span
-              className='text-red-500'
-              onClick={async () => {
-                await deleteInterfaceRequest(row.id);
-                await getPageInterfaceAction(row.interfacePageID);
-              }}>
-              {t('delete')}
-            </span>
+            <Auth permission={constants.permissionDicMap.UPDATE_PAGE_INTERFACE}>
+              <span
+                onClick={() => {
+                  setIsEditResource(true);
+                  setEditCurrentResource(row);
+                  setResourceModalOpen(true);
+                  resourceFormRef.setFieldsValue(row);
+                }}>
+                {t('edit')}
+              </span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.DELETE_PAGE_INTERFACE}>
+              <span
+                className='text-red-500'
+                onClick={async () => {
+                  await deleteInterfaceRequest(row.id);
+                  await getPageInterfaceAction(row.interfacePageID);
+                }}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         );
       },
@@ -277,17 +291,19 @@ const SystemMenu: FC = () => {
     <>
       <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
         <span className='font-bold'>{t('menuList')}</span>
-        <Button
-          type='primary'
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setEditCurrentMenu(undefined);
-            form.resetFields();
-            setIsEdit(false);
-            setModalOpen(true);
-          }}>
-          {t('add')}
-        </Button>
+        <Auth permission={constants.permissionDicMap.ADD_MENU}>
+          <Button
+            type='primary'
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setEditCurrentMenu(undefined);
+              form.resetFields();
+              setIsEdit(false);
+              setModalOpen(true);
+            }}>
+            {t('add')}
+          </Button>
+        </Auth>
       </div>
       <Table columns={columns} dataSource={menuList} bordered key='menuTable' rowKey='pageID' />
       <Modal open={modalOpen} onCancel={() => setModalOpen(false)} title={isEdit ? t('edit') : t('add')} onOk={onOk}>
@@ -341,9 +357,11 @@ const SystemMenu: FC = () => {
         extra={
           <Space>
             <Button onClick={() => setEditResourceOpen(false)}>{t('cancel')}</Button>
-            <Button type='primary' onClick={addResource} icon={<PlusOutlined />}>
-              {t('add')}
-            </Button>
+            <Auth permission={constants.permissionDicMap.ADD_PAGE_INTERFACE}>
+              <Button type='primary' onClick={addResource} icon={<PlusOutlined />}>
+                {t('add')}
+              </Button>
+            </Auth>
           </Space>
         }>
         <Table dataSource={resourceList} bordered columns={resourceColumns} rowKey='id'></Table>

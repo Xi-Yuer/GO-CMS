@@ -8,6 +8,7 @@ interface IUserStore {
   token: string | null;
   userInfo: LoginUserResponseType | undefined;
   menus: menuType[];
+  userInterfaceDic: string[];
 }
 
 const UserStoreSlice = createSlice({
@@ -16,6 +17,7 @@ const UserStoreSlice = createSlice({
     token: null,
     userInfo: undefined,
     menus: [],
+    userInterfaceDic: [],
   } as IUserStore,
   reducers: {
     changeToken(state, action) {
@@ -28,8 +30,11 @@ const UserStoreSlice = createSlice({
     changeMenus(state, action) {
       state.menus = action.payload;
     },
+    changeAllInterfaceDic(state, action: { payload: string[]; type: string }) {
+      state.userInterfaceDic = action.payload;
+    },
   },
 });
 
 export default UserStoreSlice.reducer;
-export const { changeToken, changeUserInfo, changeMenus } = UserStoreSlice.actions;
+export const { changeToken, changeUserInfo, changeMenus, changeAllInterfaceDic } = UserStoreSlice.actions;

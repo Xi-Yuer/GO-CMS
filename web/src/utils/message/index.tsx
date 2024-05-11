@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import { createRoot } from 'react-dom/client';
 
 export const message = {
-  error(message: string, duration: number = 3000) {
+  error(message: string, duration: number = 4000) {
     const el = createElement(
       'div',
       {

@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import { useForm } from 'antd/es/form/Form';
 import { PlusOutlined } from '@ant-design/icons';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 const SystemDepartment: FC = () => {
   const { t } = useTranslation();
@@ -62,32 +64,38 @@ const SystemDepartment: FC = () => {
       render: (_, row) => {
         return (
           <div className='text-[#00b0f0] flex gap-2 items-center justify-center cursor-pointer'>
-            <span
-              onClick={() => {
-                setEditCurrentDepartment(row);
-                setIsEdit(true);
-                setModalOpen(true);
-                form.setFieldsValue(row);
-              }}>
-              {t('edit')}
-            </span>
-            <span
-              onClick={() => {
-                setEditCurrentDepartment(row);
-                setIsEdit(false);
-                setModalOpen(true);
-                form.resetFields();
-              }}>
-              {t('addChildDepartment')}
-            </span>
-            <span
-              className='text-red-500'
-              onClick={async () => {
-                await deleteDepartmentRequest(row.id);
-                await getPageData();
-              }}>
-              {t('delete')}
-            </span>
+            <Auth permission={constants.permissionDicMap.UPDATE_DEPARTMENT}>
+              <span
+                onClick={() => {
+                  setEditCurrentDepartment(row);
+                  setIsEdit(true);
+                  setModalOpen(true);
+                  form.setFieldsValue(row);
+                }}>
+                {t('edit')}
+              </span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.ADD_DEPARTMENT}>
+              <span
+                onClick={() => {
+                  setEditCurrentDepartment(row);
+                  setIsEdit(false);
+                  setModalOpen(true);
+                  form.resetFields();
+                }}>
+                {t('addChildDepartment')}
+              </span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.DELETE_DEPARTMENT}>
+              <span
+                className='text-red-500'
+                onClick={async () => {
+                  await deleteDepartmentRequest(row.id);
+                  await getPageData();
+                }}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         );
       },
@@ -114,17 +122,19 @@ const SystemDepartment: FC = () => {
     <>
       <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
         <span className='font-bold'>{t('departmentList')}</span>
-        <Button
-          type='primary'
-          icon={<PlusOutlined />}
-          onClick={() => {
-            setEditCurrentDepartment(undefined);
-            form.resetFields();
-            setIsEdit(false);
-            setModalOpen(true);
-          }}>
-          {t('add')}
-        </Button>
+        <Auth permission={constants.permissionDicMap.ADD_DEPARTMENT}>
+          <Button
+            type='primary'
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setEditCurrentDepartment(undefined);
+              form.resetFields();
+              setIsEdit(false);
+              setModalOpen(true);
+            }}>
+            {t('add')}
+          </Button>
+        </Auth>
       </div>
       <Table columns={columns} dataSource={departmentList} bordered key='departmentTable' rowKey='id' />
       <Modal open={modalOpen} onCancel={() => setModalOpen(false)} title={isEdit ? t('edit') : t('add')} onOk={onOk}>

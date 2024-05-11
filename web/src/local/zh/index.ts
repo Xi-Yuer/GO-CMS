@@ -45,6 +45,7 @@ export default {
     createTime: '创建时间',
     updateTime: '更新时间',
     operate: '操作',
+    export: '导出',
     on: '启用',
     off: '禁用',
     normalMan: '普通账号',

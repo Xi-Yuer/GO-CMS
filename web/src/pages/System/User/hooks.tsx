@@ -21,6 +21,7 @@ import { AxiosResponse } from 'axios';
 import { constants } from '@/constant';
 import { Md5 } from 'ts-md5';
 import dayjs from 'dayjs';
+import Auth from '@/components/Auth';
 
 export interface IUserPageHooks {
   module?: string;
@@ -101,22 +102,28 @@ export const useUserPageHooks = (userPageRef: any, props?: IUserPageHooks) => {
       render: (_, row) =>
         props?.module !== constants.module.ROLE ? (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
-            <span onClick={() => editUserAction(row.id)}>{t('edit')}</span>
-            <span className='text-red-500' onClick={() => deleteUsersAction(row.id)}>
-              {t('delete')}
-            </span>
+            <Auth permission={constants.permissionDicMap.UPDATE_USER}>
+              <span onClick={() => editUserAction(row.id)}>{t('edit')}</span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.DELETE_USER}>
+              <span className='text-red-500' onClick={() => deleteUsersAction(row.id)}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         ) : (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
-            <span
-              onClick={() =>
-                props?.operation &&
-                props?.operation(row).then(() => {
-                  getPageData();
-                })
-              }>
-              {t('auth')}
-            </span>
+            <Auth permission={constants.permissionDicMap.BIND_USER}>
+              <span
+                onClick={() =>
+                  props?.operation &&
+                  props?.operation(row).then(() => {
+                    getPageData();
+                  })
+                }>
+                {t('auth')}
+              </span>
+            </Auth>
           </div>
         ),
     },
