@@ -9,7 +9,7 @@ export interface menuType {
   pageOrder: number;
   canEdit: 1 | 0;
   isOutSite: boolean;
-  outSiteLink: boolean;
+  outSiteLink: string;
   createdAt: string;
   updateTime: string;
 }

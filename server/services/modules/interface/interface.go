@@ -19,15 +19,23 @@ func (i *interfaceService) GetInterfaceByPageID(id string) []*dto.GetInterfaceRe
 }
 
 func (i *interfaceService) UpdateInterfaceByID(id string, params *dto.UpdateInterfaceRequest) error {
-	if _, exist := repositories.InterfaceRepository.GetInterfaceByID(id); !exist {
+	inter, exist := repositories.InterfaceRepository.GetInterfaceByID(id)
+	if !exist {
 		return errors.New("资源不存在")
+	}
+	if !inter.CanEdit {
+		return errors.New("该资源无法修改")
 	}
 	return repositories.InterfaceRepository.UpdateInterfaceByID(id, params)
 }
 
 func (i *interfaceService) DeleteInterfaceByID(id string) error {
-	if _, exist := repositories.InterfaceRepository.GetInterfaceByID(id); !exist {
+	inter, exist := repositories.InterfaceRepository.GetInterfaceByID(id)
+	if !exist {
 		return errors.New("资源不存在")
+	}
+	if !inter.CanEdit {
+		return errors.New("该资源无法删除")
 	}
 	return repositories.InterfaceRepository.DeleteInterfaceByID(id)
 }

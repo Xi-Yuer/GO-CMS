@@ -90,6 +90,14 @@ func (r *response) Conflict(context *gin.Context, v string) {
 
 func (r *response) NoAuth(context *gin.Context, v string) {
 	context.JSON(http.StatusOK, responseStruct{
+		Code: http.StatusBadRequest,
+		Data: nil,
+		Msg:  v,
+	})
+}
+
+func (r *response) Unauthorized(context *gin.Context, v string) {
+	context.JSON(http.StatusUnauthorized, responseStruct{
 		Code: http.StatusUnauthorized,
 		Data: nil,
 		Msg:  v,

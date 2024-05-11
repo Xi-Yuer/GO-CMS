@@ -67,7 +67,7 @@ const SystemRole: FC = () => {
         showSizeChanger
         onShowSizeChange={(_, size) => setLimit(size)}></Pagination>
       <Modal open={editRoleModalOpen} title={isEdit ? t('edit') : t('add')} onOk={onFinish} onCancel={() => setEditRoleModalOpen(false)}>
-        <Form form={formRef} autoComplete='off' labelAlign='right' id='editFormRef'>
+        <Form form={formRef} autoComplete='off' labelAlign='left' labelCol={{ span: 6 }} id='editFormRef'>
           <Form.Item<IUpdateRoleParams> name='roleName' label={t('roleName')} rules={[{ required: true }]}>
             <Input />
           </Form.Item>
@@ -78,6 +78,7 @@ const SystemRole: FC = () => {
       </Modal>
       <Drawer
         title={t('permissionEdit')}
+        width='40%'
         destroyOnClose
         onClose={() => setEditRolePermissionOpen(false)}
         open={editRolePermissionOpen}
@@ -91,7 +92,6 @@ const SystemRole: FC = () => {
         }>
         <Tabs
           size='small'
-          style={{ marginTop: '-20px' }}
           items={[
             {
               label: t('menusPermission'),

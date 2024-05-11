@@ -19,3 +19,23 @@ export const getAllMenusRequest = () => {
     url: '/pages',
   });
 };
+
+export const deleteMenuRequest = (id: string) => {
+  return request.delete<AxiosResponse>({
+    url: `/pages/${id}`,
+  });
+};
+
+export const updateMenuRequest = (id: string, data: menuType) => {
+  return request.patch<AxiosResponse>({
+    url: `/pages/${id}`,
+    data,
+  });
+};
+
+export const createMenuRequest = (data: menuType) => {
+  return request.post<AxiosResponse>({
+    url: '/pages',
+    data,
+  });
+};

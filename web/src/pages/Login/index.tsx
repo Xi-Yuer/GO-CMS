@@ -6,7 +6,7 @@ import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from '@ant-design/icon
 import { getCaptchaRequest, getUserMenusRequest, LoginParamsType, loginRequest } from '@/service';
 import { useTranslation } from 'react-i18next';
 import { FieldType } from '@/pages/Login/type.ts';
-import { changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
+import { changeAllInterfaceDic, changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import { getFirstMenu, sleep } from '@/utils';
@@ -47,6 +47,7 @@ const Login: FC = () => {
         dispatch(changeToken(token));
         await sleep(1000);
         const result = await getUserMenusRequest();
+        dispatch(changeAllInterfaceDic(user.interfaceDic));
         dispatch(changeMenus(result.data));
         if (result.data?.length) {
           navigate(getFirstMenu(result.data).pagePath || '/');

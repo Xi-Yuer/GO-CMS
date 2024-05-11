@@ -20,7 +20,7 @@ export interface IAllPageInterfaceListResponse {
 
 // 获取页面接口
 export const getInterfaceListByPageIDRequest = (id: string) => {
-  return request.get<AxiosResponse<IInterfaceResponse>>({
+  return request.get<AxiosResponse<IInterfaceResponse[]>>({
     url: `/interface/page/${id}`,
   });
 };
@@ -29,5 +29,25 @@ export const getInterfaceListByPageIDRequest = (id: string) => {
 export const getInterfaceAllListRequest = () => {
   return request.get<AxiosResponse<IAllPageInterfaceListResponse[]>>({
     url: `/interface`,
+  });
+};
+
+export const deleteInterfaceRequest = (id: string) => {
+  return request.delete<AxiosResponse<string>>({
+    url: `/interface/${id}`,
+  });
+};
+
+export const addInterfaceRequest = (data: IInterfaceResponse) => {
+  return request.post<AxiosResponse<string>>({
+    url: `/interface`,
+    data,
+  });
+};
+
+export const updateInterfaceRequest = (data: IInterfaceResponse) => {
+  return request.patch<AxiosResponse<string>>({
+    url: `/interface/${data.id}`,
+    data,
   });
 };

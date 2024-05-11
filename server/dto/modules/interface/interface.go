@@ -17,6 +17,7 @@ type GetInterfaceResponse struct {
 	InterfacePath   string `json:"interfacePath" `
 	InterfaceDesc   string `json:"interfaceDesc"`
 	InterfaceDic    string `json:"interfaceDic"`
+	CanEdit         bool   `json:"canEdit"`
 	CreateTime      string `json:"createTime"`
 	UpdateTime      string `json:"updateTime"`
 }

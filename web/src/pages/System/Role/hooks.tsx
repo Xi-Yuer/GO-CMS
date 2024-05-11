@@ -23,6 +23,8 @@ import { useForm } from 'antd/es/form/Form';
 import { buildInterfaceToAntdTree, buildMenuToAntdTree, getAllChildrenMenusID, getAllInterfaceKeys } from '@/utils';
 import { getInterfaceAllListRequest } from '@/service/api/interface';
 import { IUserPageRefProps } from '@/pages/System/User/hooks.tsx';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 export const useRolePageHooks = () => {
   const userPageRef = useRef<IUserPageRefProps>(null);
@@ -78,9 +80,11 @@ export const useRolePageHooks = () => {
     },
     formItems: searchConfig,
     operateComponent: !!selected.length && (
-      <Button type='primary' icon={<DownloadOutlined />} onClick={() => exportRolesRequest(selected)}>
-        导出
-      </Button>
+      <Auth permission={constants.permissionDicMap.EXPORT_ROLE}>
+        <Button type='primary' icon={<DownloadOutlined />} onClick={() => exportRolesRequest(selected)}>
+          {t('export')}
+        </Button>
+      </Auth>
     ),
     formName: 'roleSearchUserForm',
   });
@@ -220,7 +224,9 @@ export const useRolePageHooks = () => {
       align: 'center',
       render: (_, row) => (
         <div className='gap-2 flex text-red-500 items-center cursor-pointer justify-center'>
-          <span onClick={() => deBindRoleUnderUserAction(row)}>{t('remove')}</span>
+          <Auth permission={constants.permissionDicMap.UNBIND_USER}>
+            <span onClick={() => deBindRoleUnderUserAction(row)}>{t('remove')}</span>
+          </Auth>
         </div>
       ),
     },
@@ -288,7 +294,7 @@ export const useRolePageHooks = () => {
       align: 'center',
       render: (_, row) => (
         <div className='gap-2 flex text-[#48ade9] items-center cursor-pointer justify-center'>
-          <span onClick={() => deBindRoleUnderUserAction(row)}>添加</span>
+          <span onClick={() => deBindRoleUnderUserAction(row)}>{t('add')}</span>
         </div>
       ),
     },
@@ -335,12 +341,20 @@ export const useRolePageHooks = () => {
       render: (_, row) => {
         return (
           <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
-            <span onClick={() => editRolePermissionAction(row)}>{t('permissionEdit')}</span>
-            <span onClick={() => editRoleUnderUserAction(row)}>{t('authUser')}</span>
-            <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
-            <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
-              {t('delete')}
-            </span>
+            <Auth permission={[constants.permissionDicMap.UPDATE_ROLE]}>
+              <span onClick={() => editRolePermissionAction(row)}>{t('permissionEdit')}</span>
+            </Auth>
+            <Auth permission={[constants.permissionDicMap.UPDATE_ROLE]}>
+              <span onClick={() => editRoleUnderUserAction(row)}>{t('authUser')}</span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.UPDATE_ROLE}>
+              <span onClick={() => editRoleAction(row)}>{t('edit')}</span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.DELETE_ROLE}>
+              <span className='text-red-500' onClick={() => deleteRoleAction(row.id)}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         );
       },

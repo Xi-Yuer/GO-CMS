@@ -81,10 +81,10 @@ func (i *interfaceRepository) GetAllInterface() ([]*dto.AllInterfaceResponse, er
 }
 
 func (i *interfaceRepository) GetInterfaceByID(id string) (inter *dto.GetInterfaceResponse, exist bool) {
-	query := `SELECT interface_id, interface_name, interface_method, interface_path, interface_page_id, interface_desc,interface_dic, create_time,update_time FROM interfaces WHERE interface_id = ?`
+	query := `SELECT interface_id, interface_name, interface_method, interface_path, interface_page_id, interface_desc,interface_dic, can_edit, create_time,update_time FROM interfaces WHERE interface_id = ?`
 	row := db.DB.QueryRow(query, id)
 	var interfaceInfo dto.GetInterfaceResponse
-	err := row.Scan(&interfaceInfo.ID, &interfaceInfo.InterfaceName, &interfaceInfo.InterfaceMethod, &interfaceInfo.InterfacePath, &interfaceInfo.InterfacePageID, &interfaceInfo.InterfaceDesc, &interfaceInfo.InterfaceDic, &interfaceInfo.CreateTime, &interfaceInfo.UpdateTime)
+	err := row.Scan(&interfaceInfo.ID, &interfaceInfo.InterfaceName, &interfaceInfo.InterfaceMethod, &interfaceInfo.InterfacePath, &interfaceInfo.InterfacePageID, &interfaceInfo.InterfaceDesc, &interfaceInfo.InterfaceDic, &interfaceInfo.CanEdit, &interfaceInfo.CreateTime, &interfaceInfo.UpdateTime)
 	if err != nil {
 		return nil, false
 	}

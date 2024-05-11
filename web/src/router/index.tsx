@@ -13,12 +13,7 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     element: (
-      <Suspense
-        fallback={
-          <Spin spinning={true} fullscreen={true}>
-            Loading...
-          </Spin>
-        }>
+      <Suspense fallback={<Spin spinning={true} fullscreen={true}></Spin>}>
         <Main></Main>
       </Suspense>
     ),

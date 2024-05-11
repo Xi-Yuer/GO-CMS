@@ -50,40 +50,38 @@ func sortSubmenu(page *dto.SinglePageResponse) {
 func BuildDepartment(departments []*dto.DepartmentResponse) []*dto.DepartmentResponse {
 	// 构建完整的树形结构
 	pageMap := make(map[string]*dto.DepartmentResponse)
-	for _, page := range departments {
-		pageMap[page.ID] = page
-		if page.ParentDepartment != nil {
-			parent := pageMap[*page.ParentDepartment]
+	for _, department := range departments {
+		pageMap[department.ID] = department
+	}
+	var roots []*dto.DepartmentResponse
+	for _, department := range departments {
+		if department.ParentDepartment == nil {
+			roots = append(roots, department)
+		} else {
+			parent := pageMap[*department.ParentDepartment]
 			if parent != nil {
-				parent.Children = append(parent.Children, *page)
+				parent.Children = append(parent.Children, department) // 使用部门的指针
 			}
 		}
 	}
-	// 找到所有根节点
-	var roots []*dto.DepartmentResponse
-	for _, page := range departments {
-		if page.ParentDepartment == nil {
-			roots = append(roots, page)
-		}
-	}
-	// 按照PageOrder排序子页面
-	for _, root := range roots {
-		sortSubDepartment(root)
-	}
-	// 按照PageOrder排序根节点
+	// 按照DepartmentOrder排序根节点
 	sort.Slice(roots, func(i, j int) bool {
 		return roots[i].DepartmentOrder < roots[j].DepartmentOrder
 	})
+	// 按照DepartmentOrder排序子部门
+	for _, root := range roots {
+		sortSubDepartment(root)
+	}
 	return roots
 }
 
-// sortSubDepartment 对子菜单按照PageOrder排序
-func sortSubDepartment(page *dto.DepartmentResponse) {
-	sort.Slice(page.Children, func(i, j int) bool {
-		return page.Children[i].DepartmentOrder < page.Children[j].DepartmentOrder
+// sortSubDepartment 对子部门按照DepartmentOrder排序
+func sortSubDepartment(department *dto.DepartmentResponse) {
+	sort.Slice(department.Children, func(i, j int) bool {
+		return department.Children[i].DepartmentOrder < department.Children[j].DepartmentOrder
 	})
-	for _, child := range page.Children {
-		sortSubDepartment(&child)
+	for _, child := range department.Children {
+		sortSubDepartment(child)
 	}
 }
 
