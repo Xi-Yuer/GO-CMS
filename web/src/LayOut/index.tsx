@@ -1,6 +1,6 @@
 import { FC, memo, useRef } from 'react';
 import { useFullscreen } from 'ahooks';
-import { useMainPage } from '@/pages/Main/hooks.tsx';
+import { useMainPage } from '@/LayOut/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Image, Layout, Menu, Popover } from 'antd';

@@ -6,9 +6,9 @@ import SystemRole from '@/pages/System/Role';
 import SystemDepartment from '@/pages/System/Department';
 import SystemMenu from '@/pages/System/Menu';
 import NotFont from '@/pages/NotFont';
-import Iframe from '@/pages/Iframe';
-import Logs from '@/pages/Logs';
-import File from '@/pages/File';
+import Iframe from '@/components/Iframe';
+import Logs from '@/pages/Monitor/Logs';
+import File from '@/pages/File/Upload';
 import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
 import { TreeDataNode } from 'antd';
@@ -24,7 +24,7 @@ const pagesMap: Record<string, React.ReactNode | null> = {
   '/upload': <File />,
 };
 
-// 返回所有 Main 下的路由
+// 返回所有 LayOut 下的路由
 export const builderMenuRoutes = (menus: menuType[]) => {
   const mainChildrenRoutes: RouteObject[] = [];
 
