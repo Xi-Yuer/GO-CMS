@@ -86,5 +86,9 @@ export default {
     interfacePath: 'Path',
     interfaceMethod: 'Method',
     interfaceDesc: 'Description',
+    requestMethod: 'Method',
+    requestPath: 'Path',
+    requestDuration: 'Duration',
+    requestStatus: 'Status',
   },
 };

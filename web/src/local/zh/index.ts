@@ -86,5 +86,10 @@ export default {
     interfacePath: '路径',
     interfaceMethod: '方法',
     interfaceDesc: '描述',
+    userName: '用户名',
+    requestMethod: '请求方法',
+    requestPath: '请求路径',
+    requestDuration: '请求耗时',
+    requestStatus: '请求状态',
   },
 };
