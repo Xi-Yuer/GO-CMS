@@ -2,12 +2,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { FLUSH, PAUSE, PERSIST, persistReducer, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import UseUIStoreSlice from '@/store/UIStore';
 import UserStoreSlice from '@/store/UserStore';
+import useUploadStore from '@/store/UploadStore';
 import storage from 'redux-persist/es/storage';
 import { useDispatch, useSelector } from 'react-redux';
 
 const reducers = combineReducers({
   UIStore: UseUIStoreSlice,
   UserStore: UserStoreSlice,
+  UploadStore: useUploadStore,
 });
 
 const persistedReducer = persistReducer(
@@ -15,6 +17,8 @@ const persistedReducer = persistReducer(
     key: 'cms',
     version: 1,
     storage,
+    whitelist: ['UIStore', 'UserStore'],
+    blacklist: ['UploadStore'],
   },
   reducers,
 );

@@ -1,7 +1,121 @@
-import { FC, memo } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
+import { deleteFileRequest, FileResponse, getCookie, getFileList } from '@/service/api/file';
+import { Button, Pagination, Table, TableColumnsType, Upload, UploadProps } from 'antd';
+import dayjs from 'dayjs';
+import { addListenerGetFileList, emitUploadFile, removeListenerGetFileList } from '@/utils/event';
+import { formatFileSize } from '@/utils/format';
 
 const File: FC = () => {
-  return <>文件系统</>;
+  const [limit, setLimit] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [list, setList] = useState<FileResponse[]>([]);
+  const [loading, setLoading] = useState(false);
+  const getPageList = async () => {
+    setLoading(true);
+    const result = await getFileList({ limit, offset: (currentPage - 1) * limit });
+    setList(result.data.list);
+    setTotal(result.data.total);
+    setLoading(false);
+  };
+
+  const columns: TableColumnsType<FileResponse> = [
+    {
+      title: '文件名',
+      dataIndex: 'fileName',
+      key: 'fileName',
+      align: 'center',
+    },
+    {
+      title: '文件大小',
+      dataIndex: 'fileSize',
+      key: 'fileName',
+      align: 'center',
+      render: (text) => {
+        return <span>{formatFileSize(text)}</span>;
+      },
+    },
+    {
+      title: '上传用户',
+      dataIndex: 'uploadUser',
+      key: 'uploadUser',
+      align: 'center',
+    },
+    {
+      title: '上传时间',
+      dataIndex: 'uploadTime',
+      key: 'uploadTime',
+      align: 'center',
+      render: (text) => {
+        return dayjs(text).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
+    {
+      title: '操作',
+      dataIndex: 'operate',
+      align: 'center',
+      render: (_, { fileID }) => {
+        return (
+          <div className='flex gap-2 text-[#00a7fb] justify-center items-center cursor-pointer'>
+            <span
+              onClick={async () => {
+                await getCookie();
+                const a = document.createElement('a');
+                a.href = `/api/v1/upload/download/aHref/${fileID}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+              }}>
+              下载
+            </span>
+            <span
+              className='text-red-500'
+              onClick={async () => {
+                await deleteFileRequest(fileID);
+                await getPageList();
+              }}>
+              删除
+            </span>
+          </div>
+        );
+      },
+    },
+  ];
+  useEffect(() => {
+    getPageList().then();
+  }, [limit, currentPage]);
+
+  useEffect(() => {
+    addListenerGetFileList(getPageList);
+    return () => {
+      removeListenerGetFileList(getPageList);
+    };
+  }, []);
+
+  const props: UploadProps = {
+    beforeUpload: async (file) => {
+      emitUploadFile(file);
+      return false;
+    },
+  };
+  return (
+    <>
+      <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
+        <span className='font-bold'>文件列表</span>
+        <Upload showUploadList={false} {...props}>
+          <Button type='primary'>上传文件</Button>
+        </Upload>
+      </div>
+      <Table dataSource={list} loading={loading} columns={columns} pagination={false} rowKey='fileID' bordered></Table>
+      <Pagination
+        className='flex justify-end mt-2'
+        total={total}
+        onChange={(page, pageSize) => {
+          setCurrentPage(page);
+          setLimit(pageSize);
+        }}></Pagination>
+    </>
+  );
 };
 
 export default memo(File);
