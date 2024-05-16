@@ -102,5 +102,12 @@ export default {
     startUpload: 'StartUpload',
     uploadFinish: 'UploadFinish',
     continueUploadFile: 'ContinueUploadFile',
+    systemLogs: 'SystemLogs',
+    timeTask: 'TimeTask',
+    taskName: 'TaskName',
+    runTimes: 'RunTimes',
+    taskStatus: 'Status',
+    cron: 'Cron',
+    lastRunTime: 'LastRunTime',
   },
 };

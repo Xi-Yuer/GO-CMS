@@ -13,6 +13,7 @@ import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
 import { TreeDataNode } from 'antd';
 import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
+import TimeTask from '@/pages/Monitor/TimeTask';
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
@@ -22,6 +23,7 @@ const pagesMap: Record<string, React.ReactNode | null> = {
   '/system/menu': <SystemMenu />,
   '/logs': <Logs />,
   '/upload': <File />,
+  '/timeTask': <TimeTask />,
 };
 
 // 返回所有 LayOut 下的路由

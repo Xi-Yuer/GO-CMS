@@ -103,5 +103,12 @@ export default {
     startUpload: '开始上传文件',
     uploadFinish: '文件已上传完成',
     continueUploadFile: '上传文件',
+    systemLogs: '系统日志',
+    timeTask: '定时任务',
+    taskName: '任务名称',
+    runTimes: '运行时间',
+    taskStatus: '任务状态',
+    cron: 'Cron表达式',
+    lastRunTime: '最后运行时间',
   },
 };

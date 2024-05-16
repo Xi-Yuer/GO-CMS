@@ -88,6 +88,9 @@ const Logs: FC = () => {
   }, [limit, curPage]);
   return (
     <>
+      <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
+        <span className='font-bold'>{t('systemLogs')}</span>
+      </div>
       <Table dataSource={list} loading={loading} columns={columns} rowKey='id' pagination={false} bordered></Table>
       <Pagination
         className='flex justify-end mt-2'
