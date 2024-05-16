@@ -65,7 +65,7 @@ export default {
     remove: 'Remove',
     departmentName: 'Name',
     addChildDepartment: 'Add',
-    departmentList: 'List',
+    departmentList: 'DepartmentList',
     departmentDescription: 'Description',
     parentDepartment: 'ParentDepartment',
     order: 'Order',

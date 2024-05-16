@@ -10,6 +10,8 @@ import { checkFileUploadSize } from '@/service/api/file';
 import { emitGetFileList, emitUploadFile } from '@/utils/event';
 import { formatFileSize } from '@/utils/format';
 import { useTranslation } from 'react-i18next';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 export interface AppUploadsRefProps {
   addUploadFile: (file: RcFile) => void;
@@ -131,8 +133,10 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
     <div>
       {contextHolder}
       {uploadBar.showSider && (
-        <div className='flex justify-center items-center absolute z-10 right-0 w-5 cursor-pointer h-screen top-0 bg-[#ffffff50] hover:bg-white shadow'>
-          <div onClick={() => dispatch(changeUploadBarShowDrawer(true))} className='w-full h-full flex justify-center items-center'>
+        <div className='flex justify-center items-center absolute z-10 right-0 w-5 cursor-pointer h-screen top-0 bg-[#ffffff50] dark:bg-[#001620] hover:bg-white dark:hover:bg-[#001620] shadow'>
+          <div
+            onClick={() => dispatch(changeUploadBarShowDrawer(true))}
+            className='w-full h-full flex justify-center items-center dark:text-white animate-pulse'>
             <DoubleLeftOutlined />
           </div>
           <Drawer
@@ -142,13 +146,13 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
             onClose={() => dispatch(changeUploadBarShowDrawer(false))}
             open={uploadBar.showDrawer}
             extra={
-              <>
+              <Auth permission={constants.permissionDicMap.UPLOAD_FILE}>
                 <Upload showUploadList={false} {...props}>
                   <Button type='primary' icon={<UploadOutlined />}>
                     {t('continueUploadFile')}
                   </Button>
                 </Upload>
-              </>
+              </Auth>
             }>
             <Table dataSource={uploadList} columns={columns} bordered rowKey='identifier'></Table>
           </Drawer>

@@ -43,5 +43,8 @@ export const constants = {
     ADD_PAGE_INTERFACE: 'POST:/interface',
     DELETE_PAGE_INTERFACE: 'DELETE:/interface/:id',
     UPDATE_PAGE_INTERFACE: 'PATCH:/interface/:id',
+    UPLOAD_FILE: 'POST:/upload',
+    DELETE_FILE: 'DELETE:/upload/del/:id',
+    DOWNLOAD_FILE: 'GET:/upload/aHref/download/:id',
   },
 };
