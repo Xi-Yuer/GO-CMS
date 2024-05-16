@@ -22,9 +22,12 @@ type timeTask struct {
 }
 
 // AddTask 添加任务
-func (t *timeTask) AddTask(TimeTaskID string, corn string, task func()) error {
+func (t *timeTask) AddTask(TimeTaskID string, corn string, task func(), status bool) error {
 	c = cron.New(cron.WithSeconds())
 	id, err := c.AddFunc(corn, task)
+	if status {
+		go c.Start()
+	}
 	if err != nil {
 		return err
 	}

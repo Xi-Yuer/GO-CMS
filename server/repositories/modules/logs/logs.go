@@ -47,3 +47,8 @@ func (l *logsRepository) GetLogRecords(params *dto.Page) (*dto.HasTotalResponseD
 		Total: total,
 	}, nil
 }
+
+func (l *logsRepository) DeleteLogRecords() {
+	query := "DELETE FROM logs WHERE create_time < DATE_SUB(CURDATE(), INTERVAL 7 DAY)"
+	_, _ = db.DB.Exec(query)
+}
