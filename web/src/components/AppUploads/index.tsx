@@ -1,14 +1,15 @@
 import { forwardRef, memo, Ref, useImperativeHandle, useRef } from 'react';
-import { Drawer, message, Progress, Table, TableColumnsType } from 'antd';
-import { DoubleLeftOutlined } from '@ant-design/icons';
+import { Button, Drawer, message, Progress, Table, TableColumnsType, Upload, UploadProps } from 'antd';
+import { DoubleLeftOutlined, UploadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { changeUploadBarShowDrawer } from '@/store/UIStore';
 import { IUploadFile, updateUploadFileList } from '@/store/UploadStore';
 import { RcFile } from 'antd/es/upload';
 import { BigFileUpload, calculateFileHash } from '@/pages/File/Upload/hooks/useUpload.ts';
 import { checkFileUploadSize } from '@/service/api/file';
-import { emitGetFileList } from '@/utils/event';
+import { emitGetFileList, emitUploadFile } from '@/utils/event';
 import { formatFileSize } from '@/utils/format';
+import { useTranslation } from 'react-i18next';
 
 export interface AppUploadsRefProps {
   addUploadFile: (file: RcFile) => void;
@@ -17,17 +18,18 @@ export interface AppUploadsRefProps {
 const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
   const uploadBar = useAppSelector((state) => state.UIStore.uploadBar);
   const uploadList = useAppSelector((state) => state.UploadStore.uploadList);
-  const dispatch = useAppDispatch();
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const columns: TableColumnsType<IUploadFile> = [
     {
-      title: '文件名',
+      title: t('fileName'),
       dataIndex: 'fileName',
       key: 'fileName',
       align: 'center',
     },
     {
-      title: '大小',
+      title: t('fileSize'),
       dataIndex: 'fileSize',
       key: 'fileSize',
       align: 'center',
@@ -36,7 +38,7 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
       },
     },
     {
-      title: '进度',
+      title: t('progress'),
       dataIndex: 'progress',
       width: 300,
       key: 'progress',
@@ -50,23 +52,24 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
   useImperativeHandle(ref, () => ({
     addUploadFile: async (file: RcFile) => {
       // 1. 计算文件哈希
-      messageApi.loading({ content: '计算文件哈希,请稍后...', key: 'calculateFileHash', duration: 0 });
+      messageApi.loading({ content: t('calculateFileHash'), key: 'calculateFileHash', duration: 0 });
       const fileHash = await calculateFileHash(file);
-      messageApi.success({ content: '开始上传文件', key: 'calculateFileHash' });
+      messageApi.success({ content: t('startUpload'), key: 'calculateFileHash' });
       dispatch(changeUploadBarShowDrawer(true));
+      const uploadSizeResult = await checkFileUploadSize(fileHash);
       let uploadFile = {
         fileName: file.name,
         fileSize: file.size,
         identifier: fileHash,
-        progress: 0,
+        progress: Math.ceil((uploadSizeResult.data.hasReadySize / file.size) * 100),
       } as IUploadFile;
       uploadFileListRef.current = [...uploadFileListRef.current, uploadFile];
-      const uploadSizeResult = await checkFileUploadSize(fileHash);
       // 文件秒传
+      dispatch(updateUploadFileList(uploadFileListRef.current));
       if (uploadSizeResult.data.hasReadySize !== file.size) {
         // 无需上传已上传过的部分
         file.slice(uploadSizeResult.data.hasReadySize);
-        await BigFileUpload(file, fileHash, (size) => {
+        await BigFileUpload(file, uploadSizeResult.data.hasReadySize, fileHash, (size) => {
           const list = uploadFileListRef.current.map((item) => {
             if (item.identifier === fileHash) {
               return {
@@ -112,10 +115,18 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
         uploadFileListRef.current = uploadFileList;
         dispatch(updateUploadFileList(uploadFileList));
       }
-      messageApi.success({ content: '文件已上传完成', key: 'calculateFileHash' });
+      messageApi.success({ content: t('uploadFinish'), key: 'calculateFileHash' });
       emitGetFileList();
     },
   }));
+
+  const props: UploadProps = {
+    beforeUpload: async (file) => {
+      emitUploadFile(file);
+      return false;
+    },
+  };
+
   return (
     <div>
       {contextHolder}
@@ -124,7 +135,21 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
           <div onClick={() => dispatch(changeUploadBarShowDrawer(true))} className='w-full h-full flex justify-center items-center'>
             <DoubleLeftOutlined />
           </div>
-          <Drawer title='文件上传列表' width='60%' mask={false} onClose={() => dispatch(changeUploadBarShowDrawer(false))} open={uploadBar.showDrawer}>
+          <Drawer
+            title={t('fileList')}
+            width='60%'
+            mask={false}
+            onClose={() => dispatch(changeUploadBarShowDrawer(false))}
+            open={uploadBar.showDrawer}
+            extra={
+              <>
+                <Upload showUploadList={false} {...props}>
+                  <Button type='primary' icon={<UploadOutlined />}>
+                    {t('continueUploadFile')}
+                  </Button>
+                </Upload>
+              </>
+            }>
             <Table dataSource={uploadList} columns={columns} bordered rowKey='identifier'></Table>
           </Drawer>
         </div>

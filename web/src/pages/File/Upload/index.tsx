@@ -4,6 +4,8 @@ import { Button, Pagination, Table, TableColumnsType, Upload, UploadProps } from
 import dayjs from 'dayjs';
 import { addListenerGetFileList, emitUploadFile, removeListenerGetFileList } from '@/utils/event';
 import { formatFileSize } from '@/utils/format';
+import { UploadOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 
 const File: FC = () => {
   const [limit, setLimit] = useState(10);
@@ -11,6 +13,8 @@ const File: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState<FileResponse[]>([]);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
+
   const getPageList = async () => {
     setLoading(true);
     const result = await getFileList({ limit, offset: (currentPage - 1) * limit });
@@ -21,13 +25,13 @@ const File: FC = () => {
 
   const columns: TableColumnsType<FileResponse> = [
     {
-      title: '文件名',
+      title: t('fileName'),
       dataIndex: 'fileName',
       key: 'fileName',
       align: 'center',
     },
     {
-      title: '文件大小',
+      title: t('fileSize'),
       dataIndex: 'fileSize',
       key: 'fileName',
       align: 'center',
@@ -36,13 +40,13 @@ const File: FC = () => {
       },
     },
     {
-      title: '上传用户',
+      title: t('uploadUser'),
       dataIndex: 'uploadUser',
       key: 'uploadUser',
       align: 'center',
     },
     {
-      title: '上传时间',
+      title: t('uploadTime'),
       dataIndex: 'uploadTime',
       key: 'uploadTime',
       align: 'center',
@@ -51,7 +55,7 @@ const File: FC = () => {
       },
     },
     {
-      title: '操作',
+      title: t('operate'),
       dataIndex: 'operate',
       align: 'center',
       render: (_, { fileID }) => {
@@ -66,7 +70,7 @@ const File: FC = () => {
                 a.click();
                 document.body.removeChild(a);
               }}>
-              下载
+              {t('download')}
             </span>
             <span
               className='text-red-500'
@@ -74,7 +78,7 @@ const File: FC = () => {
                 await deleteFileRequest(fileID);
                 await getPageList();
               }}>
-              删除
+              {t('delete')}
             </span>
           </div>
         );
@@ -101,9 +105,11 @@ const File: FC = () => {
   return (
     <>
       <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
-        <span className='font-bold'>文件列表</span>
+        <span className='font-bold'>{t('fileList')}</span>
         <Upload showUploadList={false} {...props}>
-          <Button type='primary'>上传文件</Button>
+          <Button type='primary' icon={<UploadOutlined />}>
+            {t('uploadFile')}
+          </Button>
         </Upload>
       </div>
       <Table dataSource={list} loading={loading} columns={columns} pagination={false} rowKey='fileID' bordered></Table>

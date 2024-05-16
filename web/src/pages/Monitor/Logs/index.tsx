@@ -88,7 +88,7 @@ const Logs: FC = () => {
   }, [limit, curPage]);
   return (
     <>
-      <Table dataSource={list} loading={loading} columns={columns} rowKey='id' pagination={false}></Table>
+      <Table dataSource={list} loading={loading} columns={columns} rowKey='id' pagination={false} bordered></Table>
       <Pagination
         className='flex justify-end mt-2'
         total={total}

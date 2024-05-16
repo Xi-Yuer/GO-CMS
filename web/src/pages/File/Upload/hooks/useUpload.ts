@@ -9,22 +9,25 @@ interface Chunk {
 /**
  * 大文件上传
  * @param file 文件对象
+ * @param hasReadySize
  * @param fileHash
  * @param fallBack
  */
-export const BigFileUpload = async (file: File, fileHash: string, fallBack?: (size: number) => void) => {
+export const BigFileUpload = async (file: File, hasReadySize: number, fileHash: string, fallBack?: (size: number) => void) => {
   // 2. 将文件分片
   const chunkSize = 1024 * 1024; // 每个分片大小为1MB
   const chunks = createFileChunks(file, chunkSize);
-
   // 3. 上传分片
   for (let i = 0; i < chunks.length; i++) {
+    const uploadedSize = hasReadySize + (i + 1) * chunkSize; // 已上传的文件大小
+    const totalSize = file.size; // 文件总大小
+    const progress = uploadedSize / totalSize;
     // 上传分片
+    fallBack && fallBack(Math.ceil(progress * 100));
     await uploadFileChunk({
       file: chunks[i].file,
       identifier: fileHash,
     });
-    fallBack && fallBack(Math.ceil(((i + 1) * 100) / chunks.length));
   }
 
   // 4. 通知服务器合并分片
