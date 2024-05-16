@@ -15,13 +15,7 @@ import ErrorBoundary from 'antd/es/alert/ErrorBoundary';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <ErrorBoundary>
-      <PersistGate
-        loading={
-          <Spin spinning={true} fullscreen={true}>
-            Loading...
-          </Spin>
-        }
-        persistor={persistStore(store)}>
+      <PersistGate loading={<Spin spinning={true} fullscreen={true}></Spin>} persistor={persistStore(store)}>
         <BrowserRouter>
           <AntdApp>
             <App />

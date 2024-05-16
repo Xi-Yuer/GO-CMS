@@ -1,18 +1,22 @@
-import { FC, memo, useRef } from 'react';
+import { FC, memo, useEffect, useRef } from 'react';
 import { useFullscreen } from 'ahooks';
-import { useMainPage } from '@/pages/Main/hooks.tsx';
+import { useMainPage } from '@/LayOut/hooks.tsx';
 import { useTheme } from '@/hooks/useTheme';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Image, Layout, Menu, Popover } from 'antd';
-import { AppBreadcrumb, AppHeaderTab, ThemeBar, Translate } from '@/components';
+import { AppBreadcrumb, AppHeaderTab, AppUploads, ThemeBar, Translate } from '@/components';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { DownOutlined, ExpandOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 import { changeFold } from '@/store/UIStore';
 import { cache } from '@/utils';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
+import { addListenerUploadFile, removeListenerUploadFile } from '@/utils/event';
+import { RcFile } from 'antd/es/upload';
+import { AppUploadsRefProps } from '@/components/AppUploads';
 
 const Main: FC = () => {
+  const appUploadsRef = useRef<AppUploadsRefProps>(null);
   const dispatch = useAppDispatch();
   const fullscreenRef = useRef();
   const { Sider, Header, Content, menus, onSelect, onOpenChange, navigateHome } = useMainPage();
@@ -30,6 +34,17 @@ const Main: FC = () => {
     cache.clear();
     navigate('/Login');
   };
+
+  const uploadFileHandler = (file: RcFile) => {
+    appUploadsRef.current?.addUploadFile(file);
+  };
+
+  useEffect(() => {
+    addListenerUploadFile(uploadFileHandler);
+    return () => {
+      removeListenerUploadFile(uploadFileHandler);
+    };
+  }, []);
   return (
     <>
       <Layout className='h-screen overflow-hidden select-none'>
@@ -97,6 +112,7 @@ const Main: FC = () => {
               <Outlet />
             </div>
           </Content>
+          <AppUploads ref={appUploadsRef} />
         </Layout>
       </Layout>
     </>

@@ -5,12 +5,14 @@ import SystemUser from '@/pages/System/User';
 import SystemRole from '@/pages/System/Role';
 import SystemDepartment from '@/pages/System/Department';
 import SystemMenu from '@/pages/System/Menu';
+import NotFont from '@/pages/NotFont';
+import Iframe from '@/components/Iframe';
+import Logs from '@/pages/Monitor/Logs';
+import File from '@/pages/File/Upload';
 import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
-import NotFont from '@/pages/NotFont';
 import { TreeDataNode } from 'antd';
 import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
-import Iframe from '@/pages/Iframe';
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
@@ -18,9 +20,11 @@ const pagesMap: Record<string, React.ReactNode | null> = {
   '/system/role': <SystemRole />,
   '/system/department': <SystemDepartment />,
   '/system/menu': <SystemMenu />,
+  '/logs': <Logs />,
+  '/upload': <File />,
 };
 
-// 返回所有 Main 下的路由
+// 返回所有 LayOut 下的路由
 export const builderMenuRoutes = (menus: menuType[]) => {
   const mainChildrenRoutes: RouteObject[] = [];
 

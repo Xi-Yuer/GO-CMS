@@ -11,6 +11,10 @@ interface IUIStore {
   TabHeader: menuType[];
   defaultSelectedKeys: string[];
   defaultOpenKeys: string[];
+  uploadBar: {
+    showSider: boolean;
+    showDrawer: boolean;
+  };
 }
 
 const useUIStoreSlice = createSlice({
@@ -22,6 +26,10 @@ const useUIStoreSlice = createSlice({
     TabHeader: [],
     defaultSelectedKeys: [],
     defaultOpenKeys: [],
+    uploadBar: {
+      showSider: true,
+      showDrawer: false,
+    },
   } as IUIStore,
   reducers: {
     changeFold(state, action) {
@@ -69,9 +77,25 @@ const useUIStoreSlice = createSlice({
     changeDefaultSelectedKeys(state, action: { payload: string[]; type: string }) {
       state.defaultSelectedKeys = action.payload;
     },
+    changeUploadBarShowSider(state, action: { payload: boolean; type: string }) {
+      state.uploadBar.showSider = action.payload;
+    },
+    changeUploadBarShowDrawer(state, action: { payload: boolean; type: string }) {
+      state.uploadBar.showDrawer = action.payload;
+    },
   },
 });
 
-export const { changeFold, changeLang, changeThemeMode, addTabHeader, delTabHeader, changeTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys } =
-  useUIStoreSlice.actions;
+export const {
+  changeFold,
+  changeLang,
+  changeThemeMode,
+  addTabHeader,
+  delTabHeader,
+  changeTabHeader,
+  changeDefaultOpenKeys,
+  changeDefaultSelectedKeys,
+  changeUploadBarShowSider,
+  changeUploadBarShowDrawer,
+} = useUIStoreSlice.actions;
 export default useUIStoreSlice.reducer;

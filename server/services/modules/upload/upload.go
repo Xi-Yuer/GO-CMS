@@ -97,7 +97,7 @@ func (u *uploadService) DeleteFile(id string) error {
 	return repositories.UploadRepository.DeleteRecord(id)
 }
 
-func (u *uploadService) GetFileList(params *dto.Page) ([]dto.UploadRecordResponse, error) {
+func (u *uploadService) GetFileList(params *dto.Page) (*dto.HasTotalResponseData, error) {
 	return repositories.UploadRepository.GetRecords(params)
 }
 

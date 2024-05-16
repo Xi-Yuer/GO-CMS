@@ -31,7 +31,19 @@ func (u *uploadRepository) DeleteRecord(id string) error {
 	return nil
 }
 
-func (u *uploadRepository) GetRecords(params *dto.Page) ([]dto.UploadRecordResponse, error) {
+func (u *uploadRepository) GetRecords(params *dto.Page) (*dto.HasTotalResponseData, error) {
+	count := "SELECT COUNT(*) FROM file"
+	var total int
+	r, err := db.DB.Query(count)
+	if err != nil {
+		return nil, err
+	}
+	for r.Next() {
+		err := r.Scan(&total)
+		if err != nil {
+			return nil, err
+		}
+	}
 	query := "SELECT id, upload_user, file_name, file_size,upload_time FROM file LIMIT ? OFFSET ?"
 	rows, err := db.DB.Query(query, params.Limit, params.Offset)
 	if err != nil {
@@ -49,7 +61,10 @@ func (u *uploadRepository) GetRecords(params *dto.Page) ([]dto.UploadRecordRespo
 		}
 		records = append(records, record)
 	}
-	return records, nil
+	return &dto.HasTotalResponseData{
+		List:  records,
+		Total: total,
+	}, nil
 }
 
 func (u *uploadRepository) GetFileInfo(id string) (*dto.UploadRecordResponse, error) {

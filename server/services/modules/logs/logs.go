@@ -9,6 +9,6 @@ var LogsService = &logsService{}
 
 type logsService struct{}
 
-func (receiver *logsService) GetLogRecords(params *dto.Page) ([]*dto.GetLogRecordResponse, error) {
+func (receiver *logsService) GetLogRecords(params *dto.Page) (*dto.HasTotalResponseData, error) {
 	return repositories.LogsRepository.GetLogRecords(params)
 }
