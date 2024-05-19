@@ -9,6 +9,7 @@ import (
 	pagesControllerModules "github.com/Xi-Yuer/cms/controllers/modules/pages"
 	roleControllersModules "github.com/Xi-Yuer/cms/controllers/modules/role"
 	systemControllerModules "github.com/Xi-Yuer/cms/controllers/modules/system"
+	templateControllerModules "github.com/Xi-Yuer/cms/controllers/modules/template"
 	"github.com/Xi-Yuer/cms/controllers/modules/timeTask"
 	uploadControllerModules "github.com/Xi-Yuer/cms/controllers/modules/upload"
 	userControllersModules "github.com/Xi-Yuer/cms/controllers/modules/users"
@@ -25,3 +26,4 @@ var CommitsController = commitsControllerModules.CommitsController
 var SystemController = systemControllerModules.SystemController
 var TimeTaskController = timeTaskControllerModules.TimeTaskController
 var UploadController = uploadControllerModules.UploadController
+var TemplateController = templateControllerModules.TemplateController

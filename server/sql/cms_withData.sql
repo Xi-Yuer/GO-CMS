@@ -133,7 +133,7 @@ INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`)
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('7eba3f7987195934ffc991a777f8f477c5b3fb6c', 'Xi-Yuer', '2214380963@qq.com', '2024-04-04 17:42:59', 'docs:swagger');
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('61ead725b6e316da8ec60555d580b663a20a9a3f', 'Xi-Yuer', '2214380963@qq.com', '2024-04-04 17:40:06', 'feat:获取用户菜单');
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('4a29d1fb5f943404fac0e192bc246ae78e36c774', 'Xi-Yuer', '2214380963@qq.com', '2024-04-04 16:43:25', 'feat:给角色分配页面权限');
-INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('064c698b49f40e32b2177d1b15db08acee6de1ee', 'Xi-Yuer', '2214380963@qq.com', '2024-04-03 18:39:35', 'refactor:dto');
+INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('064c698b49f40e32b2177d1b15db08acee6de1ee', 'Xi-Yuer', '2214380963@qq.com', '2024-04-03 18:39:35', 'refactor:dto.tmpl');
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('39d26bbe25e3594bf771693f10cc841beba48f2a', 'Xi-Yuer', '2214380963@qq.com', '2024-04-03 18:36:56', 'feat:角色权限');
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('e7c603231440d541b11a56d9ef65ada273da9621', 'Xi-Yuer', '2214380963@qq.com', '2024-04-03 18:02:50', 'feat:页面管理（新建删除页面）');
 INSERT INTO `commits` (`commit_id`, `author`, `email`, `commit_date`, `message`) VALUES ('219714b514701ea4bdd5af16dc64b1965dc92b8e', 'Xi-Yuer', '2214380963@qq.com', '2024-03-31 13:59:39', 'refactor:swagger');
