@@ -11,10 +11,11 @@ import Logs from '@/pages/Monitor/Logs';
 import File from '@/pages/File/Upload';
 import * as React from 'react';
 import { RouteObject } from 'react-router-dom';
-import { TreeDataNode } from 'antd';
+import { MenuProps, TreeDataNode } from 'antd';
 import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
 import TimeTask from '@/pages/Monitor/TimeTask';
 import CodeGenerator from '@/pages/SystemUtils/CodeGenerate';
+import { FileTextOutlined, FolderOutlined } from '@ant-design/icons';
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
@@ -244,4 +245,86 @@ export const getAllInterfaceDic = (inter: IAllPageInterfaceListResponse[]): stri
   _recursionInterface(inter);
 
   return treeData;
+};
+
+type MenuItem = Required<MenuProps>['items'][number];
+export const GenerateFolderMenu = (TableName: string) => {
+  const menus: MenuItem[] = [
+    {
+      key: 'Server',
+      label: 'Server',
+      icon: <FolderOutlined />,
+      children: [
+        {
+          key: 'Controller',
+          label: 'Controller',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'controllerFile',
+              label: `${TableName}Controller.go`,
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+        {
+          key: 'Service',
+          label: 'Service',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'serviceFile',
+              label: `${TableName}Service.go`,
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+        {
+          key: 'Repository',
+          label: 'Repository',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'repositoryFile',
+              label: `${TableName}Repository.go`,
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+        {
+          key: 'DTO',
+          label: 'DTO',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'dtoFile',
+              label: `${TableName}DTO.go`,
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'Web',
+      label: 'Web',
+      icon: <FolderOutlined />,
+      children: [
+        {
+          key: 'Components',
+          label: 'Components',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'Layout',
+              label: 'Layout',
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  return menus;
 };

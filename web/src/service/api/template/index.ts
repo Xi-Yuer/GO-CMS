@@ -13,10 +13,22 @@ export interface ICreateTemplateParams {
 }
 
 export interface ICreateTemplateResponse {
-  controller: string;
-  service: string;
-  dto: string;
-  repository: string;
+  server: server;
+  web: web;
+}
+
+export interface server {
+  controllerFile: code;
+  serviceFile: code;
+  repositoryFile: code;
+  dtoFile: code;
+}
+
+export interface web {}
+
+export interface code {
+  code: string;
+  lang: string;
 }
 
 export const createTemplateRequest = (data: ICreateTemplateParams) => {

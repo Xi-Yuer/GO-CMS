@@ -12,8 +12,20 @@ type Fields struct {
 }
 
 type CreateTemplateResponse struct {
-	Controller string `json:"controller"`
-	Service    string `json:"service"`
-	Repository string `json:"repository"`
-	DTO        string `json:"dto"`
+	Server Server `json:"server"`
+	Web    Web    `json:"web"`
+}
+
+type Server struct {
+	ControllerFile Code `json:"controllerFile"`
+	ServiceFile    Code `json:"serviceFile"`
+	RepositoryFile Code `json:"repositoryFile"`
+	DTOFile        Code `json:"dtoFile"`
+}
+type Web struct {
+}
+
+type Code struct {
+	Code string `json:"code"`
+	Lang string `json:"lang"`
 }

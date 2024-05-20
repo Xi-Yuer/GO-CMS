@@ -1,4 +1,4 @@
-import { forwardRef, memo, useEffect, useImperativeHandle, useState } from 'react';
+import { Dispatch, forwardRef, memo, SetStateAction, useEffect, useImperativeHandle, useState } from 'react';
 import { Editor, loader, Monaco } from '@monaco-editor/react';
 import { defineMonacoTheme } from '@/theme';
 import { useTheme } from '@/hooks/useTheme.ts';
@@ -8,6 +8,7 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import * as monaco from 'monaco-editor';
+import { code } from '@/service/api/template';
 
 loader.config({ monaco });
 self.MonacoEnvironment = {
@@ -29,8 +30,9 @@ self.MonacoEnvironment = {
 };
 
 export interface ICodeEditeInterface {
-  lang: string;
-  code: string;
+  editCode: Dispatch<SetStateAction<code | undefined>> | undefined;
+  defaultLang: string | undefined;
+  defaultCode: string | undefined;
 }
 
 export interface ICodeEditRefProps {
@@ -42,7 +44,7 @@ await loader.init().then((monaco) => {
   monacoInstance = monaco;
 });
 
-const CodeEdit = forwardRef<ICodeEditRefProps, ICodeEditeInterface>(({ lang, code }, ref) => {
+const CodeEdit = forwardRef<ICodeEditRefProps, ICodeEditeInterface>(({ defaultCode, editCode, defaultLang }, ref) => {
   const { themeMode } = useTheme();
   const [eCode, setECode] = useState<string | undefined>('');
   const handleEditorDidMount = (monacoInstance: Monaco) => {
@@ -53,15 +55,17 @@ const CodeEdit = forwardRef<ICodeEditRefProps, ICodeEditeInterface>(({ lang, cod
   useEffect(() => {
     if (!monacoInstance) return;
     handleEditorDidMount(monacoInstance);
-    setECode(code);
-  }, [themeMode, code, monacoInstance]);
+  }, [themeMode, monacoInstance]);
+
+  useEffect(() => {
+    setECode(defaultCode);
+  }, [defaultCode, editCode]);
 
   useImperativeHandle(ref, () => ({
     getCode: () => {
       return monacoInstance?.editor.getModels()[0]?.getValue();
     },
   }));
-
   return (
     <div className='h-full bg-white py-4 rounded dark:bg-[#1e1f32]'>
       <Editor
@@ -70,11 +74,17 @@ const CodeEdit = forwardRef<ICodeEditRefProps, ICodeEditeInterface>(({ lang, cod
           minimap: { enabled: false },
           contextmenu: false,
         }}
-        onChange={(e) => setECode(e)}
+        onChange={(e: any) => {
+          editCode &&
+            editCode({
+              code: e,
+              lang: defaultLang || 'text',
+            });
+        }}
         value={eCode}
         theme='naruto'
-        defaultLanguage={lang}
-        defaultValue={code}
+        defaultLanguage={defaultLang || 'text'}
+        defaultValue={eCode}
       />
     </div>
   );

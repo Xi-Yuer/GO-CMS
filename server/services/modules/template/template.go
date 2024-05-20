@@ -3,6 +3,7 @@ package templateServiceModule
 import (
 	"bytes"
 	"github.com/Xi-Yuer/cms/dto"
+	templateResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/template"
 	"sync"
 	"text/template"
 )
@@ -49,10 +50,25 @@ func (t *templateService) CreateTemplate(params *dto.CreateTemplateRequestParams
 	}
 
 	return &dto.CreateTemplateResponse{
-		Controller: results["controller"],
-		Service:    results["service"],
-		Repository: results["repository"],
-		DTO:        results["dto"],
+		Server: templateResponsiesModules.Server{
+			ControllerFile: templateResponsiesModules.Code{
+				Code: results["controller"],
+				Lang: "go",
+			},
+			ServiceFile: templateResponsiesModules.Code{
+				Code: results["service"],
+				Lang: "go",
+			},
+			RepositoryFile: templateResponsiesModules.Code{
+				Code: results["repository"],
+				Lang: "go",
+			},
+			DTOFile: templateResponsiesModules.Code{
+				Code: results["dto"],
+				Lang: "go",
+			},
+		},
+		Web: templateResponsiesModules.Web{},
 	}, nil
 }
 

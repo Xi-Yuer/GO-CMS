@@ -30,7 +30,7 @@ export const monacoLightTheme: IStandaloneThemeData = {
   rules: [
     // 高亮规则，即给代码里不同token类型的代码设置不同的显示样式
     { token: 'identifier', foreground: '#d06733' },
-    { token: 'number', foreground: '#6bbeeb', fontStyle: 'italic' },
+    { token: 'number', foreground: '#6bbeeb' },
     { token: 'keyword', foreground: '#05a4d5' },
   ],
   colors: {
@@ -47,8 +47,8 @@ export const monacoDarkTheme: IStandaloneThemeData = {
   base: 'vs-dark', // 使用vs-dark作为基础主题
   inherit: true,
   rules: [
-    { token: 'identifier', foreground: '#819ee9', fontStyle: 'italic' }, // 修改标识符颜色为黄色
-    { token: 'number', foreground: '#6bbeeb', fontStyle: 'italic' }, // 数字颜色保持不变
+    { token: 'identifier', foreground: '#819ee9' }, // 修改标识符颜色为黄色
+    { token: 'number', foreground: '#6bbeeb' }, // 数字颜色保持不变
     { token: 'keyword', foreground: '#ff79c6' }, // 修改关键字颜色为粉色
   ],
   colors: {
