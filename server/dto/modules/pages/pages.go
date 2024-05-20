@@ -32,7 +32,7 @@ type UpdatePageRequest struct {
 	PagePath      string  `form:"pagePath"`
 	PageIcon      string  `form:"pageIcon" binding:"required"`
 	PageComponent string  `form:"pageComponent"`
-	PageOrder     int     `form:"pageOrder" binding:"required"`
+	PageOrder     *int    `form:"pageOrder" binding:"required"`
 	IsOutSite     bool    `form:"isOutSite"`
 	OutSiteLink   *string `form:"outSiteLink"`
 }

@@ -1,6 +1,7 @@
 package templateResponsiesModules
 
 type CreateTemplateRequestParams struct {
+	Package   string    `form:"package" binding:"required"`
 	TableName string    `form:"tableName" binding:"required"`
 	Fields    *[]Fields `form:"fields" binding:"required"`
 }
@@ -20,6 +21,7 @@ type Server struct {
 	ControllerFile Code `json:"controllerFile"`
 	ServiceFile    Code `json:"serviceFile"`
 	RepositoryFile Code `json:"repositoryFile"`
+	RouteFile      Code `json:"routeFile"`
 	DTOFile        Code `json:"dtoFile"`
 }
 type Web struct {

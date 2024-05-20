@@ -22,6 +22,7 @@ func (t *templateService) CreateTemplate(params *dto.CreateTemplateRequestParams
 		"controller": "template/controller/controller.tmpl",
 		"service":    "template/service/service.tmpl",
 		"repository": "template/repository/repository.tmpl",
+		"route":      "template/route/route.tmpl",
 		"dto":        "template/dto/dto.tmpl",
 	}
 
@@ -61,6 +62,10 @@ func (t *templateService) CreateTemplate(params *dto.CreateTemplateRequestParams
 			},
 			RepositoryFile: templateResponsiesModules.Code{
 				Code: results["repository"],
+				Lang: "go",
+			},
+			RouteFile: templateResponsiesModules.Code{
+				Code: results["route"],
 				Lang: "go",
 			},
 			DTOFile: templateResponsiesModules.Code{

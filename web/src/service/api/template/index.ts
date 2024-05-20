@@ -8,6 +8,7 @@ interface Field {
 }
 
 export interface ICreateTemplateParams {
+  package: string;
   tableName: string;
   fields: Field[];
 }
@@ -21,6 +22,7 @@ export interface server {
   controllerFile: code;
   serviceFile: code;
   repositoryFile: code;
+  routeFile: code;
   dtoFile: code;
 }
 

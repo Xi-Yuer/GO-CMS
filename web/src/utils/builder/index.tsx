@@ -292,6 +292,18 @@ export const GenerateFolderMenu = (TableName: string) => {
           ],
         },
         {
+          key: 'Route',
+          label: 'Route',
+          icon: <FolderOutlined />,
+          children: [
+            {
+              key: 'routeFile',
+              label: `${TableName}RouteFile.go`,
+              icon: <FileTextOutlined />,
+            },
+          ],
+        },
+        {
           key: 'DTO',
           label: 'DTO',
           icon: <FolderOutlined />,
