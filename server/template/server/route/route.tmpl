@@ -1,0 +1,17 @@
+package {{ .TableName }}Route
+
+import (
+	{{ .TableName }}Controller "{{ .Package }}/template/controller"
+	"github.com/gin-gonic/gin"
+)
+
+func Use{{ .TableName }}Routes(r *gin.RouterGroup) {
+	group := r.Group("/{{ .TableName }}")
+	c := {{ .TableName }}Controller.New{{ .TableName }}Controller()
+	{
+		group.GET("", c.Get{{ .TableName }}ListRepo)
+		group.POST("", c.Create{{ .TableName }}RecordRepo)
+		group.PUT("/:id", c.Update{{ .TableName }}RecordRepo)
+		group.DELETE("/:id", c.Delete{{ .TableName }}RecordRepo)
+	}
+}

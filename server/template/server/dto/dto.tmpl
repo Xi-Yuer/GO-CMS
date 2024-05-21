@@ -1,0 +1,17 @@
+package {{.TableName}}Dto
+
+type {{.TableName}}CreateRequestDTO struct {
+{{range .Fields}}	{{.Name}} {{.Type}} `json:"{{.Name}}" binding:"required"`
+{{end}}
+}
+
+type {{.TableName}}UpdateRequestDTO struct {
+{{range .Fields}}	{{.Name}} {{.Type}} `json:"{{.Name}}" binding:"required"`
+{{end}}
+}
+
+type {{.TableName}}FindRequestDTO struct {
+{{range .Fields}}	{{.Name}} {{.Type}} `json:"{{.Name}}" binding:"required"`
+{{end}}    Limit  int64  `json:"limit"`
+	Offset int64  `json:"offset"`
+}

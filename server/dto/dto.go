@@ -9,6 +9,7 @@ import (
 	logsResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/logs"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	rolesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/roles"
+	templateResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/template"
 	timeTaskResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/timeTask"
 	uploadResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/upload"
 	usersResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/users"
@@ -145,3 +146,12 @@ type UploadRecordResponse = uploadResponsiesModules.UploadRecordResponse
 type HasTotalResponseData = commonResponsiesModules.HasTotalResponseData
 
 type AllInterfaceResponse = interfaceResponsiesModules.AllInterfaceResponse
+
+// CreateTemplateRequestParams 创建模板
+type CreateTemplateRequestParams = templateResponsiesModules.CreateTemplateRequestParams
+
+// CreateTemplateResponse 模板返回
+type CreateTemplateResponse = templateResponsiesModules.CreateTemplateResponse
+
+// DownloadTemplateRequestParams 下载模板
+type DownloadTemplateRequestParams = templateResponsiesModules.DownloadTemplateRequestParams

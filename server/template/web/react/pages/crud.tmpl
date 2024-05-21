@@ -1,0 +1,63 @@
+import React, { FC, memo } from 'react';
+import { use{{ .TableName }}PageHooks } from '@/hooks/{{ .TableName }}TableHook'
+import { Form, Input, Modal, Pagination, Table } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { IUpdate{{ .TableName }}Params } from '@/service';
+
+const {{ .TableName }}Page: FC = () => {
+  const {
+    list,
+    roleColumns,
+    SearchFormComponent,
+    total,
+    limit,
+    loading,
+    isEdit,
+    formRef,
+    edit{{ .TableName }}ModalOpen,
+    setPage,
+    setLimit,
+    setSelected,
+    setEdit{{ .TableName }}ModalOpen,
+    onFinish,
+  } = use{{ .TableName }}PageHooks();
+  const { t } = useTranslation();
+  return (
+    <>
+      {SearchFormComponent}
+      <Table
+        dataSource={list}
+        rowSelection={
+        {
+          onChange: (selectedRowKeys: React.Key[]) => {
+            setSelected(selectedRowKeys);
+          },
+        }
+        }
+        loading={loading}
+        columns={roleColumns}
+        bordered={true}
+        pagination={false}
+        rowKey='id'></Table>
+      <Pagination
+        total={total}
+        className='flex justify-end mt-2'
+        pageSize={limit}
+        onChange={(e) => setPage(e)}
+        showSizeChanger
+        onShowSizeChange={(_, size) => setLimit(size)}></Pagination>
+      <Modal open={edit{{ .TableName }}ModalOpen} title={isEdit ? t('edit') : t('add')} onOk={onFinish} onCancel={() => setEdit{{ .TableName }}ModalOpen(false)}>
+        <Form form={formRef} autoComplete='off' labelAlign='left' id='editFormRef'>
+          <Form.Item<IUpdate{{ .TableName }}Params> name='roleName' label={t('roleName')} rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item<IUpdate{{ .TableName }}Params> name='description' label={t('roleDescription')} rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
+
+export default memo({{ .TableName }}Page);

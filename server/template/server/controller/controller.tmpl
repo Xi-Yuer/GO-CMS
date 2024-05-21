@@ -1,0 +1,82 @@
+package {{ .TableName }}Controller
+
+import (
+	{{ .TableName }}Dto "{{ .Package }}/template/dto"
+	{{ .TableName }}Service "{{ .Package }}/template/service"
+	"github.com/gin-gonic/gin"
+)
+
+type ControllerInterface interface {
+	Get{{ .TableName }}ListRepo(context *gin.Context)
+	Create{{ .TableName }}RecordRepo(context *gin.Context)
+	Update{{ .TableName }}RecordRepo(context *gin.Context)
+	Delete{{ .TableName }}RecordRepo(context *gin.Context)
+}
+
+func New{{ .TableName }}Controller() ControllerInterface {
+	return &{{ .TableName }}Controller{
+		service: {{ .TableName }}Service.New{{ .TableName }}Service(),
+	}
+}
+
+type {{ .TableName }}Controller struct {
+	service {{ .TableName }}Service.ServiceInterface
+}
+
+func (t *{{ .TableName }}Controller) Get{{ .TableName }}ListRepo(context *gin.Context) {
+	var params {{ .TableName }}Dto.{{ .TableName }}FindRequestDTO
+	if err := context.ShouldBind(&params); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	service, err := t.service.Get{{ .TableName }}ListService(&params)
+	if err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(200, gin.H{"data": service})
+}
+
+func (t *{{ .TableName }}Controller) Create{{ .TableName }}RecordRepo(context *gin.Context) {
+	var params {{ .TableName }}Dto.{{ .TableName }}CreateRequestDTO
+	if err := context.ShouldBind(&params); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := t.service.Create{{ .TableName }}RecordService(&params); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(200, gin.H{"data": "success"})
+}
+
+func (t *{{ .TableName }}Controller) Update{{ .TableName }}RecordRepo(context *gin.Context) {
+	var params {{ .TableName }}Dto.{{ .TableName }}UpdateRequestDTO
+	id := context.Param("id")
+	if id == "" {
+		context.JSON(400, gin.H{"error": "id is null"})
+		return
+	}
+	if err := context.ShouldBind(&params); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	if err := t.service.Update{{ .TableName }}ListService(id, &params); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	context.JSON(200, gin.H{"data": "success"})
+}
+
+func (t *{{ .TableName }}Controller) Delete{{ .TableName }}RecordRepo(context *gin.Context)  {
+	id := context.Param("id")
+	if id == "" {
+		context.JSON(400, gin.H{"error": "id is null"})
+		return
+	}
+	if err := t.service.Delete{{ .TableName }}RecordService(id); err != nil {
+		context.JSON(400, gin.H{"error": err.Error()})
+	}
+	context.JSON(200, gin.H{"data": "success"})
+}

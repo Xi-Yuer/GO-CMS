@@ -3,6 +3,7 @@ package utils
 import (
 	"github.com/Xi-Yuer/cms/utils/modules/bcrypt"
 	"github.com/Xi-Yuer/cms/utils/modules/buildTree"
+	"github.com/Xi-Yuer/cms/utils/modules/buildZip"
 	"github.com/Xi-Yuer/cms/utils/modules/captcha"
 	"github.com/Xi-Yuer/cms/utils/modules/contain"
 	"github.com/Xi-Yuer/cms/utils/modules/exportExcel"
@@ -33,3 +34,4 @@ var TimeTask = timeTask.TimeTask
 var File = file.File
 var FormatCommits = buildTree.FormatCommits
 var GroupCommitsByDate = buildTree.GroupCommitsByDate
+var CreateFilesAndZip = buildZip.CreateFilesAndZip

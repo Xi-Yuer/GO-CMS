@@ -11,6 +11,9 @@ importers:
       '@ant-design/icons':
         specifier: ^5.3.6
         version: 5.3.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@monaco-editor/react':
+        specifier: ^4.6.0
+        version: 4.6.0(monaco-editor@0.48.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@reduxjs/toolkit':
         specifier: ^2.2.3
         version: 2.2.3(react-redux@9.1.1(@types/react@18.2.79)(react@18.2.0)(redux@5.0.1))(react@18.2.0)
@@ -26,9 +29,6 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
-      classname:
-        specifier: ^0.0.0
-        version: 0.0.0
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -53,6 +53,9 @@ importers:
       i18next-browser-languagedetector:
         specifier: ^7.2.1
         version: 7.2.1
+      monaco-editor:
+        specifier: ^0.48.0
+        version: 0.48.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -480,6 +483,18 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==, tarball: https://registry.npmmirror.com/@jridgewell/trace-mapping/-/trace-mapping-0.3.25.tgz}
 
+  '@monaco-editor/loader@1.4.0':
+    resolution: {integrity: sha512-00ioBig0x642hytVspPl7DbQyaSWRaolYie/UFNjoTdvoKPzo6xrXLhTk9ixgIKcLH5b5vDOjVNiGyY+uDCUlg==, tarball: https://registry.npmmirror.com/@monaco-editor/loader/-/loader-1.4.0.tgz}
+    peerDependencies:
+      monaco-editor: '>= 0.21.0 < 1'
+
+  '@monaco-editor/react@4.6.0':
+    resolution: {integrity: sha512-RFkU9/i7cN2bsq/iTkurMWOEErmYcY6JiQI3Jn+WeR/FGISH8JbHERjpS9oRuSOPvDMJI0Z8nJeKkbOs9sBYQw==, tarball: https://registry.npmmirror.com/@monaco-editor/react/-/react-4.6.0.tgz}
+    peerDependencies:
+      monaco-editor: '>= 0.25.0 < 1'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==, tarball: https://registry.npmmirror.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz}
     engines: {node: '>= 8'}
@@ -886,9 +901,6 @@ packages:
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==, tarball: https://registry.npmmirror.com/chokidar/-/chokidar-3.6.0.tgz}
     engines: {node: '>= 8.10.0'}
-
-  classname@0.0.0:
-    resolution: {integrity: sha512-kkhsspEJdUW+VhuvNzb2sQf0KbafDPfd36dB1qf03Uu42dWZwMQzaQuyNkaRr5ir0ZiAN0+TlH/EOOfwb/aaXg==, tarball: https://registry.npmmirror.com/classname/-/classname-0.0.0.tgz}
 
   classnames@2.5.1:
     resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==, tarball: https://registry.npmmirror.com/classnames/-/classnames-2.5.1.tgz}
@@ -1362,6 +1374,9 @@ packages:
   minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==, tarball: https://registry.npmmirror.com/minipass/-/minipass-7.0.4.tgz}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  monaco-editor@0.48.0:
+    resolution: {integrity: sha512-goSDElNqFfw7iDHMg8WDATkfcyeLTNpBHQpO8incK6p5qZt5G/1j41X0xdGzpIkGojGXM+QiRQyLjnfDVvrpwA==, tarball: https://registry.npmmirror.com/monaco-editor/-/monaco-editor-0.48.0.tgz}
 
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==, tarball: https://registry.npmmirror.com/ms/-/ms-2.1.2.tgz}
@@ -1912,6 +1927,9 @@ packages:
   spark-md5@3.0.2:
     resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==, tarball: https://registry.npmmirror.com/spark-md5/-/spark-md5-3.0.2.tgz}
 
+  state-local@1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==, tarball: https://registry.npmmirror.com/state-local/-/state-local-1.0.7.tgz}
+
   string-convert@0.2.1:
     resolution: {integrity: sha512-u/1tdPl4yQnPBjnVrmdLo9gtuLvELKsAoRapekWggdiQNvvvum+jYF329d84NAa660KQw7pB2n36KrIKVoXa3A==, tarball: https://registry.npmmirror.com/string-convert/-/string-convert-0.2.1.tgz}
 
@@ -2430,6 +2448,18 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  '@monaco-editor/loader@1.4.0(monaco-editor@0.48.0)':
+    dependencies:
+      monaco-editor: 0.48.0
+      state-local: 1.0.7
+
+  '@monaco-editor/react@4.6.0(monaco-editor@0.48.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@monaco-editor/loader': 1.4.0(monaco-editor@0.48.0)
+      monaco-editor: 0.48.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -2902,8 +2932,6 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  classname@0.0.0: {}
-
   classnames@2.5.1: {}
 
   color-convert@1.9.3:
@@ -3363,6 +3391,8 @@ snapshots:
       brace-expansion: 2.0.1
 
   minipass@7.0.4: {}
+
+  monaco-editor@0.48.0: {}
 
   ms@2.1.2: {}
 
@@ -3951,6 +3981,8 @@ snapshots:
   source-map-js@1.2.0: {}
 
   spark-md5@3.0.2: {}
+
+  state-local@1.0.7: {}
 
   string-convert@0.2.1: {}
 

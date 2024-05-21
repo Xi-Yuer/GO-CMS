@@ -12,6 +12,7 @@ import (
 	rolesRouterModules "github.com/Xi-Yuer/cms/routers/modules/roles"
 	swaggerRouterModules "github.com/Xi-Yuer/cms/routers/modules/swagger"
 	systemRouterModules "github.com/Xi-Yuer/cms/routers/modules/system"
+	templateRouterModules "github.com/Xi-Yuer/cms/routers/modules/template"
 	timeTaskRouterModules "github.com/Xi-Yuer/cms/routers/modules/timeTask"
 	uploadTaskRouterModules "github.com/Xi-Yuer/cms/routers/modules/upload"
 	usersRouterModules "github.com/Xi-Yuer/cms/routers/modules/users"
@@ -48,6 +49,7 @@ func SetUpRouters() *gin.Engine {
 		systemRouterModules.UseSystemRoutes(v1)
 		timeTaskRouterModules.UseTimeTaskRoutes(v1)
 		uploadTaskRouterModules.UseUploadRoutes(v1)
+		templateRouterModules.UseTTemplateRoutes(v1)
 		swaggerRouterModules.UseSwaggerRoutes(r)
 	}
 

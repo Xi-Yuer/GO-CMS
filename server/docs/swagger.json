@@ -591,6 +591,52 @@
                 "responses": {}
             }
         },
+        "/template": {
+            "post": {
+                "description": "创建模板",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "代码生成器"
+                ],
+                "summary": "创建模板",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/template/download": {
+            "post": {
+                "description": "下载模板",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "代码生成器"
+                ],
+                "summary": "下载模板",
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/timeTask": {
             "get": {
                 "description": "获取定时任务",
