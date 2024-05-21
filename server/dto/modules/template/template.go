@@ -13,6 +13,9 @@ type DownloadTemplateRequestParams struct {
 	Repository string `form:"repository" binding:"required"`
 	Route      string `form:"route" binding:"required"`
 	DTO        string `form:"dto" binding:"required"`
+	SearchForm string `form:"searchForm" binding:"required"`
+	Table      string `form:"table" binding:"required"`
+	TableHook  string `form:"tableHook" binding:"required"`
 }
 
 type Fields struct {

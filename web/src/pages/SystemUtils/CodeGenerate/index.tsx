@@ -173,6 +173,9 @@ const CodeGenerate: FC = () => {
       repository: repositoryCode?.code,
       route: routeFileCode?.code,
       dto: dtoCode?.code,
+      searchForm: reactSearchFormCode?.code,
+      tableHook: reactTableHookCode?.code,
+      table: reactTableCode?.code,
     }).then((res) => {
       saveAs(res, 'UserTableTemplate.zip');
     });

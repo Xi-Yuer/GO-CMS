@@ -48,6 +48,9 @@ export interface IDownloadTemplateParams {
   repository: string | undefined;
   route: string | undefined;
   dto: string | undefined;
+  searchForm: string | undefined;
+  table: string | undefined;
+  tableHook: string | undefined;
 }
 
 export const createTemplateRequest = (data: ICreateTemplateParams) => {

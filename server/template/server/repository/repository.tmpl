@@ -28,7 +28,7 @@ func (r *repository) Get{{ .TableName }}ListRepo(params *{{ .TableName }}Dto.{{ 
 	var {{ .TableName }}List []*{{ .TableName }}Dto.{{ .TableName }}FindRequestDTO
 	for rows.Next() {
 		var params {{ .TableName }}Dto.{{ .TableName }}FindRequestDTO
-		if err := rows.Scan(&params.Name, &params.Age); err != nil {
+		if err := rows.Scan({{range .Fields}} &params.{{.Name}}, {{end}}); err != nil {
 			log.Fatal(err)
 		}
 		{{ .TableName }}List = append({{ .TableName }}List, &params)
@@ -37,7 +37,7 @@ func (r *repository) Get{{ .TableName }}ListRepo(params *{{ .TableName }}Dto.{{ 
 }
 
 func (r *repository) Create{{ .TableName }}RecordRepo(params *{{ .TableName }}Dto.{{ .TableName }}CreateRequestDTO) error {
-	querySQL := "INSERT INTO {{ .TableName }} (Name,Age) VALUES (?,?)"
+	querySQL := "INSERT INTO {{ .TableName }} ({{range .Fields}} {{.Name}}, {{end}}) VALUES (?,?)"
 	if _, err := db.DB.Exec(querySQL, params.Name, params.Age); err != nil {
 		return err
 	}
@@ -45,8 +45,8 @@ func (r *repository) Create{{ .TableName }}RecordRepo(params *{{ .TableName }}Dt
 }
 
 func (r *repository) Update{{ .TableName }}RecordRepo(id string, params *{{ .TableName }}Dto.{{ .TableName }}UpdateRequestDTO) error {
-	querySQL := "UPDATE {{ .TableName }} SET Name=?,Age=? WHERE id=?"
-	if _, err := db.DB.Exec(querySQL, params.Name, params.Age); err != nil {
+	querySQL := "UPDATE {{ .TableName }} SET {{range .Fields}} {{.Name}}=?,{{end}} WHERE id=?"
+	if _, err := db.DB.Exec(querySQL, {{range .Fields}} params.{{.Name}}, {{end}}); err != nil {
 		return err
 	}
 	return nil

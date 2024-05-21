@@ -104,12 +104,18 @@ func (t *templateService) DownloadTemplateZip(params *dto.DownloadTemplateReques
 	Repository := fmt.Sprintf("%vTemplate/server/repository/%v.go", params.TableName, params.TableName)
 	Route := fmt.Sprintf("%vTemplate/server/route/%v.go", params.TableName, params.TableName)
 	DTO := fmt.Sprintf("%vTemplate/server/dto/%v.go", params.TableName, params.TableName)
+	SearchForm := fmt.Sprintf("%vTemplate/web/react/hook/searchForm.tsx", params.TableName)
+	TableHook := fmt.Sprintf("%vTemplate/web/react/hook/%vtableHook.tsx", params.TableName, params.TableName)
+	Table := fmt.Sprintf("%vTemplate/web/react/pages/%vTablePage.tsx", params.TableName, params.TableName)
 	files := map[string]string{
 		Controller: params.Controller,
 		Service:    params.Service,
 		Repository: params.Repository,
 		Route:      params.Route,
 		DTO:        params.DTO,
+		SearchForm: params.SearchForm,
+		Table:      params.Table,
+		TableHook:  params.TableHook,
 	}
 
 	return utils.CreateFilesAndZip(files)
