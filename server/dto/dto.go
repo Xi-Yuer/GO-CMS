@@ -152,3 +152,6 @@ type CreateTemplateRequestParams = templateResponsiesModules.CreateTemplateReque
 
 // CreateTemplateResponse 模板返回
 type CreateTemplateResponse = templateResponsiesModules.CreateTemplateResponse
+
+// DownloadTemplateRequestParams 下载模板
+type DownloadTemplateRequestParams = templateResponsiesModules.DownloadTemplateRequestParams

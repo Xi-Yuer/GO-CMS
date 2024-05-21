@@ -104,7 +104,7 @@ func (t *timeTaskService) GetTimeTask() []dto.TimeTaskResponse {
 			TaskName:    task.TaskName,
 			Cron:        task.Cron,
 			Status:      task.Status,
-			LastRunTime: task.LastRunTime.Format("2006/01/02 03:04:05"),
+			LastRunTime: task.LastRunTime.Format("2006-01-02 03:04:05"),
 			RunTimes:    diff.Seconds(),
 		})
 	}

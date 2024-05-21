@@ -6,6 +6,15 @@ type CreateTemplateRequestParams struct {
 	Fields    *[]Fields `form:"fields" binding:"required"`
 }
 
+type DownloadTemplateRequestParams struct {
+	TableName  string `form:"tableName" binding:"required"`
+	Controller string `form:"controller" binding:"required"`
+	Service    string `form:"service" binding:"required"`
+	Repository string `form:"repository" binding:"required"`
+	Route      string `form:"route" binding:"required"`
+	DTO        string `form:"dto" binding:"required"`
+}
+
 type Fields struct {
 	Name    string `form:"name" binding:"required"`
 	Type    string `form:"type" binding:"required"`
@@ -25,6 +34,13 @@ type Server struct {
 	DTOFile        Code `json:"dtoFile"`
 }
 type Web struct {
+	React React `json:"react"`
+}
+
+type React struct {
+	SearchForm Code `json:"searchForm"`
+	Table      Code `json:"table"`
+	TableHook  Code `json:"tableHook"`
 }
 
 type Code struct {

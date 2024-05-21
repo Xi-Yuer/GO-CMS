@@ -323,16 +323,45 @@ export const GenerateFolderMenu = (TableName: string) => {
       icon: <FolderOutlined />,
       children: [
         {
-          key: 'Components',
-          label: 'Components',
+          key: 'React',
+          label: 'React',
           icon: <FolderOutlined />,
           children: [
             {
-              key: 'Layout',
-              label: 'Layout',
-              icon: <FileTextOutlined />,
+              key: 'Hook',
+              label: 'Hook',
+              icon: <FolderOutlined />,
+              children: [
+                {
+                  key: 'searchForm',
+                  label: `searchForm.tsx`,
+                  icon: <FileTextOutlined />,
+                },
+                {
+                  key: 'tableHook',
+                  label: `${TableName}Hook.tsx`,
+                  icon: <FileTextOutlined />,
+                },
+              ],
+            },
+            {
+              key: 'Pages',
+              label: 'Pages',
+              icon: <FolderOutlined />,
+              children: [
+                {
+                  key: 'table',
+                  label: `${TableName}Page.tsx`,
+                  icon: <FileTextOutlined />,
+                },
+              ],
             },
           ],
+        },
+        {
+          key: 'Vue',
+          label: 'Vue',
+          icon: <FolderOutlined />,
         },
       ],
     },

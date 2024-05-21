@@ -26,16 +26,41 @@ export interface server {
   dtoFile: code;
 }
 
-export interface web {}
+export interface web {
+  react: reactType;
+}
+
+export interface reactType {
+  searchForm: code;
+  table: code;
+  tableHook: code;
+}
 
 export interface code {
   code: string;
   lang: string;
 }
 
+export interface IDownloadTemplateParams {
+  tableName: string;
+  controller: string | undefined;
+  service: string | undefined;
+  repository: string | undefined;
+  route: string | undefined;
+  dto: string | undefined;
+}
+
 export const createTemplateRequest = (data: ICreateTemplateParams) => {
   return request.post<AxiosResponse<ICreateTemplateResponse>>({
     url: '/template',
     data: data,
+  });
+};
+
+export const downloadTemplateRequest = (data: IDownloadTemplateParams) => {
+  return request.post<Blob>({
+    url: '/template/download',
+    data: data,
+    responseType: 'blob',
   });
 };

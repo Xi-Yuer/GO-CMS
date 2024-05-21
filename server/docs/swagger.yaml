@@ -394,6 +394,36 @@ paths:
       summary: 获取系统运行信息
       tags:
       - 系统管理
+  /template:
+    post:
+      consumes:
+      - application/json
+      description: 创建模板
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 创建模板
+      tags:
+      - 代码生成器
+  /template/download:
+    post:
+      consumes:
+      - application/json
+      description: 下载模板
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 下载模板
+      tags:
+      - 代码生成器
   /timeTask:
     get:
       consumes:

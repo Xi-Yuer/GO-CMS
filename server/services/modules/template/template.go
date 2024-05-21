@@ -2,8 +2,10 @@ package templateServiceModule
 
 import (
 	"bytes"
+	"fmt"
 	"github.com/Xi-Yuer/cms/dto"
 	templateResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/template"
+	"github.com/Xi-Yuer/cms/utils"
 	"sync"
 	"text/template"
 )
@@ -19,11 +21,14 @@ func (t *templateService) CreateTemplate(params *dto.CreateTemplateRequestParams
 	var mu sync.Mutex
 
 	templates := map[string]string{
-		"controller": "template/controller/controller.tmpl",
-		"service":    "template/service/service.tmpl",
-		"repository": "template/repository/repository.tmpl",
-		"route":      "template/route/route.tmpl",
-		"dto":        "template/dto/dto.tmpl",
+		"controller":         "template/server/controller/controller.tmpl",
+		"service":            "template/server/service/service.tmpl",
+		"repository":         "template/server/repository/repository.tmpl",
+		"route":              "template/server/route/route.tmpl",
+		"dto":                "template/server/dto/dto.tmpl",
+		"webReactSearchForm": "template/web/react/hook/searchForm.tmpl",
+		"webReactTableHook":  "template/web/react/hook/crudHook.tmpl",
+		"webReactTable":      "template/web/react/pages/crud.tmpl",
 	}
 
 	wg.Add(len(templates))
@@ -73,13 +78,49 @@ func (t *templateService) CreateTemplate(params *dto.CreateTemplateRequestParams
 				Lang: "go",
 			},
 		},
-		Web: templateResponsiesModules.Web{},
+		Web: templateResponsiesModules.Web{
+			React: templateResponsiesModules.React{
+				SearchForm: templateResponsiesModules.Code{
+					Code: results["webReactSearchForm"],
+					Lang: "typescript",
+				},
+				TableHook: templateResponsiesModules.Code{
+					Code: results["webReactTableHook"],
+					Lang: "typescript",
+				},
+				Table: templateResponsiesModules.Code{
+					Code: results["webReactTable"],
+					Lang: "typescript",
+				},
+			},
+		},
 	}, nil
+}
+
+func (t *templateService) DownloadTemplateZip(params *dto.DownloadTemplateRequestParams) ([]byte, error) {
+	// 定义文件路径和内容的映射
+	Controller := fmt.Sprintf("%vTemplate/server/controller/%v.go", params.TableName, params.TableName)
+	Service := fmt.Sprintf("%vTemplate/server/service/%v.go", params.TableName, params.TableName)
+	Repository := fmt.Sprintf("%vTemplate/server/repository/%v.go", params.TableName, params.TableName)
+	Route := fmt.Sprintf("%vTemplate/server/route/%v.go", params.TableName, params.TableName)
+	DTO := fmt.Sprintf("%vTemplate/server/dto/%v.go", params.TableName, params.TableName)
+	files := map[string]string{
+		Controller: params.Controller,
+		Service:    params.Service,
+		Repository: params.Repository,
+		Route:      params.Route,
+		DTO:        params.DTO,
+	}
+
+	return utils.CreateFilesAndZip(files)
 }
 
 func parseTemplate(path string, params any) (string, error) {
 	var parseTemplate bytes.Buffer
 	parseControllerExecute, err := template.ParseFiles(path)
+	if err != nil {
+		return "", err
+	}
 	if err != nil {
 		return "", err
 	}

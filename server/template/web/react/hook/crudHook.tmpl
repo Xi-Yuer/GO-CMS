@@ -1,0 +1,155 @@
+import { Key, ReactNode, useEffect, useState } from 'react';
+import { Button, Input, TableProps } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
+import {
+  create{{ .TableName }}Request,
+  delete{{ .TableName }}Request,
+  export{{ .TableName }}Request,
+  get{{ .TableName }}Request,
+  IQuery{{ .TableName }}Params,
+  I{{ .TableName }}Response,
+  IUpdate{{ .TableName }}Params,
+  update{{ .TableName }}Request,
+} from '@/service';
+import { useTranslation } from 'react-i18next';
+import { useSearchFrom } from '@/hooks/useSearchForm.tsx';
+import { useForm } from 'antd/es/form/Form';
+
+export const use{{ .TableName }}PageHooks = () => {
+  const [formRef] = useForm();
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<Key[]>([]);
+  const [list, set{{ .TableName }}] = useState<I{{ .TableName }}Response[]>([]);
+  const [currentEdit{{ .TableName }}, setCurrentEdit{{ .TableName }}] = useState<I{{ .TableName }}Response>();
+  const [isEdit, setIsEdit] = useState(false);
+  const [edit{{ .TableName }}ModalOpen, setEdit{{ .TableName }}ModalOpen] = useState(false);
+  const { t } = useTranslation();
+  const searchConfig: { label: string; name: keyof IQuery{{ .TableName }}Params; component: ReactNode }[] = [
+    {
+      label: 'ID',
+      name: 'id',
+      component: <Input allowClear />,
+    },
+    {{range .Fields}}
+    {
+        label: '{{.Name}}',
+        name: '{{.Name}}',
+        component: <Input allowClear />,
+    },
+    {{end}}
+  ];
+  const { SearchFormComponent } = useSearchFrom({
+    getDataRequestFn: (values) => getPageData(values),
+    onNewRecordFn: () => {
+      setIsEdit(false);
+      setEdit{{ .TableName }}ModalOpen(true);
+    },
+    formItems: searchConfig,
+    operateComponent: !!selected.length && (
+      <Button type='primary' icon={<DownloadOutlined />} onClick={() => export{{ .TableName }}Request(selected)}>
+        {t('export')}
+      </Button>
+    ),
+    formName: 'roleSearchUserForm',
+  });
+
+  const getPageData = (values?: I{{ .TableName }}Response) => {
+    setLoading(true);
+    get{{ .TableName }}Request({ limit, offset: (page - 1) * limit, ...values } as IQuery{{ .TableName }}Params)
+      .then((res) => {
+        set{{ .TableName }}(res.data.list);
+        setTotal(res.data.total);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const delete{{ .TableName }}Action = (id: string) => {
+    delete{{ .TableName }}Request(id).then(() => getPageData());
+  };
+
+  const edit{{ .TableName }}Action = async (row: I{{ .TableName }}Response) => {
+    setCurrentEdit{{ .TableName }}(row);
+    setIsEdit(true);
+    setEdit{{ .TableName }}ModalOpen(true);
+  };
+
+  const onFinish = () => {
+    formRef.validateFields().then((values) => {
+      // 编辑
+      if (isEdit) {
+        update{{ .TableName }}Request({ ...currentEdit{{ .TableName }}, ...values } as IUpdate{{ .TableName }}Params).then(() => {
+          setEdit{{ .TableName }}ModalOpen(false);
+          getPageData();
+        });
+      } else {
+        // 新增
+        create{{ .TableName }}Request(values).then(() => {
+          setEdit{{ .TableName }}ModalOpen(false);
+          getPageData();
+        });
+      }
+    });
+  };
+
+  const roleColumns: TableProps<I{{ .TableName }}Response>['columns'] = [
+    {
+      title: t('index'),
+      align: 'center',
+      render: (_, __, index) => (page - 1) * limit + index + 1,
+    },
+    {{range .Fields}}
+    {
+        title: '{{.Name}}',
+        dataIndex: '{{.Name}}',
+        key: '{{.Name}}',
+    },
+    {{end}}
+    {
+      title: t('operate'),
+      key: 'action',
+      align: 'center',
+      render: (_, row) => {
+        return (
+          <div className='gap-2 flex text-[#5bb4ef] items-center cursor-pointer justify-center'>
+            <span onClick={() => edit{{ .TableName }}Action(row)}>{t('edit')}</span>
+            <span className='text-red-500' onClick={() => delete{{ .TableName }}Action(row.id)}>
+              {t('delete')}
+            </span>
+          </div>
+        );
+      },
+    },
+  ];
+
+  useEffect(() => {
+    if (edit{{ .TableName }}ModalOpen && isEdit) {
+      formRef.setFieldsValue(currentEdit{{ .TableName }});
+    }
+  }, [edit{{ .TableName }}ModalOpen]);
+
+  useEffect(() => {
+    getPageData();
+  }, [limit, page]);
+
+  return {
+    list,
+    roleColumns,
+    SearchFormComponent,
+    total,
+    limit,
+    loading,
+    isEdit,
+    formRef,
+    edit{{ .TableName }}ModalOpen,
+    setPage,
+    setLimit,
+    setSelected,
+    setEdit{{ .TableName }}ModalOpen,
+    onFinish,
+  };
+};
