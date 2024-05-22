@@ -1,1 +1,1 @@
-VITE_APP_BASE_URL = "/api/v1"
+VITE_APP_BASE_URL = "/cms"

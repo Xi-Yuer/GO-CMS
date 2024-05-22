@@ -2,11 +2,11 @@ package config
 
 var Config = config{
 	APP: APP{
-		PORT:          ":8080",
+		PORT:          ":8081",
 		SESSIONSECRET: "1234567890",
 		JWT:           "1234567890",
-		SWAGPATH:      "http://localhost:8080/swagger/docs/index.html#/example",
-		BASEURL:       "/api/v1",
+		SWAGPATH:      "http://localhost:8081/swagger/docs/index.html#/example",
+		BASEURL:       "/cms",
 		FILEPATH:      "./uploadFile/",
 	},
 	DB: DB{
