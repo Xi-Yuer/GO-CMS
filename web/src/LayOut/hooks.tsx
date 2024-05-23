@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getFirstMenu, getMenuByPath, getTheCurrentRoutePathAllMenuPath } from '@/utils';
 import { useDispatch } from 'react-redux';
 import { addTabHeader, changeDefaultOpenKeys, changeDefaultSelectedKeys } from '@/store/UIStore';
+import { constants } from '@/constant';
 
 export const useMainPage = () => {
   const { Header, Sider, Content } = Layout;
@@ -22,8 +23,8 @@ export const useMainPage = () => {
 
   useEffect(() => {
     // 首页重定向
-    if (menus.length && pathname === '/') {
-      navigate(getFirstMenu(menus).pagePath);
+    if (menus.length && pathname === constants.routePath.main) {
+      navigateHome();
     }
   }, []);
 

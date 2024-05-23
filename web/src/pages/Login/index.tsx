@@ -8,11 +8,12 @@ import { useTranslation } from 'react-i18next';
 import { FieldType } from '@/pages/Login/type.ts';
 import { changeAllInterfaceDic, changeMenus, changeToken, changeUserInfo } from '@/store/UserStore';
 import { useAppDispatch } from '@/store';
-import { useNavigate } from 'react-router-dom';
 import { getFirstMenu, sleep } from '@/utils';
 import { changeTabHeader } from '@/store/UIStore';
 import Logo from '@/assets/svg/logo.svg';
 import classNames from 'classnames';
+import { constants } from '@/constant';
+import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
   const navigate = useNavigate();
@@ -50,8 +51,8 @@ const Login: FC = () => {
         dispatch(changeAllInterfaceDic(user.interfaceDic));
         dispatch(changeMenus(result.data));
         if (result.data?.length) {
-          navigate(getFirstMenu(result.data).pagePath || '/');
           dispatch(changeTabHeader([getFirstMenu(result.data)]));
+          navigate(constants.routePath.main);
         } else {
           message.error('暂无任何菜单，请联系管理员');
         }

@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import { addListenerUploadFile, removeListenerUploadFile } from '@/utils/event';
 import { RcFile } from 'antd/es/upload';
 import { AppUploadsRefProps } from '@/components/AppUploads';
+import { constants } from '@/constant';
 
 const Main: FC = () => {
   const appUploadsRef = useRef<AppUploadsRefProps>(null);
@@ -32,7 +33,7 @@ const Main: FC = () => {
 
   const logOutAction = () => {
     cache.clear();
-    navigate('/Login');
+    navigate(constants.routePath.login);
   };
 
   const uploadFileHandler = (file: RcFile) => {

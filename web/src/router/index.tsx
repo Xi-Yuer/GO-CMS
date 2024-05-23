@@ -4,14 +4,15 @@ import NotFont from '@/pages/NotFont';
 import { Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { Spin } from 'antd';
+import { constants } from '@/constant';
 
 export const routes: RouteObject[] = [
   {
-    path: '/Login',
+    path: constants.routePath.login,
     element: <Login />,
   },
   {
-    path: '/',
+    path: constants.routePath.main,
     element: (
       <Suspense fallback={<Spin spinning={true} fullscreen={true}></Spin>}>
         <Main></Main>
