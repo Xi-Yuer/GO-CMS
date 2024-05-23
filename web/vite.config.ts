@@ -23,8 +23,21 @@ export default defineConfig({
       },
     },
     target: ['esnext'],
+    terserOptions: {
+      enclose: false,
+      compress: true,
+      sourceMap: false,
+    },
   },
   server: {
+    proxy: {
+      '/cms': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+      },
+    },
+  },
+  preview: {
     proxy: {
       '/cms': {
         target: 'http://localhost:8081',
