@@ -65,7 +65,7 @@ const File: FC = () => {
               onClick={async () => {
                 await getCookie();
                 const a = document.createElement('a');
-                a.href = `/api/v1/upload/download/aHref/${fileID}`;
+                a.href = `/cms/upload/download/aHref/${fileID}`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
