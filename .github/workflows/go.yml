@@ -50,10 +50,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.1.0
-          release_name: Release 代码生成器
+          tag_name: v1.1.1
+          release_name: Release 预发布
           body: |
-            Release v1.1.0
+            Release v1.1.1
           draft: false
           prerelease: false
 
