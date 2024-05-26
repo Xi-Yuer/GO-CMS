@@ -1,6 +1,7 @@
 export default {
   translation: {
     login: '立即登录',
+    logout: '退出登录',
     title: 'Go-React-Admin',
     welcome: '欢迎来到后台管理系统',
     slogan: '让后台开发更简单',

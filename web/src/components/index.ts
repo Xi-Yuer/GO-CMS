@@ -11,5 +11,21 @@ import AppBreadcrumb from '@/components/AppBreadcrumb';
 import AppHeaderTab from '@/components/AppHeaderTab';
 import Card from '@/components/Card';
 import AppUploads from '@/components/AppUploads';
+import Footer from '@/components/Footer';
 
-export { DarkSvg, LightSvg, Icon, useAppRouter, IconSelect, TranslateLight, TranslateDark, ThemeBar, Translate, AppBreadcrumb, AppHeaderTab, Card, AppUploads };
+export {
+  DarkSvg,
+  LightSvg,
+  Icon,
+  useAppRouter,
+  IconSelect,
+  TranslateLight,
+  TranslateDark,
+  ThemeBar,
+  Translate,
+  AppBreadcrumb,
+  AppHeaderTab,
+  Card,
+  AppUploads,
+  Footer,
+};

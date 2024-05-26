@@ -1,6 +1,7 @@
 export default {
   translation: {
     login: 'Sign in',
+    logout: 'Sign out',
     title: 'Go-React-Admin',
     welcome: 'Welcome to the management System',
     slogan: 'A General Management System Developed Based on Golang',
