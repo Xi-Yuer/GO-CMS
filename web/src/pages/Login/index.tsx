@@ -68,7 +68,7 @@ const Login: FC = () => {
 
   return (
     <>
-      <div className='h-screen flex flex-col'>
+      <div className='h-screen flex flex-col select-none'>
         <div
           className={classNames('w-screen flex justify-center items-center tran dark:text-[#fff] flex-1', {
             'bg-[#ededed]': themeMode === 'light',
@@ -79,13 +79,13 @@ const Login: FC = () => {
             <Translate />
           </div>
           <div
-            className={classNames('w-3/5 h-[500px] rounded-xl tran loginBg flex justify-between overflow-hidden', {
+            className={classNames('w-3/5 h-[500px] min-w-[400px] rounded-xl tran loginBg flex justify-between overflow-hidden', {
               physicLight: themeMode === 'light',
               physicDark: themeMode === 'dark',
             })}>
-            <div className='flex flex-col flex-1 p-10 pt-20'>
+            <div className='hidden md:flex flex-col flex-1 p-10 pt-20 '>
               <p className='text-2xl font-bold'>{t('welcome')}</p>
-              <div className='mt-10 ml-[-40px] hidden lg:flex'>
+              <div className='mt-10 ml-[-40px] hidden xl:flex'>
                 <Image src={Logo} preview={false} className='animate__animated animate__backInUp' />
                 <div className='w-full mt-10'>
                   <p className='text-xl font-bold hidden lg:block'>{t('slogan')}</p>
@@ -93,7 +93,7 @@ const Login: FC = () => {
                 </div>
               </div>
             </div>
-            <div className='w-[500px] flex bg-gray-100 dark:bg-[#262626] tran'>
+            <div className='min-w-[400px] flex bg-gray-100 dark:bg-[#262626] tran'>
               <div className='flex flex-col items-center gap-4 flex-grow px-20 mt-20'>
                 <p className='text-2xl font-bold'>{t('title')}</p>
                 <p className='text-sm text-[#6c727f] dark:text-[#fff] tran'>A management platform using Golang and React</p>
