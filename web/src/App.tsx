@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { ConfigProvider, message } from 'antd';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
-import { Router } from '@/components';
+import { useAppRouter } from '@/components';
 import 'dayjs/locale/zh-cn';
 import dayjs from 'dayjs';
 import { useTheme } from '@/theme';
@@ -17,7 +17,7 @@ const APP = () => {
   const [api, contextHolder] = message.useMessage();
   const { langMode, themeMode } = useAppSelector((state) => state.UIStore);
   const dispatch = useAppDispatch();
-
+  const { element } = useAppRouter();
   useEffect(() => {
     dispatch(changeThemeMode(themeMode));
   }, [dispatch, themeMode]);
@@ -40,7 +40,7 @@ const APP = () => {
     <>
       {contextHolder}
       <ConfigProvider locale={constants.langMap[langMode]} theme={theme}>
-        <Router />
+        {element}
       </ConfigProvider>
     </>
   );

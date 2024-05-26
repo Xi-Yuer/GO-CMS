@@ -22,13 +22,26 @@ export default defineConfig({
         },
       },
     },
+    target: ['esnext'],
+    terserOptions: {
+      enclose: false,
+      compress: true,
+      sourceMap: false,
+    },
   },
   server: {
     proxy: {
-      '/api/v1': {
-        target: 'http://localhost:8080/api/v1',
+      '/cms': {
+        target: 'http://localhost:8081',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/v1/, ''),
+      },
+    },
+  },
+  preview: {
+    proxy: {
+      '/cms': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
       },
     },
   },

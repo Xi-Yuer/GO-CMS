@@ -14,8 +14,11 @@ import classNames from 'classnames';
 import { addListenerUploadFile, removeListenerUploadFile } from '@/utils/event';
 import { RcFile } from 'antd/es/upload';
 import { AppUploadsRefProps } from '@/components/AppUploads';
+import { constants } from '@/constant';
+import { useTranslation } from 'react-i18next';
 
 const Main: FC = () => {
+  const { t } = useTranslation();
   const appUploadsRef = useRef<AppUploadsRefProps>(null);
   const dispatch = useAppDispatch();
   const fullscreenRef = useRef();
@@ -32,7 +35,7 @@ const Main: FC = () => {
 
   const logOutAction = () => {
     cache.clear();
-    navigate('/Login');
+    navigate(constants.routePath.login);
   };
 
   const uploadFileHandler = (file: RcFile) => {
@@ -91,7 +94,7 @@ const Main: FC = () => {
                 <Popover
                   content={
                     <div className='cursor-pointer hover:text-[#00b0f0]' onClick={logOutAction}>
-                      退出登录
+                      {t('logout')}
                     </div>
                   }
                   trigger='click'>
