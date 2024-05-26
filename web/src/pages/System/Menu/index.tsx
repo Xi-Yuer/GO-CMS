@@ -311,17 +311,8 @@ const SystemMenu: FC = () => {
           <Form.Item label={t('menuName')} name='pageName' rules={[{ required: true }]}>
             <Input placeholder={t('pleaseEnter')} />
           </Form.Item>
-          <Form.Item rules={[{ required: true }]} noStyle shouldUpdate>
-            {({ getFieldValue }) => {
-              return (
-                (!getFieldValue('isOutSite') && (
-                  <Form.Item label={t('menuPath')} name='pagePath' rules={[{ required: true }]}>
-                    <Input allowClear placeholder={t('pleaseEnter')}></Input>
-                  </Form.Item>
-                )) ||
-                null
-              );
-            }}
+          <Form.Item label={t('menuPath')} name='pagePath' rules={[{ required: true }]}>
+            <Input allowClear placeholder={t('pleaseEnter')}></Input>
           </Form.Item>
           <Form.Item label={t('menuIcon')} name='pageIcon' rules={[{ required: true }]}>
             <IconSelect></IconSelect>
