@@ -5,7 +5,7 @@ import SystemUser from '@/pages/System/User';
 import SystemRole from '@/pages/System/Role';
 import SystemDepartment from '@/pages/System/Department';
 import SystemMenu from '@/pages/System/Menu';
-import NotFont from '@/pages/NotFont';
+import NotFond from '@/pages/NotFond';
 import Iframe from '@/components/Iframe';
 import Logs from '@/pages/Monitor/Logs';
 import File from '@/pages/File/Upload';
@@ -46,7 +46,7 @@ export const builderMenuRoutes = (menus: menuType[]) => {
         } else {
           mainChildrenRoutes.push({
             path: item.pagePath,
-            element: pagesMap[item.pagePath] ? pagesMap[item.pagePath] : <NotFont />,
+            element: pagesMap[item.pagePath] ? pagesMap[item.pagePath] : <NotFond />,
           });
         }
       }

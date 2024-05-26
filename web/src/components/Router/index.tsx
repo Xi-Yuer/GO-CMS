@@ -3,7 +3,7 @@ import { useAppSelector } from '@/store';
 import { builderMenuRoutes, getFirstMenu } from '@/utils';
 import { useEffect, useState } from 'react';
 import routes from '@/router';
-import NotFont from '@/pages/NotFont';
+import NotFond from '@/pages/NotFond';
 import { constants } from '@/constant';
 
 export const useAppRouter = () => {
@@ -23,7 +23,7 @@ export const useAppRouter = () => {
     routesWithDynamicMenus[1].children = builderMenuRoutes(menus);
     routesWithDynamicMenus[1].children?.push({
       path: '*',
-      element: <NotFont />,
+      element: <NotFond />,
     });
 
     setRoutesWithMenus(routesWithDynamicMenus);
