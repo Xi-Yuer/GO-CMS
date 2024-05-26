@@ -93,7 +93,7 @@ const Login: FC = () => {
                 </div>
               </div>
             </div>
-            <div className='min-w-[400px] flex bg-gray-100 dark:bg-[#262626] tran'>
+            <div className='min-w-[400px] flex bg-gray-100 dark:bg-[#041527] tran'>
               <div className='flex flex-col items-center gap-4 flex-grow px-20 mt-20'>
                 <p className='text-2xl font-bold'>{t('title')}</p>
                 <p className='text-sm text-[#6c727f] dark:text-[#fff] tran'>A management platform using Golang and React</p>

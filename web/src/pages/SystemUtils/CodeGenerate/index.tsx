@@ -182,7 +182,7 @@ const CodeGenerate: FC = () => {
   };
 
   return (
-    <div className='h-full flex flex-col relative bg-[#ffffff] dark:bg-[#0e1b23] rounded-md'>
+    <div className='h-full flex flex-col relative bg-[#ffffff] dark:bg-[#041527] rounded-md'>
       <div className='mb-4 rounded p-4 overflow-auto relative no-scrollbar'>
         <Form name='form' form={form} onFinish={onFinish} style={{ maxWidth: 600 }} autoComplete='off'>
           <Form.Item label='包名（package）' name='package' rules={[{ required: true }]} initialValue='cms'>
