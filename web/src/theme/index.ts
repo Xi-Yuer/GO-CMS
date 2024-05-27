@@ -18,8 +18,8 @@ export const useTheme: () => [ThemeConfig] = () => {
       },
       components: {
         Spin: {
-          colorBgContainer: '00000000',
-          colorBgMask: '00000000',
+          colorBgContainer: themeMode === 'dark' ? '#001624' : '#fff',
+          colorBgMask: themeMode === 'dark' ? '#001624' : '#fff',
         },
       },
     },

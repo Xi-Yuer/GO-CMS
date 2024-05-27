@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
     <ErrorBoundary>
       <PersistGate
-        loading={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} />} style={{ width: '150px', height: '150px' }}></Spin>}
+        loading={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} />} style={{ width: '100px', height: '100px' }}></Spin>}
         persistor={persistStore(store)}>
         <HashRouter>
           <AntdApp>

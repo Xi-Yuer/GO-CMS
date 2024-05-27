@@ -16,7 +16,7 @@ export const routes: RouteObject[] = [
   {
     path: constants.routePath.main,
     element: (
-      <Suspense fallback={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} style={{ width: '150px', height: '150px' }} />}></Spin>}>
+      <Suspense fallback={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} style={{ width: '100px', height: '100px' }} />}></Spin>}>
         <Main></Main>
       </Suspense>
     ),
