@@ -1,10 +1,11 @@
-import Login from '@/pages/Login';
-import Main from '@/LayOut';
-import NotFond from '@/pages/NotFond';
-import { Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { Spin } from 'antd';
 import { constants } from '@/constant';
+
+const Login = lazy(() => import('@/pages/Login'));
+const Main = lazy(() => import('@/LayOut'));
+const NotFond = lazy(() => import('@/pages/NotFond'));
 
 export const routes: RouteObject[] = [
   {

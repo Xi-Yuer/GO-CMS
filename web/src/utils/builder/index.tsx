@@ -1,21 +1,22 @@
 import { menuType } from '@/types/menus';
-
-import DashBoard from '@/pages/Dashboard/';
-import SystemUser from '@/pages/System/User';
-import SystemRole from '@/pages/System/Role';
-import SystemDepartment from '@/pages/System/Department';
-import SystemMenu from '@/pages/System/Menu';
-import NotFond from '@/pages/NotFond';
-import Iframe from '@/components/Iframe';
-import Logs from '@/pages/Monitor/Logs';
-import File from '@/pages/File/Upload';
 import * as React from 'react';
+import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { MenuProps, TreeDataNode } from 'antd';
 import { IAllPageInterfaceListResponse, IInterfaceResponse } from '@/service/api/interface';
-import TimeTask from '@/pages/Monitor/TimeTask';
-import CodeGenerator from '@/pages/SystemUtils/CodeGenerate';
 import { FileTextOutlined, FolderOutlined } from '@ant-design/icons';
+
+const DashBoard = lazy(() => import('@/pages/Dashboard/'));
+const SystemUser = lazy(() => import('@/pages/System/User'));
+const SystemRole = lazy(() => import('@/pages/System/Role'));
+const SystemDepartment = lazy(() => import('@/pages/System/Department'));
+const SystemMenu = lazy(() => import('@/pages/System/Menu'));
+const NotFond = lazy(() => import('@/pages/NotFond'));
+const Iframe = lazy(() => import('@/components/Iframe'));
+const Logs = lazy(() => import('@/pages/Monitor/Logs'));
+const File = lazy(() => import('@/pages/File/Upload'));
+const TimeTask = lazy(() => import('@/pages/Monitor/TimeTask'));
+const CodeGenerator = lazy(() => import('@/pages/SystemUtils/CodeGenerate'));
 
 const pagesMap: Record<string, React.ReactNode | null> = {
   '/dashboard': <DashBoard />,
