@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import viteCompression from 'vite-plugin-compression';
 
 const prefix = `monaco-editor/esm/vs`;
 
@@ -21,6 +22,7 @@ export default defineConfig({
         entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
         assetFileNames: '[ext]/[name]-[hash].[ext]', // 资源文件像 字体，图片等
       },
+      plugins: [viteCompression()],
     },
     target: ['esnext'],
     terserOptions: {

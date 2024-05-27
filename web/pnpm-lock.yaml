@@ -138,6 +138,9 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.2.11
+      vite-plugin-compression:
+        specifier: ^0.5.1
+        version: 0.5.1(vite@5.2.11)
 
 packages:
 
@@ -1137,6 +1140,10 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==, tarball: https://registry.npmmirror.com/fraction.js/-/fraction.js-4.3.7.tgz}
 
+  fs-extra@10.1.0:
+    resolution: {integrity: sha512-oRXApq54ETRj4eMiFzGnHWGy+zo5raudjuxN0b8H7s/RU2oW0Wvsx9O0ACRN/kRq9E8Vu/ReskGB5o3ji+FzHQ==, tarball: https://registry.npmmirror.com/fs-extra/-/fs-extra-10.1.0.tgz}
+    engines: {node: '>=12'}
+
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==, tarball: https://registry.npmmirror.com/fs.realpath/-/fs.realpath-1.0.0.tgz}
 
@@ -1179,6 +1186,9 @@ packages:
   globby@11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==, tarball: https://registry.npmmirror.com/globby/-/globby-11.1.0.tgz}
     engines: {node: '>=10'}
+
+  graceful-fs@4.2.11:
+    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==, tarball: https://registry.npmmirror.com/graceful-fs/-/graceful-fs-4.2.11.tgz}
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==, tarball: https://registry.npmmirror.com/graphemer/-/graphemer-1.4.0.tgz}
@@ -1297,6 +1307,9 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==, tarball: https://registry.npmmirror.com/json5/-/json5-2.2.3.tgz}
     engines: {node: '>=6'}
     hasBin: true
+
+  jsonfile@6.1.0:
+    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==, tarball: https://registry.npmmirror.com/jsonfile/-/jsonfile-6.1.0.tgz}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==, tarball: https://registry.npmmirror.com/keyv/-/keyv-4.5.4.tgz}
@@ -2025,6 +2038,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  universalify@2.0.1:
+    resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==, tarball: https://registry.npmmirror.com/universalify/-/universalify-2.0.1.tgz}
+    engines: {node: '>= 10.0.0'}
+
   update-browserslist-db@1.0.16:
     resolution: {integrity: sha512-KVbTxlBYlckhF5wgfyZXTWnMn7MMZjMu9XG8bPlliUOP9ThaF4QnhP8qrjrH7DRzHfSk0oQv1wToW+iA5GajEQ==, tarball: https://registry.npmmirror.com/update-browserslist-db/-/update-browserslist-db-1.0.16.tgz}
     hasBin: true
@@ -2041,6 +2058,11 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, tarball: https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz}
+
+  vite-plugin-compression@0.5.1:
+    resolution: {integrity: sha512-5QJKBDc+gNYVqL/skgFAP81Yuzo9R+EAf19d+EtsMF/i8kFUpNi3J/H01QD3Oo8zBQn+NzoCIFkpPLynoOzaJg==, tarball: https://registry.npmmirror.com/vite-plugin-compression/-/vite-plugin-compression-0.5.1.tgz}
+    peerDependencies:
+      vite: '>=2.0.0'
 
   vite@5.2.11:
     resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==, tarball: https://registry.npmmirror.com/vite/-/vite-5.2.11.tgz}
@@ -3167,6 +3189,12 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  fs-extra@10.1.0:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.1.0
+      universalify: 2.0.1
+
   fs.realpath@1.0.0: {}
 
   fsevents@2.3.3:
@@ -3215,6 +3243,8 @@ snapshots:
       ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
+
+  graceful-fs@4.2.11: {}
 
   graphemer@1.4.0: {}
 
@@ -3309,6 +3339,12 @@ snapshots:
       string-convert: 0.2.1
 
   json5@2.2.3: {}
+
+  jsonfile@6.1.0:
+    dependencies:
+      universalify: 2.0.1
+    optionalDependencies:
+      graceful-fs: 4.2.11
 
   keyv@4.5.4:
     dependencies:
@@ -4074,6 +4110,8 @@ snapshots:
 
   typescript@5.4.5: {}
 
+  universalify@2.0.1: {}
+
   update-browserslist-db@1.0.16(browserslist@4.23.0):
     dependencies:
       browserslist: 4.23.0
@@ -4089,6 +4127,15 @@ snapshots:
       react: 18.3.1
 
   util-deprecate@1.0.2: {}
+
+  vite-plugin-compression@0.5.1(vite@5.2.11):
+    dependencies:
+      chalk: 4.1.2
+      debug: 4.3.4
+      fs-extra: 10.1.0
+      vite: 5.2.11
+    transitivePeerDependencies:
+      - supports-color
 
   vite@5.2.11:
     dependencies:
