@@ -16,6 +16,12 @@ export const useTheme: () => [ThemeConfig] = () => {
         colorBgContainer: themeMode === 'dark' ? '#001624' : '#fff',
         colorBgElevated: themeMode === 'dark' ? '#0c1d27' : '#fff',
       },
+      components: {
+        Spin: {
+          colorBgContainer: '00000000',
+          colorBgMask: '00000000',
+        },
+      },
     },
   ];
 };

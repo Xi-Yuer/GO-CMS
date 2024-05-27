@@ -1,7 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Image, Spin } from 'antd';
 import { constants } from '@/constant';
+import LoadingGIF from '@/assets/image/loading.gif';
 
 const Login = lazy(() => import('@/pages/Login'));
 const Main = lazy(() => import('@/LayOut'));
@@ -15,7 +16,7 @@ export const routes: RouteObject[] = [
   {
     path: constants.routePath.main,
     element: (
-      <Suspense fallback={<Spin spinning={true} fullscreen={true}></Spin>}>
+      <Suspense fallback={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} style={{ width: '150px', height: '150px' }} />}></Spin>}>
         <Main></Main>
       </Suspense>
     ),
