@@ -6,6 +6,8 @@ import { addListenerGetFileList, emitUploadFile, removeListenerGetFileList } fro
 import { formatFileSize } from '@/utils/format';
 import { UploadOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 const File: FC = () => {
   const [limit, setLimit] = useState(10);
@@ -61,25 +63,29 @@ const File: FC = () => {
       render: (_, { fileID }) => {
         return (
           <div className='flex gap-2 text-[#00a7fb] justify-center items-center cursor-pointer'>
-            <span
-              onClick={async () => {
-                await getCookie();
-                const a = document.createElement('a');
-                a.href = `/cms/upload/download/aHref/${fileID}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-              }}>
-              {t('download')}
-            </span>
-            <span
-              className='text-red-500'
-              onClick={async () => {
-                await deleteFileRequest(fileID);
-                await getPageList();
-              }}>
-              {t('delete')}
-            </span>
+            <Auth permission={constants.permissionDicMap.DOWNLOAD_FILE}>
+              <span
+                onClick={async () => {
+                  await getCookie();
+                  const a = document.createElement('a');
+                  a.href = `/cms/upload/download/aHref/${fileID}`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                }}>
+                {t('download')}
+              </span>
+            </Auth>
+            <Auth permission={constants.permissionDicMap.DELETE_FILE}>
+              <span
+                className='text-red-500'
+                onClick={async () => {
+                  await deleteFileRequest(fileID);
+                  await getPageList();
+                }}>
+                {t('delete')}
+              </span>
+            </Auth>
           </div>
         );
       },
@@ -106,11 +112,13 @@ const File: FC = () => {
     <>
       <div className='mb-2 flex justify-between items-center bg-white p-4 rounded dark:bg-[#001620]'>
         <span className='font-bold'>{t('fileList')}</span>
-        <Upload showUploadList={false} {...props}>
-          <Button type='primary' icon={<UploadOutlined />}>
-            {t('uploadFile')}
-          </Button>
-        </Upload>
+        <Auth permission={constants.permissionDicMap.UPLOAD_FILE}>
+          <Upload showUploadList={false} {...props}>
+            <Button type='primary' icon={<UploadOutlined />}>
+              {t('uploadFile')}
+            </Button>
+          </Upload>
+        </Auth>
       </div>
       <Table dataSource={list} loading={loading} columns={columns} pagination={false} rowKey='fileID' bordered></Table>
       <Pagination

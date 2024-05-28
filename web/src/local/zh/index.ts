@@ -111,5 +111,7 @@ export default {
     taskStatus: '任务状态',
     cron: 'Cron表达式',
     lastRunTime: '最后运行时间',
+    preview: '预览',
+    downloadZip: '下载(zip）',
   },
 };

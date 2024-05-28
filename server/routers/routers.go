@@ -16,17 +16,12 @@ import (
 	timeTaskRouterModules "github.com/Xi-Yuer/cms/routers/modules/timeTask"
 	uploadTaskRouterModules "github.com/Xi-Yuer/cms/routers/modules/upload"
 	usersRouterModules "github.com/Xi-Yuer/cms/routers/modules/users"
-	"github.com/Xi-Yuer/cms/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func SetUpRouters() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
-	err := utils.Translator("zh")
-	if err != nil {
-		panic(err.Error())
-	}
 
 	v1 := r.Group(
 		config.Config.APP.BASEURL,

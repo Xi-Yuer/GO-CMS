@@ -1,10 +1,12 @@
+import { Suspense } from 'react';
+import { RouteObject } from 'react-router-dom';
+import { Image, Spin } from 'antd';
+import { constants } from '@/constant';
+import LoadingGIF from '@/assets/image/loading.gif';
+
 import Login from '@/pages/Login';
 import Main from '@/LayOut';
 import NotFond from '@/pages/NotFond';
-import { Suspense } from 'react';
-import { RouteObject } from 'react-router-dom';
-import { Spin } from 'antd';
-import { constants } from '@/constant';
 
 export const routes: RouteObject[] = [
   {
@@ -14,7 +16,7 @@ export const routes: RouteObject[] = [
   {
     path: constants.routePath.main,
     element: (
-      <Suspense fallback={<Spin spinning={true} fullscreen={true}></Spin>}>
+      <Suspense fallback={<Spin spinning={true} fullscreen={true} indicator={<Image src={LoadingGIF} style={{ width: '100px', height: '100px' }} />}></Spin>}>
         <Main></Main>
       </Suspense>
     ),
