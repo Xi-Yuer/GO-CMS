@@ -110,5 +110,7 @@ export default {
     taskStatus: 'Status',
     cron: 'Cron',
     lastRunTime: 'LastRunTime',
+    preview: 'Preview',
+    downloadZip: 'Download (Zip)',
   },
 };

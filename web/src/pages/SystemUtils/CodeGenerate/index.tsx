@@ -10,6 +10,8 @@ import CodeEdit, { ICodeEditRefProps } from '@/components/CodeEdit';
 import { saveAs } from 'file-saver';
 import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 const CodeGenerate: FC = () => {
   const [form] = useForm();
@@ -235,9 +237,11 @@ const CodeGenerate: FC = () => {
               </>
             )}
           </Form.List>
-          <Button type='primary' htmlType='submit' icon={<EyeOutlined />} className='absolute top-0 left-[650px] mt-4 mr-4'>
-            预览
-          </Button>
+          <Auth permission={constants.permissionDicMap.CREATE_TEMPLATE}>
+            <Button type='primary' htmlType='submit' icon={<EyeOutlined />} className='absolute top-0 left-[650px] mt-4 mr-4'>
+              {t('preview')}
+            </Button>
+          </Auth>
         </Form>
       </div>
       <Drawer
@@ -250,9 +254,11 @@ const CodeGenerate: FC = () => {
         open={open}
         getContainer={false}
         extra={
-          <Button type='primary' icon={<FileZipOutlined />} onClick={downLoadAction} disabled={!canDownLoad}>
-            下载（zip）
-          </Button>
+          <Auth permission={constants.permissionDicMap.DOWNLOAD_TEMPLATE}>
+            <Button type='primary' icon={<FileZipOutlined />} onClick={downLoadAction} disabled={!canDownLoad}>
+              {t('downloadZip')}
+            </Button>
+          </Auth>
         }>
         {showEditor ? (
           <Layout className='flex-1 overflow-hidden rounded-md h-full'>
