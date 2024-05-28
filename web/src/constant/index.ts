@@ -45,5 +45,8 @@ export const constants = {
     UPDATE_PAGE_INTERFACE: 'PATCH:/interface/:id',
     CREATE_TEMPLATE: 'POST:/template',
     DOWNLOAD_TEMPLATE: 'POST:/template/download',
+    UPLOAD_FILE: 'POST:/upload',
+    DOWNLOAD_FILE: 'GET:/upload/download/aHref/:id',
+    DELETE_FILE: 'DELETE:/upload/del/:id',
   },
 };

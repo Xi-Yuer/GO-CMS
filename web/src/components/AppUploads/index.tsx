@@ -10,6 +10,8 @@ import { checkFileUploadSize } from '@/service/api/file';
 import { emitGetFileList, emitUploadFile } from '@/utils/event';
 import { formatFileSize } from '@/utils/format';
 import { useTranslation } from 'react-i18next';
+import Auth from '@/components/Auth';
+import { constants } from '@/constant';
 
 export interface AppUploadsRefProps {
   addUploadFile: (file: RcFile) => void;
@@ -142,13 +144,13 @@ const Index = forwardRef((_, ref: Ref<AppUploadsRefProps>) => {
             onClose={() => dispatch(changeUploadBarShowDrawer(false))}
             open={uploadBar.showDrawer}
             extra={
-              <>
+              <Auth permission={constants.permissionDicMap.UPLOAD_FILE}>
                 <Upload showUploadList={false} {...props}>
                   <Button type='primary' icon={<UploadOutlined />}>
                     {t('continueUploadFile')}
                   </Button>
                 </Upload>
-              </>
+              </Auth>
             }>
             <Table dataSource={uploadList} columns={columns} bordered rowKey='identifier'></Table>
           </Drawer>
