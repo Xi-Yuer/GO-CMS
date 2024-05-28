@@ -1,12 +1,12 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { Image, Spin } from 'antd';
 import { constants } from '@/constant';
 import LoadingGIF from '@/assets/image/loading.gif';
 
-const Login = lazy(() => import('@/pages/Login'));
-const Main = lazy(() => import('@/LayOut'));
-const NotFond = lazy(() => import('@/pages/NotFond'));
+import Login from '@/pages/Login';
+import Main from '@/LayOut';
+import NotFond from '@/pages/NotFond';
 
 export const routes: RouteObject[] = [
   {

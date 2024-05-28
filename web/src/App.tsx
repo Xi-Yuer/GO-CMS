@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { ConfigProvider, message } from 'antd';
 import { constants } from '@/constant';
 import { changeThemeMode } from '@/store/UIStore';
-import { useAppRouter } from '@/components';
+import { useAppRouter } from '@/hooks/useAppRoutes.tsx';
 import 'dayjs/locale/zh-cn';
 import dayjs from 'dayjs';
 import { useTheme } from '@/theme';
