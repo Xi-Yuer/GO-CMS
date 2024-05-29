@@ -1,7 +1,6 @@
 package pagesServiceModules
 
 import (
-	"fmt"
 	"github.com/Xi-Yuer/cms/dto"
 	pagesResponsiesModules "github.com/Xi-Yuer/cms/dto/modules/pages"
 	repositories "github.com/Xi-Yuer/cms/repositories/modules"
@@ -34,7 +33,6 @@ func (p *pageService) GetPages() ([]*dto.SinglePageResponse, error) {
 func (p *pageService) GetUserMenus(id string) ([]*pagesResponsiesModules.SinglePageResponse, error) {
 	// 查找用户角色ID
 	rolesID := repositories.UsersAndRolesRepositorys.FindUserRolesID(id)
-	fmt.Println("rolesID", rolesID)
 	// 查找角色页面权限
 	var pagesID []string
 	for _, roleID := range rolesID {

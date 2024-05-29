@@ -10,7 +10,7 @@ import { changeAllInterfaceDic, changeMenus, changeToken, changeUserInfo } from 
 import { useAppDispatch } from '@/store';
 import { getFirstMenu, sleep } from '@/utils';
 import { changeTabHeader } from '@/store/UIStore';
-import Logo from '@/assets/svg/logo.svg';
+import Logo from '@/assets/image/logo.svg';
 import classNames from 'classnames';
 import { constants } from '@/constant';
 import { useNavigate } from 'react-router-dom';
