@@ -7,7 +7,7 @@ const Footer: FC = () => {
         <span>&copy; Design Xi-Yuer</span>
         <span>
           <a href='https://beian.miit.gov.cn/#/Integrated/index' target='_blank'>
-            备案号： 蜀ICP备2022015920号-1
+            备案号： 蜀ICP备2022015920号-2
           </a>
         </span>
       </div>
