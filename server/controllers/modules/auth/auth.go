@@ -1,6 +1,7 @@
 package authControllersModules
 
 import (
+	"github.com/Xi-Yuer/cms/config"
 	"github.com/Xi-Yuer/cms/dto"
 	"github.com/Xi-Yuer/cms/services"
 	"github.com/Xi-Yuer/cms/utils"
@@ -70,6 +71,6 @@ func (a *authController) Cookie(context *gin.Context) {
 	session := sessions.Default(context)
 	session.Set("token", userToken)
 	_ = session.Save()
-	context.SetCookie("token", userToken, 3600, "/", "localhost", false, true)
+	context.SetCookie("token", userToken, 3600, "/", config.Config.APP.DOMAIN, true, true)
 	utils.Response.Success(context, "请求成功,可继续下载文件")
 }

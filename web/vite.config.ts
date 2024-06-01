@@ -1,4 +1,4 @@
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteCompression from 'vite-plugin-compression';
 
@@ -42,7 +42,7 @@ export default defineConfig({
   preview: {
     proxy: {
       '/cms': {
-        target: 'http://localhost:8081',
+        target: 'http://127.124.28.77:8081',
         changeOrigin: true,
       },
     },

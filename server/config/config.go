@@ -8,6 +8,7 @@ var Config = config{
 		SWAGPATH:      "http://localhost:8081/swagger/docs/index.html#/example",
 		BASEURL:       "/cms",
 		FILEPATH:      "./uploadFile/",
+		DOMAIN:        "localhost",
 	},
 	DB: DB{
 		NAME:     "root",
@@ -30,6 +31,7 @@ type APP struct {
 	SWAGPATH      string
 	BASEURL       string
 	FILEPATH      string
+	DOMAIN        string
 }
 type DB struct {
 	NAME     string
