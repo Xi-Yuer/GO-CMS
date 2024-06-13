@@ -26,15 +26,27 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 
 func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.CommonResponse, err error) {
 	verifyCaptcha, err := l.svcCtx.CaptchaService.VerifyCaptcha(l.ctx, &captcha.VerifyCaptchaRequest{
-		SessionId: req.SessionID,
+		SessionId:   req.SessionID,
+		CaptchaCode: req.Captcha,
 	})
 	if err != nil {
-		return nil, err
+		return &types.CommonResponse{
+			Code: 400,
+			Data: nil,
+			Msg:  err.Error(),
+		}, nil
+	}
+	if !verifyCaptcha.Valid {
+		return &types.CommonResponse{
+			Code: 400,
+			Data: nil,
+			Msg:  "验证码错误",
+		}, nil
 	}
 
 	return &types.CommonResponse{
-		Code: 0,
+		Code: 200,
 		Data: verifyCaptcha,
-		Msg:  "",
+		Msg:  "success",
 	}, nil
 }

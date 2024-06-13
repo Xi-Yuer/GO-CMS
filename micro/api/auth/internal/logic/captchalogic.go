@@ -31,9 +31,11 @@ func (l *CaptchaLogic) Captcha(req *types.EmptyRequest) (resp *types.CommonRespo
 	generateCaptcha, err := l.svcCtx.CaptchaService.GenerateCaptcha(l.ctx, &captcha.GenerateCaptchaRequest{
 		SessionId: sessionID,
 	})
+
 	if err != nil {
 		return nil, err
 	}
+
 	return &types.CommonResponse{
 		Code: 0,
 		Data: &struct {
@@ -43,6 +45,6 @@ func (l *CaptchaLogic) Captcha(req *types.EmptyRequest) (resp *types.CommonRespo
 			Captcha:   generateCaptcha.CaptchaCode,
 			SessionID: sessionID,
 		},
-		Msg: "",
+		Msg: "success",
 	}, nil
 }
