@@ -2,9 +2,9 @@ package svc
 
 import (
 	"github.com/redis/go-redis/v9"
-	redisDB "micro/common/redis"
 	appConfig "micro/config"
 	"micro/rpc/captcha/internal/config"
+	redisDB "micro/shared/redis"
 )
 
 type ServiceContext struct {

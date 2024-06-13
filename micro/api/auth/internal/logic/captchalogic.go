@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"micro/common/snowflake"
 	"micro/rpc/captcha/captcha"
+	"micro/shared/snowflake"
 	"strconv"
 
 	"micro/api/auth/internal/svc"
@@ -37,10 +37,10 @@ func (l *CaptchaLogic) Captcha(req *types.EmptyRequest) (resp *types.CommonRespo
 	return &types.CommonResponse{
 		Code: 0,
 		Data: &struct {
-			Captcha   *captcha.GenerateCaptchaResponse `json:"captcha"`
-			SessionID string                           `json:"sessionID"`
+			Captcha   string `json:"captcha"`
+			SessionID string `json:"sessionID"`
 		}{
-			Captcha:   generateCaptcha,
+			Captcha:   generateCaptcha.CaptchaCode,
 			SessionID: sessionID,
 		},
 		Msg: "",

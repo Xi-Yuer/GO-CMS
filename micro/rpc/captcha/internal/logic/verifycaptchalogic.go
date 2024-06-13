@@ -37,6 +37,9 @@ func (l *VerifyCaptchaLogic) VerifyCaptcha(in *captcha.VerifyCaptchaRequest) (*c
 	// 检查存储的验证码是否与用户输入的验证码匹配
 	valid := storedCode == userInputCode
 
+	// 删除 Redis 中存储的验证码
+	l.svcCtx.Redis.Del(l.ctx, fmt.Sprintf("captcha:%s", sessionID))
+
 	return &captcha.VerifyCaptchaResponse{
 		Valid: valid,
 	}, nil
