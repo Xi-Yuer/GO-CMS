@@ -1,0 +1,14 @@
+Name: auth
+Host: 0.0.0.0
+Port: 8888
+CaptchaService:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: captcha.rpc
+UserService:
+  Etcd:
+    Hosts:
+      - localhost:2379
+    Key: user.rpc
+

@@ -1,0 +1,38 @@
+syntax = "v1"
+
+info(
+	title: "登录鉴权"
+	desc: "登录鉴权接口"
+	author: "Xi-Yuer"
+	email: "2214380963@qq.com"
+	version: "v1"
+)
+
+type (
+	LoginRequest {
+		Account   string `form:"account"`
+		Password  string `form:"password"`
+		Captcha   string `form:"captcha"`
+		SessionID string `form:"sessionId"`
+	}
+	CommonResponse {
+		Code int64       `json:"code"`
+		Data interface{} `json:"data"`
+		Msg  string      `json:"msg"`
+	}
+	EmptyRequest {
+	}
+)
+
+@server(
+	// 定义路由前缀为 "/v1"
+	prefix: /v1
+)
+
+service auth {
+	@handler Login
+	post /auth/login (LoginRequest) returns (CommonResponse)
+
+	@handler Captcha
+	get /auth/captcha (EmptyRequest) returns (CommonResponse)
+}
