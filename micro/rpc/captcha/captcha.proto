@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package captcha;
+package captchaRPC;
 
 option go_package = "./captcha";
 

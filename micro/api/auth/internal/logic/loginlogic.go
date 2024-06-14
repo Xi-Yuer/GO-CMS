@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"micro/rpc/captcha/captcha"
+	"micro/rpc/user/userRPC"
 
 	"micro/api/auth/internal/svc"
 	"micro/api/auth/internal/types"
@@ -41,6 +42,19 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.CommonResponse,
 			Code: 400,
 			Data: nil,
 			Msg:  "验证码错误",
+		}, nil
+	}
+
+	hasBeenExist, err := l.svcCtx.UserService.UserAccountHasBeenExist(l.ctx, &userRPC.UserAccountHasBeenExistRequest{Account: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	if !hasBeenExist.Ok {
+		return &types.CommonResponse{
+			Code: 400,
+			Data: nil,
+			Msg:  "用户不存在",
 		}, nil
 	}
 

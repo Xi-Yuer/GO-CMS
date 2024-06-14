@@ -4,7 +4,7 @@
 // - protoc             v4.25.3
 // source: captcha.proto
 
-package captcha
+package captchaRPC
 
 import (
 	context "context"

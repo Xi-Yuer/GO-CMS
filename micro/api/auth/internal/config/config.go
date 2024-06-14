@@ -8,4 +8,5 @@ import (
 type Config struct {
 	rest.RestConf
 	CaptchaService zrpc.RpcClientConf
+	UserService    zrpc.RpcClientConf
 }
