@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	userModel "micro/model/user"
 
 	"micro/rpc/user/internal/svc"
 	"micro/rpc/user/userRPC"
@@ -24,7 +25,18 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateUserLogic) UpdateUser(in *userRPC.UpdateUserRequest) (*userRPC.CommonResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &userRPC.CommonResponse{}, nil
+	if err := l.svcCtx.GormDB.Model(&userModel.User{}).Where("id", in.Id).Updates(&userModel.User{
+		Password:     in.Password,
+		NickName:     in.Nickname,
+		Avatar:       in.Avatar,
+		Status:       in.Status,
+		DepartmentID: in.Department,
+		IsAdmin:      in.IsAdmin,
+	}).Error; err != nil {
+		return nil, err
+	}
+	return &userRPC.CommonResponse{
+		Ok:  true,
+		Msg: "更新成功",
+	}, nil
 }

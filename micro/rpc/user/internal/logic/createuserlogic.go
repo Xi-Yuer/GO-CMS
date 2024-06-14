@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	userModel "micro/model/user"
 
 	"micro/rpc/user/internal/svc"
 	"micro/rpc/user/userRPC"
@@ -24,7 +25,21 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 }
 
 func (l *CreateUserLogic) CreateUser(in *userRPC.CreateUserRequest) (*userRPC.CommonResponse, error) {
-	// todo: add your logic here and delete this line
+	if err := l.svcCtx.GormDB.Create(&userModel.User{
+		ID:           in.Id,
+		Account:      in.Account,
+		Password:     in.Password,
+		Avatar:       in.Avatar,
+		NickName:     in.Nickname,
+		DepartmentID: in.Department,
+		Status:       in.Status,
+		IsAdmin:      in.IsAdmin,
+	}).Error; err != nil {
+		return nil, err
+	}
 
-	return &userRPC.CommonResponse{}, nil
+	return &userRPC.CommonResponse{
+		Ok:  true,
+		Msg: "创建成功",
+	}, nil
 }

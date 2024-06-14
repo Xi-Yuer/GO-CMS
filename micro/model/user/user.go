@@ -9,7 +9,7 @@ type User struct {
 	Password     string
 	NickName     string
 	Avatar       string
-	Status       int
+	Status       bool
 	DepartmentID string
 	IsAdmin      bool
 }

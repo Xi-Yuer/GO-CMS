@@ -10,7 +10,7 @@ message CreateUserRequest {
   string password = 3;
   string nickname = 4;
   string avatar = 5;
-  string status = 6;
+  bool status = 6;
   string department = 7;
   bool is_admin = 8;
 }
@@ -21,12 +21,13 @@ message CommonResponse {
 }
 
 message UpdateUserRequest {
-  string password = 1;
-  string nickname = 2;
-  string avatar = 3;
-  string status = 4;
-  string department = 5;
-  bool is_admin = 6;
+  string id = 1;
+  string password = 2;
+  string nickname = 3;
+  string avatar = 4;
+  bool status = 5;
+  string department = 6;
+  bool is_admin = 7;
 }
 
 message GetUserRequest {
@@ -43,20 +44,21 @@ message GetUserResponse {
   string password = 3;
   string nickname = 4;
   string avatar = 5;
-  string status = 6;
+  bool status = 6;
   string department = 7;
   bool is_admin = 8;
 }
 
 message GetUserListRequest {
-  string account = 1;
-  string nickname = 2;
-  string avatar = 3;
-  string status = 4;
-  string department = 5;
-  bool is_admin = 6;
-  int32 page = 7;
-  int32 page_size = 8;
+  string id = 1;
+  string account = 2;
+  string nickname = 3;
+  string avatar = 4;
+  bool status = 5;
+  string department = 6;
+  bool is_admin = 7;
+  int32 page = 8;
+  int32 page_size = 9;
 }
 
 message GetUserListResponse {

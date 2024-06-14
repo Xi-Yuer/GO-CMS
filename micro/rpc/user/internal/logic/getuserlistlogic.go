@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-
+	userModel "micro/model/user"
 	"micro/rpc/user/internal/svc"
 	"micro/rpc/user/userRPC"
 
@@ -24,7 +24,37 @@ func NewGetUserListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserListLogic) GetUserList(in *userRPC.GetUserListRequest) (*userRPC.GetUserListResponse, error) {
-	// todo: add your logic here and delete this line
+	var userList []userModel.User
+	var total int64
+	err := l.svcCtx.GormDB.Where(&userModel.User{
+		ID:           in.Id,
+		Account:      in.Account,
+		NickName:     in.Nickname,
+		Avatar:       in.Avatar,
+		Status:       in.Status,
+		DepartmentID: in.Department,
+		IsAdmin:      in.IsAdmin,
+	}).Find(&userList).Count(&total).Error
 
-	return &userRPC.GetUserListResponse{}, nil
+	if err != nil {
+		return nil, err
+	}
+	userListRPC := make([]*userRPC.GetUserResponse, 0)
+
+	for _, v := range userList {
+		userListRPC = append(userListRPC, &userRPC.GetUserResponse{
+			Id:         v.ID,
+			Account:    v.Account,
+			Nickname:   v.NickName,
+			Avatar:     v.Avatar,
+			Status:     v.Status,
+			Department: v.DepartmentID,
+			IsAdmin:    v.IsAdmin,
+		})
+	}
+
+	return &userRPC.GetUserListResponse{
+		UserList: userListRPC,
+		Total:    int32(total),
+	}, nil
 }
