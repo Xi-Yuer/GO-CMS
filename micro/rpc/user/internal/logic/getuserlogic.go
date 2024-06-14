@@ -37,5 +37,7 @@ func (l *GetUserLogic) GetUser(in *userRPC.GetUserRequest) (*userRPC.GetUserResp
 		Department: user.DepartmentID,
 		Status:     user.Status,
 		IsAdmin:    user.IsAdmin,
+		CreateTime: user.CreatedAt.String(),
+		UpdateTime: user.UpdatedAt.String(),
 	}, nil
 }

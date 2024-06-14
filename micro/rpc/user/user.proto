@@ -47,6 +47,8 @@ message GetUserResponse {
   bool status = 6;
   string department = 7;
   bool is_admin = 8;
+  string create_time = 9;
+  string update_time = 10;
 }
 
 message GetUserListRequest {

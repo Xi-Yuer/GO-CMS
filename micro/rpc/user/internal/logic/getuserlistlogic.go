@@ -34,7 +34,7 @@ func (l *GetUserListLogic) GetUserList(in *userRPC.GetUserListRequest) (*userRPC
 		Status:       in.Status,
 		DepartmentID: in.Department,
 		IsAdmin:      in.IsAdmin,
-	}).Find(&userList).Count(&total).Error
+	}).Offset(int(in.Page)).Limit(int(in.PageSize)).Find(&userList).Count(&total).Error
 
 	if err != nil {
 		return nil, err
@@ -43,13 +43,16 @@ func (l *GetUserListLogic) GetUserList(in *userRPC.GetUserListRequest) (*userRPC
 
 	for _, v := range userList {
 		userListRPC = append(userListRPC, &userRPC.GetUserResponse{
-			Id:         v.ID,
-			Account:    v.Account,
-			Nickname:   v.NickName,
-			Avatar:     v.Avatar,
-			Status:     v.Status,
+			Id:       v.ID,
+			Account:  v.Account,
+			Nickname: v.NickName,
+			Avatar:   v.Avatar,
+			Status:   v.Status,
+
 			Department: v.DepartmentID,
 			IsAdmin:    v.IsAdmin,
+			CreateTime: v.CreatedAt.String(),
+			UpdateTime: v.UpdatedAt.String(),
 		})
 	}
 

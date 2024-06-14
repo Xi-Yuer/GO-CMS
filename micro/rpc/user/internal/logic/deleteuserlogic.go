@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	userModel "micro/model/user"
-
 	"micro/rpc/user/internal/svc"
 	"micro/rpc/user/userRPC"
 
@@ -25,7 +24,7 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(in *userRPC.DeleteUserRequest) (*userRPC.CommonResponse, error) {
-	if err := l.svcCtx.GormDB.Model(&userModel.User{}).Delete(in.Id).Error; err != nil {
+	if err := l.svcCtx.GormDB.Where("id = ?", in.Id).Delete(&userModel.User{}).Error; err != nil {
 		return nil, err
 	}
 	return &userRPC.CommonResponse{
