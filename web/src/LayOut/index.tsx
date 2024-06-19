@@ -106,7 +106,7 @@ const Main: FC = () => {
             </div>
           </Header>
           <AppHeaderTab />
-          <Content className='px-8 py-4'>
+          <Content className='py-4 px-8 pl-6 flex justify-center items-center'>
             <div
               ref={fullscreenRef as any}
               className={classNames('w-full h-full min-h-[600px] overflow-y-scroll no-scrollbar p-4', {

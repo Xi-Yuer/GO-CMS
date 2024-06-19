@@ -3,60 +3,56 @@
 @tailwind utilities;
 
 .physicLight {
-  border-radius: 20px;
-  background: #ededed;
-  box-shadow:
-    9px 9px 18px #c9c9c9,
+    border-radius: 20px;
+    background: #ededed;
+    box-shadow: 9px 9px 18px #c9c9c9,
     -9px -9px 18px #ffffff;
 }
 
 .physicLightCard {
-  border-radius: 10px;
-  background: #ededed;
-  box-shadow:
-    9px 9px 18px #c9c9c9,
-    -9px -9px 18px #ffffff;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 9px 9px 18px #c9c9c9,
+    -9px -9px 18px #ececec;
 }
 
 .physicDark {
-  border-radius: 20px;
-  background: #142433;
-  box-shadow:
-    9px 9px 18px #272727,
+    border-radius: 20px;
+    background: #142433;
+    box-shadow: 9px 9px 18px #272727,
     -9px -9px 18px #353535;
 }
 
 .physicDarkDashBoard {
-  border-radius: 20px;
-  background: #2e2e2e;
-  box-shadow: 9px 9px 18px #000000;
+    border-radius: 20px;
+    background: #2e2e2e;
+    box-shadow: 9px 9px 18px #000000;
 }
 
 .physicDarkCard {
-  border-radius: 10px;
-  background: #001624;
-  box-shadow:
-    9px 9px 18px #272727,
+    border-radius: 10px;
+    background: #001624;
+    box-shadow: 9px 9px 18px #272727,
     -9px -9px 18px #2d2d2d;
 }
 
 @layer utilities {
-  .tran {
-    transition: all 0.2s ease;
-  }
-
-  * {
-    /* Hide scrollbar for Chrome, Safari and Opera */
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    .tran {
+        transition: all 0.2s ease;
     }
 
-    /* Hide scrollbar for IE, Edge and Firefox */
+    * {
+        /* Hide scrollbar for Chrome, Safari and Opera */
 
-    .no-scrollbar {
-      -ms-overflow-style: none; /* IE and Edge */
-      scrollbar-width: none; /* Firefox */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
     }
-  }
 }
