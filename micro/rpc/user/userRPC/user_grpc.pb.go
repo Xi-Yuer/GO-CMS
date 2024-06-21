@@ -25,6 +25,7 @@ const (
 	UserService_GetUserList_FullMethodName             = "/userRPC.UserService/GetUserList"
 	UserService_DeleteUser_FullMethodName              = "/userRPC.UserService/DeleteUser"
 	UserService_UserAccountHasBeenExist_FullMethodName = "/userRPC.UserService/UserAccountHasBeenExist"
+	UserService_UserIDHasBeenExist_FullMethodName      = "/userRPC.UserService/UserIDHasBeenExist"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -37,6 +38,7 @@ type UserServiceClient interface {
 	GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	UserAccountHasBeenExist(ctx context.Context, in *UserAccountHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	UserIDHasBeenExist(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 }
 
 type userServiceClient struct {
@@ -101,6 +103,15 @@ func (c *userServiceClient) UserAccountHasBeenExist(ctx context.Context, in *Use
 	return out, nil
 }
 
+func (c *userServiceClient) UserIDHasBeenExist(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	out := new(CommonResponse)
+	err := c.cc.Invoke(ctx, UserService_UserIDHasBeenExist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -111,6 +122,7 @@ type UserServiceServer interface {
 	GetUserList(context.Context, *GetUserListRequest) (*GetUserListResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*CommonResponse, error)
 	UserAccountHasBeenExist(context.Context, *UserAccountHasBeenExistRequest) (*CommonResponse, error)
+	UserIDHasBeenExist(context.Context, *DeleteUserRequest) (*CommonResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -135,6 +147,9 @@ func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserReq
 }
 func (UnimplementedUserServiceServer) UserAccountHasBeenExist(context.Context, *UserAccountHasBeenExistRequest) (*CommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserAccountHasBeenExist not implemented")
+}
+func (UnimplementedUserServiceServer) UserIDHasBeenExist(context.Context, *DeleteUserRequest) (*CommonResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserIDHasBeenExist not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -257,6 +272,24 @@ func _UserService_UserAccountHasBeenExist_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_UserIDHasBeenExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserIDHasBeenExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_UserIDHasBeenExist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserIDHasBeenExist(ctx, req.(*DeleteUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +320,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserAccountHasBeenExist",
 			Handler:    _UserService_UserAccountHasBeenExist_Handler,
+		},
+		{
+			MethodName: "UserIDHasBeenExist",
+			Handler:    _UserService_UserIDHasBeenExist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

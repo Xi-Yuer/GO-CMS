@@ -30,6 +30,7 @@ type (
 		GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
 		DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		UserAccountHasBeenExist(ctx context.Context, in *UserAccountHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+		UserIDHasBeenExist(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	}
 
 	defaultUserService struct {
@@ -71,4 +72,9 @@ func (m *defaultUserService) DeleteUser(ctx context.Context, in *DeleteUserReque
 func (m *defaultUserService) UserAccountHasBeenExist(ctx context.Context, in *UserAccountHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
 	client := userRPC.NewUserServiceClient(m.cli.Conn())
 	return client.UserAccountHasBeenExist(ctx, in, opts...)
+}
+
+func (m *defaultUserService) UserIDHasBeenExist(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+	client := userRPC.NewUserServiceClient(m.cli.Conn())
+	return client.UserIDHasBeenExist(ctx, in, opts...)
 }

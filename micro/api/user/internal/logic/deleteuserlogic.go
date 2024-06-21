@@ -24,15 +24,23 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserRequest) (resp *types.DeleteUserResponse, err error) {
-	if _, err = l.svcCtx.UserService.DeleteUser(l.ctx, &userRPC.DeleteUserRequest{Id: req.ID}); err != nil {
+	response, err := l.svcCtx.UserService.DeleteUser(l.ctx, &userRPC.DeleteUserRequest{Id: req.ID})
+	if err != nil {
 		return &types.DeleteUserResponse{
 			Code: 500,
 			Msg:  err.Error(),
 		}, nil
 	} else {
-		return &types.DeleteUserResponse{
-			Code: 200,
-			Msg:  "删除成功",
-		}, nil
+		if !response.Ok {
+			return &types.DeleteUserResponse{
+				Code: 500,
+				Msg:  err.Error(),
+			}, nil
+		} else {
+			return &types.DeleteUserResponse{
+				Code: 200,
+				Msg:  response.Msg,
+			}, nil
+		}
 	}
 }

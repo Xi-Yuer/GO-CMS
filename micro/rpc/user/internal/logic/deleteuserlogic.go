@@ -24,6 +24,20 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(in *userRPC.DeleteUserRequest) (*userRPC.CommonResponse, error) {
+	existLogic := NewUserIDHasBeenExistLogic(l.ctx, l.svcCtx)
+	exist, err := existLogic.UserIDHasBeenExist(&userRPC.DeleteUserRequest{Id: in.Id})
+	if err != nil {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, err
+	}
+	if !exist.Ok {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: "用户不存在",
+		}, nil
+	}
 	if err := l.svcCtx.GormDB.Where("id = ?", in.Id).Unscoped().Delete(&userModel.User{}).Error; err != nil {
 		return &userRPC.CommonResponse{
 			Ok:  false,
