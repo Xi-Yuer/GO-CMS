@@ -1,0 +1,118 @@
+syntax = "v1"
+
+info(
+	title: "用户模块"
+	desc: "用户模块"
+	author: "Xi-Yuer"
+	email: "2214380963@qq.com"
+	version: "v1"
+)
+
+type (
+	UserResponse {
+		ID           string   `json:"id"`
+		Nickname     string   `json:"nickname"`
+		Avatar       string   `json:"avatar"`
+		Account      string   `json:"account"`
+		RolesID      []string `json:"rolesID"`
+		DepartmentID string   `json:"departmentID"`
+		InterfaceDic []string `json:"interfaceDic"`
+		IsAdmin      bool     `json:"isAdmin"`
+		Status       bool     `json:"status"`
+		CreateTime   string   `json:"createTime"`
+		UpdateTime   string   `json:"updateTime"`
+	}
+
+	UserListResponse {
+		Total int            `json:"total"`
+		List  []UserResponse `json:"list"`
+	}
+
+	CommonResponse {
+		Code int              `json:"code"`
+		Msg  string           `json:"msg"`
+		Data UserListResponse `json:"data"`
+	}
+
+	GetUserListRequest {
+		Limit        int32    `form:"limit"`
+		Offset       int32    `form:"offset"`
+		ID           string   `form:"id,optional"`
+		Nickname     string   `form:"nickname,optional"`
+		Avatar       string   `form:",optional"`
+		Account      string   `form:"account,optional"`
+		RolesID      []string `form:"rolesID,optional"`
+		DepartmentID string   `form:"departmentID,optional"`
+		InterfaceDic []string `form:"interfaceDic,optional"`
+		IsAdmin      bool     `form:"isAdmin,optional"`
+		Status       bool     `form:"status,optional"`
+		CreateTime   string   `form:"createTime,optional"`
+		UpdateTime   string   `form:"updateTime,optional"`
+	}
+
+	GetUserListResponse {
+		Code int              `json:"code"`
+		Msg  string           `json:"msg"`
+		Data UserListResponse `json:"data"`
+	}
+
+	DeleteUserRequest {
+		ID string `path:"id"`
+	}
+
+	DeleteUserResponse {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+	}
+
+	UpdateUserRequest {
+		ID           string   `path:"id"`
+		Password     string   `form:"password,optional"`
+		Nickname     string   `form:"nickname,optional"`
+		Avatar       string   `form:"avatar,optional"`
+		RolesID      []string `form:"rolesID,optional"`
+		DepartmentID string   `form:"departmentID,optional"`
+		InterfaceDic []string `form:"interfaceDic,optional"`
+		IsAdmin      bool     `form:"isAdmin,optional"`
+		Status       bool     `form:"status,optional"`
+	}
+
+	UpdateUserResponse {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+	}
+
+	CreateUserRequest {
+		Nickname     string   `form:"nickname,optional"`
+		Avatar       string   `form:"avatar,optional"`
+		Account      string   `form:"account"`
+		Password     string   `form:"password"`
+		RolesID      []string `form:"rolesID,optional"`
+		DepartmentID string   `form:"departmentID,optional"`
+		InterfaceDic []string `form:"interfaceDic,optional"`
+		IsAdmin      bool     `form:"isAdmin,optional"`
+		Status       bool     `form:"status,optional"`
+	}
+)
+
+@server(
+	prefix: /v1/user
+)
+
+service UserService {
+	// 获取用户列表
+	@handler GetUserList
+	get / (GetUserListRequest) returns (GetUserListResponse)
+
+	// 删除用户
+	@handler DeleteUser
+	delete /:id (DeleteUserRequest) returns (DeleteUserResponse)
+
+	// 更新用户
+	@handler UpdateUser
+	put /:id (UpdateUserRequest) returns (UpdateUserResponse)
+
+	// 创建用户
+	@handler CreateUser
+	post / (CreateUserRequest) returns (UpdateUserResponse)
+}

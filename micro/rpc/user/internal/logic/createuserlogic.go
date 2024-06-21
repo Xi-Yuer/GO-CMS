@@ -35,11 +35,15 @@ func (l *CreateUserLogic) CreateUser(in *userRPC.CreateUserRequest) (*userRPC.Co
 		Status:       in.Status,
 		IsAdmin:      in.IsAdmin,
 	}).Error; err != nil {
-		return nil, err
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, nil
+	} else {
+		return &userRPC.CommonResponse{
+			Ok:  true,
+			Msg: "创建成功",
+		}, nil
 	}
 
-	return &userRPC.CommonResponse{
-		Ok:  true,
-		Msg: "创建成功",
-	}, nil
 }
