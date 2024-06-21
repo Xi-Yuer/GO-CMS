@@ -24,7 +24,7 @@ func NewDeleteUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Delete
 }
 
 func (l *DeleteUserLogic) DeleteUser(in *userRPC.DeleteUserRequest) (*userRPC.CommonResponse, error) {
-	if err := l.svcCtx.GormDB.Where("id = ?", in.Id).Delete(&userModel.User{}).Error; err != nil {
+	if err := l.svcCtx.GormDB.Where("id = ?", in.Id).Unscoped().Delete(&userModel.User{}).Error; err != nil {
 		return &userRPC.CommonResponse{
 			Ok:  false,
 			Msg: err.Error(),
