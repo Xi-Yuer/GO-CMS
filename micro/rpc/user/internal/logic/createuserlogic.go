@@ -25,6 +25,22 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 }
 
 func (l *CreateUserLogic) CreateUser(in *userRPC.CreateUserRequest) (*userRPC.CommonResponse, error) {
+	beenExistLogic := NewUserAccountHasBeenExistLogic(l.ctx, l.svcCtx)
+	exist, err := beenExistLogic.UserAccountHasBeenExist(&userRPC.UserAccountHasBeenExistRequest{
+		Account: in.Account,
+	})
+	if err != nil {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, err
+	}
+	if exist.Ok {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: "用户名已存在",
+		}, nil
+	}
 	if err := l.svcCtx.GormDB.Create(&userModel.User{
 		ID:           in.Id,
 		Account:      in.Account,
@@ -35,11 +51,15 @@ func (l *CreateUserLogic) CreateUser(in *userRPC.CreateUserRequest) (*userRPC.Co
 		Status:       in.Status,
 		IsAdmin:      in.IsAdmin,
 	}).Error; err != nil {
-		return nil, err
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, nil
+	} else {
+		return &userRPC.CommonResponse{
+			Ok:  true,
+			Msg: "创建成功",
+		}, nil
 	}
 
-	return &userRPC.CommonResponse{
-		Ok:  true,
-		Msg: "创建成功",
-	}, nil
 }

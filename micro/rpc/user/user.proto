@@ -79,5 +79,6 @@ service UserService {
   rpc GetUserList(GetUserListRequest) returns (GetUserListResponse);
   rpc DeleteUser(DeleteUserRequest) returns (CommonResponse);
   rpc UserAccountHasBeenExist(UserAccountHasBeenExistRequest) returns (CommonResponse);
+  rpc UserIDHasBeenExist(DeleteUserRequest) returns (CommonResponse);
 }
 

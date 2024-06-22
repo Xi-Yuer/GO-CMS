@@ -51,3 +51,8 @@ func (s *UserServiceServer) UserAccountHasBeenExist(ctx context.Context, in *use
 	l := logic.NewUserAccountHasBeenExistLogic(ctx, s.svcCtx)
 	return l.UserAccountHasBeenExist(in)
 }
+
+func (s *UserServiceServer) UserIDHasBeenExist(ctx context.Context, in *userRPC.DeleteUserRequest) (*userRPC.CommonResponse, error) {
+	l := logic.NewUserIDHasBeenExistLogic(ctx, s.svcCtx)
+	return l.UserIDHasBeenExist(in)
+}

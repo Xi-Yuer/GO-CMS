@@ -33,10 +33,14 @@ func (l *UpdateUserLogic) UpdateUser(in *userRPC.UpdateUserRequest) (*userRPC.Co
 		DepartmentID: in.Department,
 		IsAdmin:      in.IsAdmin,
 	}).Error; err != nil {
-		return nil, err
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, nil
+	} else {
+		return &userRPC.CommonResponse{
+			Ok:  true,
+			Msg: "更新成功",
+		}, nil
 	}
-	return &userRPC.CommonResponse{
-		Ok:  true,
-		Msg: "更新成功",
-	}, nil
 }

@@ -1,15 +1,20 @@
 package userModel
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type User struct {
-	gorm.Model
-	ID           string
-	Account      string
-	Password     string
+	ID           string `gorm:"<-:create;primaryKey"`
+	Account      string `gorm:"<-:create;unique"`
+	Password     string `gorm:"not null"`
 	NickName     string
 	Avatar       string
-	Status       bool
+	Status       bool `gorm:"default:true"`
 	DepartmentID string
-	IsAdmin      bool
+	IsAdmin      bool `gorm:"default:false"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 }

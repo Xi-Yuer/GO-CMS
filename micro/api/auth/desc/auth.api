@@ -25,14 +25,13 @@ type (
 )
 
 @server(
-	// 定义路由前缀为 "/v1"
-	prefix: /v1
+	prefix: /v1/auth
 )
 
 service auth {
 	@handler Login
-	post /auth/login (LoginRequest) returns (CommonResponse)
+	post /login (LoginRequest) returns (CommonResponse)
 
 	@handler Captcha
-	get /auth/captcha (EmptyRequest) returns (CommonResponse)
+	get /captcha (EmptyRequest) returns (CommonResponse)
 }
