@@ -1,14 +1,14 @@
 # RBAC-Based Permission Management System
 
-[简体中文](README_zh.md) | English
+[简体中文](README.md) | English
 
 [![GoDoc](https://godoc.org/github.com/Xi-Yuer/GO-CMS?status.svg)](https://godoc.org/github.com/Xi-Yuer/GO-CMS)
 ![License](https://img.shields.io/github/license/Xi-Yuer/GO-CMS)
-![GitHub stars](https://img.shields.io/github/stars/Xi-Yuer/GO-CMS)
-![GitHub forks](https://img.shields.io/github/forks/Xi-Yuer/GO-CMS)
-![GitHub issues](https://img.shields.io/github/issues/Xi-Yuer/GO-CMS)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Xi-Yuer/GO-CMS)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Xi-Yuer/GO-CMS)
+![GitHub issues](https://img.shields.io/github/issues/Xi-Yuer/GO-CMS)
+![GitHub forks](https://img.shields.io/github/forks/Xi-Yuer/GO-CMS)
+![GitHub stars](https://img.shields.io/github/stars/Xi-Yuer/GO-CMS)
 
 ## Project Introduction
 The RBAC-based permission management system is developed using the Go + Gin framework, with MySQL as the database and React + Antd for the frontend. It supports features such as internationalization, theme color switching, permission control, menu management, user management, role management, data dictionary management, log management, system monitoring, code generator, and API documentation.

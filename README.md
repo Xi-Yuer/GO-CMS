@@ -4,11 +4,11 @@
 
 [![GoDoc](https://godoc.org/github.com/Xi-Yuer/GO-CMS?status.svg)](https://godoc.org/github.com/Xi-Yuer/GO-CMS)
 ![License](https://img.shields.io/github/license/Xi-Yuer/GO-CMS)
-![GitHub stars](https://img.shields.io/github/stars/Xi-Yuer/GO-CMS)
-![GitHub forks](https://img.shields.io/github/forks/Xi-Yuer/GO-CMS)
-![GitHub issues](https://img.shields.io/github/issues/Xi-Yuer/GO-CMS)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Xi-Yuer/GO-CMS)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Xi-Yuer/GO-CMS)
+![GitHub issues](https://img.shields.io/github/issues/Xi-Yuer/GO-CMS)
+![GitHub forks](https://img.shields.io/github/forks/Xi-Yuer/GO-CMS)
+![GitHub stars](https://img.shields.io/github/stars/Xi-Yuer/GO-CMS)
 
 
 ## 项目介绍
