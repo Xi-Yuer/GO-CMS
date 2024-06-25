@@ -2,7 +2,8 @@ package logic
 
 import (
 	"context"
-
+	"errors"
+	roleModlel "micro/model/role"
 	"micro/rpc/role/internal/svc"
 	"micro/rpc/role/roleRPC"
 
@@ -24,7 +25,18 @@ func NewRoleIDsHasBeenExistLogic(ctx context.Context, svcCtx *svc.ServiceContext
 }
 
 func (l *RoleIDsHasBeenExistLogic) RoleIDsHasBeenExist(in *roleRPC.RoleIDsHasBeenExistRequest) (*roleRPC.CommonResponse, error) {
-	// todo: add your logic here and delete this line
+	var roles []roleModlel.Role
+	if err := l.svcCtx.GormDB.Where("id in (?)", in.Ids).Find(&roles).Error; err != nil {
+		return nil, err
+	}
 
-	return &roleRPC.CommonResponse{}, nil
+	if len(roles) != len(in.Ids) {
+		return nil, errors.New("角色ID不存在")
+	}
+
+	return &roleRPC.CommonResponse{
+		Ok:  true,
+		Msg: "",
+	}, nil
+
 }

@@ -47,7 +47,7 @@ func (s *RoleServiceServer) GetRoleList(ctx context.Context, in *roleRPC.GetRole
 	return l.GetRoleList(in)
 }
 
-func (s *RoleServiceServer) RoleNameHasBeenExist(ctx context.Context, in *roleRPC.DeleteRoleRequest) (*roleRPC.CommonResponse, error) {
+func (s *RoleServiceServer) RoleNameHasBeenExist(ctx context.Context, in *roleRPC.RoleNamesHasBeenExistRequest) (*roleRPC.CommonResponse, error) {
 	l := logic.NewRoleNameHasBeenExistLogic(ctx, s.svcCtx)
 	return l.RoleNameHasBeenExist(in)
 }

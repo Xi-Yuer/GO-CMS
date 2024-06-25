@@ -37,7 +37,7 @@ type RoleServiceClient interface {
 	UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*GetRoleResponse, error)
 	GetRoleList(ctx context.Context, in *GetRoleListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
-	RoleNameHasBeenExist(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+	RoleNameHasBeenExist(ctx context.Context, in *RoleNamesHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	RoleIDsHasBeenExist(ctx context.Context, in *RoleIDsHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 }
 
@@ -94,7 +94,7 @@ func (c *roleServiceClient) GetRoleList(ctx context.Context, in *GetRoleListRequ
 	return out, nil
 }
 
-func (c *roleServiceClient) RoleNameHasBeenExist(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+func (c *roleServiceClient) RoleNameHasBeenExist(ctx context.Context, in *RoleNamesHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
 	out := new(CommonResponse)
 	err := c.cc.Invoke(ctx, RoleService_RoleNameHasBeenExist_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -121,7 +121,7 @@ type RoleServiceServer interface {
 	UpdateRole(context.Context, *UpdateRoleRequest) (*CommonResponse, error)
 	GetRole(context.Context, *GetRoleRequest) (*GetRoleResponse, error)
 	GetRoleList(context.Context, *GetRoleListRequest) (*GetUserListResponse, error)
-	RoleNameHasBeenExist(context.Context, *DeleteRoleRequest) (*CommonResponse, error)
+	RoleNameHasBeenExist(context.Context, *RoleNamesHasBeenExistRequest) (*CommonResponse, error)
 	RoleIDsHasBeenExist(context.Context, *RoleIDsHasBeenExistRequest) (*CommonResponse, error)
 	mustEmbedUnimplementedRoleServiceServer()
 }
@@ -145,7 +145,7 @@ func (UnimplementedRoleServiceServer) GetRole(context.Context, *GetRoleRequest) 
 func (UnimplementedRoleServiceServer) GetRoleList(context.Context, *GetRoleListRequest) (*GetUserListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoleList not implemented")
 }
-func (UnimplementedRoleServiceServer) RoleNameHasBeenExist(context.Context, *DeleteRoleRequest) (*CommonResponse, error) {
+func (UnimplementedRoleServiceServer) RoleNameHasBeenExist(context.Context, *RoleNamesHasBeenExistRequest) (*CommonResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoleNameHasBeenExist not implemented")
 }
 func (UnimplementedRoleServiceServer) RoleIDsHasBeenExist(context.Context, *RoleIDsHasBeenExistRequest) (*CommonResponse, error) {
@@ -255,7 +255,7 @@ func _RoleService_GetRoleList_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _RoleService_RoleNameHasBeenExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteRoleRequest)
+	in := new(RoleNamesHasBeenExistRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func _RoleService_RoleNameHasBeenExist_Handler(srv interface{}, ctx context.Cont
 		FullMethod: RoleService_RoleNameHasBeenExist_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RoleServiceServer).RoleNameHasBeenExist(ctx, req.(*DeleteRoleRequest))
+		return srv.(RoleServiceServer).RoleNameHasBeenExist(ctx, req.(*RoleNamesHasBeenExistRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

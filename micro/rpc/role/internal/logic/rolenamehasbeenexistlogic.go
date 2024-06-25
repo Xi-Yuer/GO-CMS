@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	roleModlel "micro/model/role"
 
 	"micro/rpc/role/internal/svc"
 	"micro/rpc/role/roleRPC"
@@ -23,8 +24,22 @@ func NewRoleNameHasBeenExistLogic(ctx context.Context, svcCtx *svc.ServiceContex
 	}
 }
 
-func (l *RoleNameHasBeenExistLogic) RoleNameHasBeenExist(in *roleRPC.DeleteRoleRequest) (*roleRPC.CommonResponse, error) {
-	// todo: add your logic here and delete this line
-
-	return &roleRPC.CommonResponse{}, nil
+func (l *RoleNameHasBeenExistLogic) RoleNameHasBeenExist(in *roleRPC.RoleNamesHasBeenExistRequest) (*roleRPC.CommonResponse, error) {
+	count := int64(0)
+	if err := l.svcCtx.GormDB.Where("role_name = ?", in.Names).First(&roleModlel.Role{}).Count(&count).Error; err != nil {
+		return &roleRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, nil
+	}
+	if count > 0 {
+		return &roleRPC.CommonResponse{
+			Ok:  true,
+			Msg: "角色名已存在",
+		}, nil
+	}
+	return &roleRPC.CommonResponse{
+		Ok:  false,
+		Msg: "",
+	}, nil
 }

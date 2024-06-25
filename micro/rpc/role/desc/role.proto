@@ -18,6 +18,10 @@ message RoleIDsHasBeenExistRequest {
   repeated string ids = 1;
 }
 
+message RoleNamesHasBeenExistRequest {
+  repeated string names = 1;
+}
+
 message UpdateRoleRequest  {
   string id = 1;
   string role_name = 2;
@@ -65,6 +69,6 @@ service RoleService {
   rpc UpdateRole(UpdateRoleRequest) returns (CommonResponse) {}
   rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {}
   rpc GetRoleList(GetRoleListRequest) returns (GetUserListResponse) {}
-  rpc RoleNameHasBeenExist(DeleteRoleRequest) returns (CommonResponse);
+  rpc RoleNameHasBeenExist(RoleNamesHasBeenExistRequest) returns (CommonResponse);
   rpc RoleIDsHasBeenExist(RoleIDsHasBeenExistRequest) returns (CommonResponse);
 }

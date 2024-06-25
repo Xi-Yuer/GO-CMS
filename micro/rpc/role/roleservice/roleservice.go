@@ -13,15 +13,16 @@ import (
 )
 
 type (
-	CommonResponse             = roleRPC.CommonResponse
-	CreateRoleRequest          = roleRPC.CreateRoleRequest
-	DeleteRoleRequest          = roleRPC.DeleteRoleRequest
-	GetRoleListRequest         = roleRPC.GetRoleListRequest
-	GetRoleRequest             = roleRPC.GetRoleRequest
-	GetRoleResponse            = roleRPC.GetRoleResponse
-	GetUserListResponse        = roleRPC.GetUserListResponse
-	RoleIDsHasBeenExistRequest = roleRPC.RoleIDsHasBeenExistRequest
-	UpdateRoleRequest          = roleRPC.UpdateRoleRequest
+	CommonResponse               = roleRPC.CommonResponse
+	CreateRoleRequest            = roleRPC.CreateRoleRequest
+	DeleteRoleRequest            = roleRPC.DeleteRoleRequest
+	GetRoleListRequest           = roleRPC.GetRoleListRequest
+	GetRoleRequest               = roleRPC.GetRoleRequest
+	GetRoleResponse              = roleRPC.GetRoleResponse
+	GetUserListResponse          = roleRPC.GetUserListResponse
+	RoleIDsHasBeenExistRequest   = roleRPC.RoleIDsHasBeenExistRequest
+	RoleNamesHasBeenExistRequest = roleRPC.RoleNamesHasBeenExistRequest
+	UpdateRoleRequest            = roleRPC.UpdateRoleRequest
 
 	RoleService interface {
 		CreateRole(ctx context.Context, in *CreateRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error)
@@ -29,7 +30,7 @@ type (
 		UpdateRole(ctx context.Context, in *UpdateRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		GetRole(ctx context.Context, in *GetRoleRequest, opts ...grpc.CallOption) (*GetRoleResponse, error)
 		GetRoleList(ctx context.Context, in *GetRoleListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
-		RoleNameHasBeenExist(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error)
+		RoleNameHasBeenExist(ctx context.Context, in *RoleNamesHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		RoleIDsHasBeenExist(ctx context.Context, in *RoleIDsHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 	}
 
@@ -69,7 +70,7 @@ func (m *defaultRoleService) GetRoleList(ctx context.Context, in *GetRoleListReq
 	return client.GetRoleList(ctx, in, opts...)
 }
 
-func (m *defaultRoleService) RoleNameHasBeenExist(ctx context.Context, in *DeleteRoleRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
+func (m *defaultRoleService) RoleNameHasBeenExist(ctx context.Context, in *RoleNamesHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error) {
 	client := roleRPC.NewRoleServiceClient(m.cli.Conn())
 	return client.RoleNameHasBeenExist(ctx, in, opts...)
 }
