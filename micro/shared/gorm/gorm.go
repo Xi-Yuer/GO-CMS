@@ -22,9 +22,9 @@ func NewGorm() *gorm.DB {
 		logger.Config{
 			SlowThreshold:             time.Second,   // Slow SQL threshold
 			LogLevel:                  logger.Silent, // Log level
-			IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
-			ParameterizedQueries:      true,          // Don't include params in the SQL log
-			Colorful:                  true,          // Disable color
+			IgnoreRecordNotFoundError: false,         // Ignore ErrRecordNotFound error for logger
+			ParameterizedQueries:      false,         // Don't include params in the SQL log
+			Colorful:                  false,         // Disable color
 		},
 	)
 
