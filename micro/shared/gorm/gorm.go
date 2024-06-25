@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"log"
+	roleModlel "micro/model/role"
 	userModel "micro/model/user"
 	"os"
 	"time"
@@ -39,7 +40,7 @@ func NewGorm() *gorm.DB {
 		Logger: newLogger,
 	})
 
-	if err := db.AutoMigrate(&userModel.User{}); err != nil {
+	if err := db.AutoMigrate(&userModel.User{}, &roleModlel.Role{}); err != nil {
 		return nil
 	}
 	if err != nil {

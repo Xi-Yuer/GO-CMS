@@ -27,7 +27,7 @@ func NewCreateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Create
 }
 
 func (l *CreateUserLogic) CreateUser(req *types.CreateUserRequest) (resp *types.UpdateUserResponse, err error) {
-	if response, _ := l.svcCtx.UserService.CreateUser(l.ctx, &userRPC.CreateUserRequest{
+	response, _ := l.svcCtx.UserService.CreateUser(l.ctx, &userRPC.CreateUserRequest{
 		Id:         strconv.FormatInt(snowflake.GenID(), 10),
 		Account:    req.Account,
 		Password:   req.Password,
@@ -36,15 +36,15 @@ func (l *CreateUserLogic) CreateUser(req *types.CreateUserRequest) (resp *types.
 		Status:     req.Status,
 		Department: req.DepartmentID,
 		IsAdmin:    req.IsAdmin,
-	}); response.Ok {
+	})
+	if response.Ok {
 		return &types.UpdateUserResponse{
 			Code: 200,
 			Msg:  response.Msg,
 		}, nil
-	} else {
-		return &types.UpdateUserResponse{
-			Code: 500,
-			Msg:  response.Msg,
-		}, nil
 	}
+	return &types.UpdateUserResponse{
+		Code: 500,
+		Msg:  response.Msg,
+	}, nil
 }
