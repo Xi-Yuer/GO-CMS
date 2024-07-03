@@ -2,11 +2,11 @@ package logic
 
 import (
 	"context"
-	"micro/rpc/captcha/captcha"
-	"micro/rpc/user/userRPC"
-
 	"micro/api/auth/internal/svc"
 	"micro/api/auth/internal/types"
+	"micro/rpc/captcha/captcha"
+	"micro/rpc/user/userRPC"
+	"micro/shared/token"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -58,9 +58,28 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.CommonResponse,
 		}, nil
 	}
 
+	userResponse, err := l.svcCtx.UserService.GetUserByAccount(l.ctx, &userRPC.GetUserByAccountRequest{Account: req.Account})
+	if err != nil {
+		return &types.CommonResponse{
+			Code: 400,
+			Data: nil,
+			Msg:  "用户不存在",
+		}, nil
+	}
+
+	createToken, err := token.CreateToken(userResponse.Id, userResponse.Account)
+
+	if err != nil {
+		return &types.CommonResponse{
+			Code: 400,
+			Data: nil,
+			Msg:  err.Error(),
+		}, nil
+	}
+
 	return &types.CommonResponse{
 		Code: 200,
-		Data: verifyCaptcha,
+		Data: createToken,
 		Msg:  "success",
 	}, nil
 }

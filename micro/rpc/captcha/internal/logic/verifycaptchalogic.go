@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"micro/rpc/captcha/captcha"
@@ -31,7 +32,7 @@ func (l *VerifyCaptchaLogic) VerifyCaptcha(in *captcha.VerifyCaptchaRequest) (*c
 	// 从 Redis 中获取存储的验证码
 	storedCode, err := l.svcCtx.Redis.Get(l.ctx, fmt.Sprintf("captcha:%s", sessionID)).Result()
 	if err != nil {
-		return nil, err
+		return nil, errors.New("验证码已过期，请重新获取")
 	}
 
 	// 检查存储的验证码是否与用户输入的验证码匹配

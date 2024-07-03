@@ -37,6 +37,11 @@ func (s *UserServiceServer) GetUser(ctx context.Context, in *userRPC.GetUserRequ
 	return l.GetUser(in)
 }
 
+func (s *UserServiceServer) GetUserByAccount(ctx context.Context, in *userRPC.GetUserByAccountRequest) (*userRPC.GetUserResponse, error) {
+	l := logic.NewGetUserByAccountLogic(ctx, s.svcCtx)
+	return l.GetUserByAccount(in)
+}
+
 func (s *UserServiceServer) GetUserList(ctx context.Context, in *userRPC.GetUserListRequest) (*userRPC.GetUserListResponse, error) {
 	l := logic.NewGetUserListLogic(ctx, s.svcCtx)
 	return l.GetUserList(in)

@@ -16,6 +16,7 @@ type (
 	CommonResponse                 = userRPC.CommonResponse
 	CreateUserRequest              = userRPC.CreateUserRequest
 	DeleteUserRequest              = userRPC.DeleteUserRequest
+	GetUserByAccountRequest        = userRPC.GetUserByAccountRequest
 	GetUserListRequest             = userRPC.GetUserListRequest
 	GetUserListResponse            = userRPC.GetUserListResponse
 	GetUserRequest                 = userRPC.GetUserRequest
@@ -27,6 +28,7 @@ type (
 		CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+		GetUserByAccount(ctx context.Context, in *GetUserByAccountRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 		GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
 		DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*CommonResponse, error)
 		UserAccountHasBeenExist(ctx context.Context, in *UserAccountHasBeenExistRequest, opts ...grpc.CallOption) (*CommonResponse, error)
@@ -57,6 +59,11 @@ func (m *defaultUserService) UpdateUser(ctx context.Context, in *UpdateUserReque
 func (m *defaultUserService) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
 	client := userRPC.NewUserServiceClient(m.cli.Conn())
 	return client.GetUser(ctx, in, opts...)
+}
+
+func (m *defaultUserService) GetUserByAccount(ctx context.Context, in *GetUserByAccountRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+	client := userRPC.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserByAccount(ctx, in, opts...)
 }
 
 func (m *defaultUserService) GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error) {

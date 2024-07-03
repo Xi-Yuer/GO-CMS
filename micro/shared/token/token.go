@@ -11,20 +11,20 @@ var jwtKey = []byte("12345699999")
 
 // Claims 结构定义了 Token 中的声明
 type Claims struct {
-	UserID   int    `json:"user_id"`
-	Username string `json:"username"`
+	UserID      string `json:"user_id"`
+	UserAccount string `json:"user_account"`
 	jwt.StandardClaims
 }
 
 // CreateToken 创建 Token
-func CreateToken(userID int, username string) (string, error) {
+func CreateToken(userID string, userAccount string) (string, error) {
 	// 设置 Token 的过期时间
 	expirationTime := time.Now().Add(5 * time.Minute)
 
 	// 创建声明
 	claims := &Claims{
-		UserID:   userID,
-		Username: username,
+		UserID:      userID,
+		UserAccount: userAccount,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

@@ -34,6 +34,10 @@ message GetUserRequest {
   string id = 1;
 }
 
+message GetUserByAccountRequest {
+  string account = 1;
+}
+
 message UserAccountHasBeenExistRequest {
   string account = 1;
 }
@@ -76,6 +80,7 @@ service UserService {
   rpc CreateUser(CreateUserRequest) returns (CommonResponse);
   rpc UpdateUser(UpdateUserRequest) returns (CommonResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetUserByAccount(GetUserByAccountRequest) returns (GetUserResponse);
   rpc GetUserList(GetUserListRequest) returns (GetUserListResponse);
   rpc DeleteUser(DeleteUserRequest) returns (CommonResponse);
   rpc UserAccountHasBeenExist(UserAccountHasBeenExistRequest) returns (CommonResponse);
