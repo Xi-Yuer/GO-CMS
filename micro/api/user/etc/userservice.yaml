@@ -6,3 +6,6 @@ UserService:
     Hosts:
       - localhost:2379
     Key: user.rpc
+Auth:
+  AccessSecret: "12345699999"
+  AccessExpire: 86400
