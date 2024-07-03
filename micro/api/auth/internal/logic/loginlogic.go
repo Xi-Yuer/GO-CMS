@@ -45,7 +45,7 @@ func (l *LoginLogic) Login(req *types.LoginRequest) (resp *types.CommonResponse,
 		}, nil
 	}
 
-	hasBeenExist, err := l.svcCtx.UserService.UserAccountHasBeenExist(l.ctx, &userRPC.UserAccountHasBeenExistRequest{Account: ""})
+	hasBeenExist, err := l.svcCtx.UserService.UserAccountHasBeenExist(l.ctx, &userRPC.UserAccountHasBeenExistRequest{Account: req.Account})
 	if err != nil {
 		return nil, err
 	}

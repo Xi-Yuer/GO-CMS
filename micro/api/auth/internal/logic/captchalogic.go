@@ -39,11 +39,13 @@ func (l *CaptchaLogic) Captcha(req *types.EmptyRequest) (resp *types.CommonRespo
 	return &types.CommonResponse{
 		Code: 0,
 		Data: &struct {
-			Captcha   string `json:"captcha"`
-			SessionID string `json:"sessionID"`
+			Captcha     string `json:"captchaCode"`
+			SessionID   string `json:"sessionID"`
+			CaptchaCode string `json:"captchaBase64Code"`
 		}{
-			Captcha:   generateCaptcha.CaptchaCode,
-			SessionID: sessionID,
+			CaptchaCode: generateCaptcha.CaptchaCode,
+			Captcha:     generateCaptcha.Captcha,
+			SessionID:   sessionID,
 		},
 		Msg: "success",
 	}, nil

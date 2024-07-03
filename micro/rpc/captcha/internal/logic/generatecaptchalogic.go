@@ -37,7 +37,7 @@ func (l *GenerateCaptchaLogic) GenerateCaptcha(in *captcha.GenerateCaptchaReques
 	expiresAt := time.Now().Add(5 * time.Minute).Unix()
 
 	// 将验证码存储到 Redis 中，以 sessionID 为键
-	if err := l.svcCtx.Redis.Set(l.ctx, fmt.Sprintf("captcha:%s", sessionID), code, time.Duration(expiresAt)*time.Second).Err(); err != nil {
+	if err := l.svcCtx.Redis.Set(l.ctx, fmt.Sprintf("captcha:%s", sessionID), code, 5*time.Minute).Err(); err != nil {
 		return nil, err
 	}
 
@@ -48,6 +48,7 @@ func (l *GenerateCaptchaLogic) GenerateCaptcha(in *captcha.GenerateCaptchaReques
 	}
 	return &captcha.GenerateCaptchaResponse{
 		CaptchaCode: captchaImage,
+		Captcha:     code,
 		ExpiresAt:   expiresAt,
 	}, nil
 }
