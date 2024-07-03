@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	userModel "micro/model/user"
 
 	"micro/rpc/user/internal/svc"
@@ -25,9 +26,21 @@ func NewGetUserByAccountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *GetUserByAccountLogic) GetUserByAccount(in *userRPC.GetUserByAccountRequest) (*userRPC.GetUserResponse, error) {
-	var user *userRPC.GetUserResponse
-	if err := l.svcCtx.GormDB.Model(&userModel.User{}).First(&userModel.User{}, "account = ?", in.Account).Error; err != nil {
+	var user *userModel.User
+	if err := l.svcCtx.GormDB.Model(&userModel.User{}).First(&user, "account = ?", in.Account).Error; err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
-	return user, nil
+	return &userRPC.GetUserResponse{
+		Id:         user.ID,
+		Account:    user.Account,
+		Password:   "",
+		Nickname:   user.NickName,
+		Avatar:     user.Avatar,
+		Status:     user.Status,
+		Department: user.DepartmentID,
+		IsAdmin:    user.IsAdmin,
+		CreateTime: user.CreatedAt.String(),
+		UpdateTime: user.UpdatedAt.String(),
+	}, nil
 }
