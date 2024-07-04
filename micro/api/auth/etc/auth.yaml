@@ -11,4 +11,4 @@ UserService:
     Hosts:
       - localhost:2379
     Key: user.rpc
-
+MaxConns: 100
