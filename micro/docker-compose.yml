@@ -9,6 +9,8 @@ services:
       MYSQL_ROOT_PASSWORD: 2214380963Wx!!  # 添加 MySQL 的 root 密码
     networks:
       - microservices-network
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # 挂载初始化 SQL 文件
 
   redis:
     image: redis:latest
