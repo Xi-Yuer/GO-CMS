@@ -1,0 +1,147 @@
+version: '3.8'
+
+services:
+  # 数据库
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: micro_cms
+      MYSQL_ROOT_PASSWORD: 2214380963Wx!!  # 添加 MySQL 的 root 密码
+    networks:
+      - microservices-network
+
+  redis:
+    image: redis:latest
+    networks:
+      - microservices-network
+
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.0
+    networks:
+      - microservices-network
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    command: [
+      "etcd",
+      "--name", "etcd0",
+      "--advertise-client-urls", "http://0.0.0.0:2379",
+      "--listen-client-urls", "http://0.0.0.0:2379",
+      "--initial-advertise-peer-urls", "http://0.0.0.0:2380",
+      "--listen-peer-urls", "http://0.0.0.0:2380",
+      "--initial-cluster", "etcd0=http://0.0.0.0:2380"
+    ]
+
+  # RPC 服务
+  captcha-rpc-service:
+    image: captcha-rpc-image
+    container_name: captcha-rpc-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]  # 健康检查命令
+      interval: 10s  # 检查间隔
+      retries: 5  # 重试次数
+
+  user-rpc-service:
+    image: user-rpc-image
+    container_name: user-rpc-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 10s
+      retries: 5
+
+  role-rpc-service:
+    image: role-rpc-image
+    container_name: role-rpc-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - redis
+      - etcd
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 10s
+      retries: 5
+
+  # API 服务
+  auth-service:
+    image: auth-service-image
+    container_name: auth-service
+    ports:
+      - "8888:8888"
+    depends_on:
+      - etcd
+      - mysql
+      - redis
+      - captcha-rpc-service
+      - user-rpc-service
+      - role-rpc-service
+    networks:
+      - microservices-network  # 将服务连接到自定义网络
+    environment:
+      REDIS_HOST: redis  # 使用服务名称作为主机名
+      REDIS_PORT: 6379
+      ETCD_HOST: etcd
+      ETCD_PORT: 2379
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+
+  user-service:
+    image: user-service-image
+    container_name: user-service
+    ports:
+      - "8889:8889"
+    depends_on:
+      - etcd
+      - mysql
+      - redis
+      - captcha-rpc-service
+      - user-rpc-service
+      - role-rpc-service
+    networks:
+      - microservices-network
+    environment:
+      REDIS_HOST: redis   # 使用服务名称作为主机名
+      REDIS_PORT: 6379
+      ETCD_HOST: etcd
+      ETCD_PORT: 2379
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+
+  nginx-proxy:
+    image: nginx:latest  # 使用最新版本的 Nginx 镜像
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    networks:
+      - microservices-network
+    depends_on:
+      - auth-service
+      - user-service
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # 挂载自定义的 Nginx 配置文件
+
+networks:
+  microservices-network:
+    driver: bridge  # 使用默认的 Docker bridge 网络驱动
+
+volumes:
+  etcd-data:

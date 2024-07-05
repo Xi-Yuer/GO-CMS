@@ -4,11 +4,11 @@ Port: 8888
 CaptchaService:
   Etcd:
     Hosts:
-      - localhost:2379
+      - etcd:2379
     Key: captcha.rpc
 UserService:
   Etcd:
     Hosts:
-      - localhost:2379
+      - etcd:2379
     Key: user.rpc
 MaxConns: 100

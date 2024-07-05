@@ -1,3 +1,3 @@
 package appConfig
 
-var RedisHost = "localhost:6379"
+var RedisHost = "redis:6379"
