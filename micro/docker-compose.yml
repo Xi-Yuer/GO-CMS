@@ -105,6 +105,8 @@ services:
       ETCD_PORT: 2379
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
 
   user-service:
     image: user-service-image
@@ -127,6 +129,8 @@ services:
       ETCD_PORT: 2379
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8889/health"]
 
   nginx-proxy:
     image: nginx:latest  # 使用最新版本的 Nginx 镜像
