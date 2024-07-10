@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package roleRPC;
+
+option go_package = "./roleRPC";
+
+message CreateRoleRequest {
+  string id = 1;
+  string role_name = 2;
+  string description = 3;
+  bool can_edit = 4;
+}
+
+message DeleteRoleRequest  {
+  string id = 1;
+}
+message RoleIDsHasBeenExistRequest {
+  repeated string ids = 1;
+}
+
+message RoleNamesHasBeenExistRequest {
+  repeated string names = 1;
+}
+
+message UpdateRoleRequest  {
+  string id = 1;
+  string role_name = 2;
+  string description = 3;
+  bool can_edit = 4;
+}
+
+message GetRoleRequest  {
+  string id = 1;
+}
+
+message GetRoleListRequest  {
+  string id = 1;
+  string role_name = 2;
+  string description = 3;
+  bool can_edit = 4;
+  string create_time = 9;
+  string update_time = 10;
+  int32 page = 11;
+  int32 page_size = 12;
+}
+
+message GetRoleResponse  {
+  string id = 1;
+  string role_name = 2;
+  string description = 3;
+  bool can_edit = 4;
+  string create_time = 9;
+  string update_time = 10;
+}
+
+message GetUserListResponse {
+  int32 total = 1;
+  repeated GetRoleResponse role_list = 2;
+}
+
+message CommonResponse {
+  bool ok = 1;
+  string msg = 2;
+}
+
+service RoleService {
+  rpc CreateRole(CreateRoleRequest) returns (CommonResponse) {}
+  rpc DeleteRole(DeleteRoleRequest) returns (CommonResponse) {}
+  rpc UpdateRole(UpdateRoleRequest) returns (CommonResponse) {}
+  rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {}
+  rpc GetRoleList(GetRoleListRequest) returns (GetUserListResponse) {}
+  rpc RoleNameHasBeenExist(RoleNamesHasBeenExistRequest) returns (CommonResponse);
+  rpc RoleIDsHasBeenExist(RoleIDsHasBeenExistRequest) returns (CommonResponse);
+}

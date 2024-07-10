@@ -1,0 +1,6 @@
+Name: role.rpc
+ListenOn: 0.0.0.0:8082
+Etcd:
+  Hosts:
+  - etcd:2379
+  Key: role.rpc

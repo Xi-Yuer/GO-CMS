@@ -30,17 +30,15 @@ func (l *DeleteUserLogic) DeleteUser(req *types.DeleteUserRequest) (resp *types.
 			Code: 500,
 			Msg:  err.Error(),
 		}, nil
-	} else {
-		if !response.Ok {
-			return &types.DeleteUserResponse{
-				Code: 500,
-				Msg:  err.Error(),
-			}, nil
-		} else {
-			return &types.DeleteUserResponse{
-				Code: 200,
-				Msg:  response.Msg,
-			}, nil
-		}
 	}
+	if !response.Ok {
+		return &types.DeleteUserResponse{
+			Code: 500,
+			Msg:  response.Msg,
+		}, nil
+	}
+	return &types.DeleteUserResponse{
+		Code: 200,
+		Msg:  response.Msg,
+	}, nil
 }

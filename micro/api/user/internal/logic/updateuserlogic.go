@@ -38,11 +38,9 @@ func (l *UpdateUserLogic) UpdateUser(req *types.UpdateUserRequest) (resp *types.
 			Code: 200,
 			Msg:  response.Msg,
 		}, nil
-	} else {
-		return &types.UpdateUserResponse{
-			Code: 500,
-			Msg:  err.Error(),
-		}, nil
-
 	}
+	return &types.UpdateUserResponse{
+		Code: 500,
+		Msg:  response.Msg,
+	}, nil
 }

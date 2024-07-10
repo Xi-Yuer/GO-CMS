@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package userRPC;
+
+option go_package = "./userRPC";
+
+message CreateUserRequest {
+  string id = 1;
+  string account = 2;
+  string password = 3;
+  string nickname = 4;
+  string avatar = 5;
+  bool status = 6;
+  string department = 7;
+  bool is_admin = 8;
+}
+
+message CommonResponse {
+  bool ok = 1;
+  string msg = 2;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  string password = 2;
+  string nickname = 3;
+  string avatar = 4;
+  bool status = 5;
+  string department = 6;
+  bool is_admin = 7;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserByAccountRequest {
+  string account = 1;
+}
+
+message UserAccountHasBeenExistRequest {
+  string account = 1;
+}
+
+message GetUserResponse {
+  string id = 1;
+  string account = 2;
+  string password = 3;
+  string nickname = 4;
+  string avatar = 5;
+  bool status = 6;
+  string department = 7;
+  bool is_admin = 8;
+  string create_time = 9;
+  string update_time = 10;
+}
+
+message GetUserListRequest {
+  string id = 1;
+  string account = 2;
+  string nickname = 3;
+  string avatar = 4;
+  bool status = 5;
+  string department = 6;
+  bool is_admin = 7;
+  int32 page = 8;
+  int32 page_size = 9;
+}
+
+message GetUserListResponse {
+  int32 total = 1;
+  repeated GetUserResponse user_list = 2;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CommonResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (CommonResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetUserByAccount(GetUserByAccountRequest) returns (GetUserResponse);
+  rpc GetUserList(GetUserListRequest) returns (GetUserListResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (CommonResponse);
+  rpc UserAccountHasBeenExist(UserAccountHasBeenExistRequest) returns (CommonResponse);
+  rpc UserIDHasBeenExist(DeleteUserRequest) returns (CommonResponse);
+}
+

@@ -1,0 +1,32 @@
+syntax = "v1"
+
+type LoginReq {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginResp {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type UserInfoReq {
+	ID string `json:"id"`
+}
+
+type UserInfoResp {
+	Name string `json:"name"`
+}
+
+service user-api {
+	@handler login
+	post /user/login (LoginReq) returns (LoginResp)
+}
+
+@server (
+	jwt: Auth // 开启 jwt 认证
+)
+service user-api {
+	@handler userInfo
+	post /user/info (UserInfoReq) returns (UserInfoResp)
+}

@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package authRPC;
-
-option go_package = "./auth";
-
-service AuthService {
-
-}

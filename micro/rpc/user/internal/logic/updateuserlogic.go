@@ -25,6 +25,22 @@ func NewUpdateUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 }
 
 func (l *UpdateUserLogic) UpdateUser(in *userRPC.UpdateUserRequest) (*userRPC.CommonResponse, error) {
+	existLogic := NewUserIDHasBeenExistLogic(l.ctx, l.svcCtx)
+	exist, err := existLogic.UserIDHasBeenExist(&userRPC.DeleteUserRequest{Id: in.Id})
+
+	if err != nil {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: err.Error(),
+		}, err
+	}
+	if !exist.Ok {
+		return &userRPC.CommonResponse{
+			Ok:  false,
+			Msg: "用户不存在",
+		}, nil
+	}
+
 	if err := l.svcCtx.GormDB.Model(&userModel.User{}).Where("id", in.Id).Updates(&userModel.User{
 		Password:     in.Password,
 		NickName:     in.Nickname,
@@ -37,10 +53,9 @@ func (l *UpdateUserLogic) UpdateUser(in *userRPC.UpdateUserRequest) (*userRPC.Co
 			Ok:  false,
 			Msg: err.Error(),
 		}, nil
-	} else {
-		return &userRPC.CommonResponse{
-			Ok:  true,
-			Msg: "更新成功",
-		}, nil
 	}
+	return &userRPC.CommonResponse{
+		Ok:  true,
+		Msg: "更新成功",
+	}, nil
 }

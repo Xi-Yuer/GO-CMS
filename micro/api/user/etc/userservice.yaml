@@ -1,8 +1,11 @@
-Name: UserService
+Name: user
 Host: 0.0.0.0
-Port: 8888
+Port: 8889
 UserService:
   Etcd:
     Hosts:
-      - localhost:2379
+      - etcd:2379
     Key: user.rpc
+Auth:
+  AccessSecret: "12345699999"
+  AccessExpire: 86400

@@ -97,6 +97,7 @@ type (
 
 @server(
 	prefix: /v1/user
+	jwt : Auth
 )
 
 service UserService {

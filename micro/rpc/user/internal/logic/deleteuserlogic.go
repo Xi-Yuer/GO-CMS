@@ -43,10 +43,9 @@ func (l *DeleteUserLogic) DeleteUser(in *userRPC.DeleteUserRequest) (*userRPC.Co
 			Ok:  false,
 			Msg: err.Error(),
 		}, nil
-	} else {
-		return &userRPC.CommonResponse{
-			Ok:  true,
-			Msg: "删除成功",
-		}, nil
 	}
+	return &userRPC.CommonResponse{
+		Ok:  true,
+		Msg: "删除成功",
+	}, nil
 }
