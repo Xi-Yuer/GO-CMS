@@ -48,8 +48,11 @@ services:
       - microservices-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/health"]  # 健康检查命令
-      interval: 10s  # 检查间隔
-      retries: 5  # 重试次数
+      interval: 10s
+      retries: 10
+      start_period: 30s
+      timeout: 10s
+    restart: always
 
   user-rpc-service:
     image: user-rpc-image
@@ -65,7 +68,10 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
       interval: 10s
-      retries: 5
+      retries: 10
+      start_period: 30s
+      timeout: 10s
+    restart: always
 
   role-rpc-service:
     image: role-rpc-image
@@ -82,6 +88,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
       interval: 10s
       retries: 5
+    restart: always
 
   # API 服务
   auth-service:
@@ -107,6 +114,7 @@ services:
       MYSQL_PORT: 3306
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+    restart: always
 
   user-service:
     image: user-service-image
@@ -131,6 +139,7 @@ services:
       MYSQL_PORT: 3306
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8889/health"]
+    restart: always
 
   nginx-proxy:
     image: nginx:latest  # 使用最新版本的 Nginx 镜像
