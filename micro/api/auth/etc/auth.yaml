@@ -11,4 +11,3 @@ UserService:
     Hosts:
       - etcd:2379
     Key: user.rpc
-MaxConns: 100

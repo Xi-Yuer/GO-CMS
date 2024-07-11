@@ -22,8 +22,8 @@ services:
     networks:
       - microservices-network
     ports:
-      - "2379:2379"
-      - "2380:2380"
+      - "2379"
+      - "2380"
     command: [
       "etcd",
       "--name", "etcd0",
@@ -39,7 +39,7 @@ services:
     image: captcha-rpc-image
     container_name: captcha-rpc-service
     ports:
-      - "8081:8081"
+      - "8081"
     depends_on:
       - mysql
       - redis
@@ -58,7 +58,7 @@ services:
     image: user-rpc-image
     container_name: user-rpc-service
     ports:
-      - "8083:8083"
+      - "8083"
     depends_on:
       - mysql
       - redis
@@ -77,7 +77,7 @@ services:
     image: role-rpc-image
     container_name: role-rpc-service
     ports:
-      - "8082:8082"
+      - "8082"
     depends_on:
       - mysql
       - redis
@@ -95,7 +95,7 @@ services:
     image: auth-service-image
     container_name: auth-service
     ports:
-      - "8888:8888"
+      - "8888"
     depends_on:
       - etcd
       - mysql
@@ -120,7 +120,7 @@ services:
     image: user-service-image
     container_name: user-service
     ports:
-      - "8889:8889"
+      - "8889"
     depends_on:
       - etcd
       - mysql
