@@ -4,6 +4,7 @@ services:
   # 数据库
   mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_DATABASE: micro_cms
       MYSQL_ROOT_PASSWORD: 2214380963Wx!!  # 添加 MySQL 的 root 密码
@@ -14,11 +15,13 @@ services:
 
   redis:
     image: redis:latest
+    container_name: redis
     networks:
       - microservices-network
 
   etcd:
     image: quay.io/coreos/etcd:v3.5.0
+    container_name: etcd
     networks:
       - microservices-network
     ports:
