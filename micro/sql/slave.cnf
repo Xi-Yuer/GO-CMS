@@ -1,0 +1,5 @@
+server-id=2
+relay-log=relay-log
+log-bin=mysql-bin
+read-only=1
+binlog-do-db=micro_cms

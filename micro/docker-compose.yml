@@ -1,29 +1,65 @@
 version: '3.8'
 
 services:
-  # 数据库
-  mysql:
+  mysql:                                                                          # 数据库(主库)
     image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: micro_cms                                                   # 数据库(该容器会自动创建改数据库)
+      MYSQL_ROOT_PASSWORD: 2214380963Wx!!                                         # 添加 MySQL 的 root 密码
+    ports:
+      - "3306:3306"                                                               # 将容器的 3306 端口映射到宿主机的 3306 端口
+    networks:
+      - microservices-network                                                     # 确保容器在同一个网络环境中
+    volumes:
+      - type: bind
+        source: ./sql/master.cnf                                                  # 挂载配置文件(配置文件所在位置)
+        target: /etc/mysql/conf.d/master.cnf                                      # 挂载配置文件(配置文件被挂载到容器中的位置)
+        read_only: true                                                           # 只读
+        consistency: consistent                                                   # 一致性(保了卷被挂载为具有一致性)
+      - type: bind
+        source: ./sql/master_init.sql                                             # 挂载初始化 SQL 文件(初始化 SQL 文件所在位置)
+        target: /docker-entrypoint-initdb.d/master_init.sql                       # 挂载初始化 SQL 文件(配置文件被挂载到容器中的位置)
+        read_only: true                                                           # 只读
+        consistency: consistent                                                   # 一致性(保了卷被挂载为具有一致性)
+
+  mysql-slave:                                                                    # 数据库(从库库)
+    image: mysql:8.0
+    container_name: mysql-slave
     environment:
       MYSQL_DATABASE: micro_cms
-      MYSQL_ROOT_PASSWORD: 2214380963Wx!!  # 添加 MySQL 的 root 密码
+      MYSQL_ROOT_PASSWORD: 2214380963Wx!!
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./sql/slave.cnf:/etc/mysql/conf.d/slave.cnf:ro,consistent
+      - ./sql/master_init.sql:/docker-entrypoint-initdb.d/master_init.sql:ro,consistent
+    depends_on:
+      - mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --server-id=2
+      - --relay-log=relay-log
+      - --log-bin=mysql-bin
+      - --read-only=1
+      - --skip-slave-start
     networks:
       - microservices-network
-    volumes:
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # 挂载初始化 SQL 文件
 
   redis:
     image: redis:latest
+    container_name: redis
     networks:
       - microservices-network
 
   etcd:
     image: quay.io/coreos/etcd:v3.5.0
+    container_name: etcd
     networks:
       - microservices-network
     ports:
-      - "2379:2379"
-      - "2380:2380"
+      - "2379"
+      - "2380"
     command: [
       "etcd",
       "--name", "etcd0",
@@ -39,7 +75,7 @@ services:
     image: captcha-rpc-image
     container_name: captcha-rpc-service
     ports:
-      - "8081:8081"
+      - "8081"
     depends_on:
       - mysql
       - redis
@@ -48,14 +84,17 @@ services:
       - microservices-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/health"]  # 健康检查命令
-      interval: 10s  # 检查间隔
-      retries: 5  # 重试次数
+      interval: 10s
+      retries: 10
+      start_period: 30s
+      timeout: 10s
+    restart: always
 
   user-rpc-service:
     image: user-rpc-image
     container_name: user-rpc-service
     ports:
-      - "8083:8083"
+      - "8083"
     depends_on:
       - mysql
       - redis
@@ -65,13 +104,16 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
       interval: 10s
-      retries: 5
+      retries: 10
+      start_period: 30s
+      timeout: 10s
+    restart: always
 
   role-rpc-service:
     image: role-rpc-image
     container_name: role-rpc-service
     ports:
-      - "8082:8082"
+      - "8082"
     depends_on:
       - mysql
       - redis
@@ -82,13 +124,14 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
       interval: 10s
       retries: 5
+    restart: always
 
   # API 服务
   auth-service:
     image: auth-service-image
     container_name: auth-service
     ports:
-      - "8888:8888"
+      - "8888"
     depends_on:
       - etcd
       - mysql
@@ -107,12 +150,13 @@ services:
       MYSQL_PORT: 3306
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+    restart: always
 
   user-service:
     image: user-service-image
     container_name: user-service
     ports:
-      - "8889:8889"
+      - "8889"
     depends_on:
       - etcd
       - mysql
@@ -131,6 +175,7 @@ services:
       MYSQL_PORT: 3306
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8889/health"]
+    restart: always
 
   nginx-proxy:
     image: nginx:latest  # 使用最新版本的 Nginx 镜像
@@ -143,8 +188,11 @@ services:
       - auth-service
       - user-service
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # 挂载自定义的 Nginx 配置文件
-
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf                                    # 挂载配置文件
+        read_only: true
+        consistency: consistent
 networks:
   microservices-network:
     driver: bridge  # 使用默认的 Docker bridge 网络驱动
