@@ -1,0 +1,3 @@
+server-id=1
+log-bin=mysql-bin
+binlog-do-db=micro_cms

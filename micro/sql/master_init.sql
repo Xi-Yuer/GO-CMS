@@ -3,19 +3,41 @@
 
  Source Server         : mac
  Source Server Type    : MySQL
- Source Server Version : 80300 (8.3.0)
+ Source Server Version : 80038 (8.0.38)
  Source Host           : localhost:3306
  Source Schema         : micro_cms
 
  Target Server Type    : MySQL
- Target Server Version : 80300 (8.3.0)
+ Target Server Version : 80038 (8.0.38)
  File Encoding         : 65001
 
- Date: 05/07/2024 17:59:39
+ Date: 15/07/2024 18:01:05
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for roles
+-- ----------------------------
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id` varchar(256) NOT NULL,
+  `role_name` varchar(256) NOT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `can_edit` tinyint(1) DEFAULT '1',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_roles_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of roles
+-- ----------------------------
+BEGIN;
+COMMIT;
 
 -- ----------------------------
 -- Table structure for users
@@ -49,6 +71,7 @@ INSERT INTO `users` (`id`, `account`, `password`, `nick_name`, `avatar`, `status
 INSERT INTO `users` (`id`, `account`, `password`, `nick_name`, `avatar`, `status`, `department_id`, `is_admin`, `created_at`, `updated_at`, `deleted_at`) VALUES ('63889859118370816', '龚丽', '123456', 'Donna', 'http://dummyimage.com/468x60', 1, '', 1, '2024-06-25 15:15:29', '2024-06-25 15:15:29', NULL);
 INSERT INTO `users` (`id`, `account`, `password`, `nick_name`, `avatar`, `status`, `department_id`, `is_admin`, `created_at`, `updated_at`, `deleted_at`) VALUES ('63898827001696256', '孙秀英', '123456', 'Laura', 'http://dummyimage.com/88x31', 1, '', 1, '2024-06-25 15:51:08', '2024-06-25 15:51:08', NULL);
 INSERT INTO `users` (`id`, `account`, `password`, `nick_name`, `avatar`, `status`, `department_id`, `is_admin`, `created_at`, `updated_at`, `deleted_at`) VALUES ('67082467554627584', '魏娜', '123456', 'Melissa', 'http://dummyimage.com/120x60', 1, '', 1, '2024-07-04 10:41:47', '2024-07-04 10:41:47', NULL);
+INSERT INTO `users` (`id`, `account`, `password`, `nick_name`, `avatar`, `status`, `department_id`, `is_admin`, `created_at`, `updated_at`, `deleted_at`) VALUES ('71177962640117760', '龚刚', '123456', 'Jessica', 'http://dummyimage.com/120x90', 1, '', 1, '2024-07-15 09:55:49', '2024-07-15 09:55:49', NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
