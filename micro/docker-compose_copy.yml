@@ -82,7 +82,9 @@ services:
 
   # RPC 服务
   captcha-rpc-service:
-    image: captcha-rpc-image
+    build:
+      context: ./rpc/captcha
+      dockerfile: Dockerfile
     container_name: captcha-rpc-service
     ports:
       - "8081"
@@ -101,7 +103,9 @@ services:
     restart: always
 
   user-rpc-service:
-    image: user-rpc-image
+    build:
+        context: ./rpc/user
+        dockerfile: Dockerfile
     container_name: user-rpc-service
     ports:
       - "8083"
@@ -120,7 +124,9 @@ services:
     restart: always
 
   role-rpc-service:
-    image: role-rpc-image
+    build:
+        context: ./rpc/role
+        dockerfile: Dockerfile
     container_name: role-rpc-service
     ports:
       - "8082"
@@ -138,7 +144,9 @@ services:
 
   # API 服务
   auth-service:
-    image: auth-service-image
+    build:
+        context: ./api/auth
+        dockerfile: Dockerfile
     container_name: auth-service
     ports:
       - "8888"
@@ -163,7 +171,9 @@ services:
     restart: always
 
   user-service:
-    image: user-service-image
+    build:
+        context: ./api/user
+        dockerfile: Dockerfile
     container_name: user-service
     ports:
       - "8889"
