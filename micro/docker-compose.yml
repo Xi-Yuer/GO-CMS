@@ -22,6 +22,14 @@ services:
         target: /docker-entrypoint-initdb.d/master_init.sql                       # 挂载初始化 SQL 文件(配置文件被挂载到容器中的位置)
         read_only: true                                                           # 只读
         consistency: consistent                                                   # 一致性(保了卷被挂载为具有一致性)
+      - type: bind
+        source: ./sql/init-master.sh                                              # 挂载数据文件(数据文件所在位置)
+        target: /docker-entrypoint-initdb.d/init-master.sh                        # 挂载数据文件(配置文件被挂载到容器中的位置)
+        read_only: true                                                           # 只读
+        consistency: consistent                                                   # 一致性(保了卷被挂载为具有一致性)
+      - type: bind
+        source: ./sql/data_master                                                 # 数据卷名称
+        target: /var/lib/mysql                                                    # 数据卷被挂载到容器中的位置
 
   mysql-slave:                                                                    # 数据库(从库库)
     image: mysql:8.0
@@ -34,6 +42,8 @@ services:
     volumes:
       - ./sql/slave.cnf:/etc/mysql/conf.d/slave.cnf:ro,consistent
       - ./sql/master_init.sql:/docker-entrypoint-initdb.d/master_init.sql:ro,consistent
+      - ./sql/init-slave.sh:/docker-entrypoint-initdb.d/init-slave.sh:ro,consistent
+      - ./sql/data_slave:/var/lib/mysql
     depends_on:
       - mysql
     command:
