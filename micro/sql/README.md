@@ -74,11 +74,14 @@ binlog-do-db=micro_cms
 在主库上执行以下命令：
 ```sql
 # 创建一个用户，用于从库复制主库的 Binlog 日志文件
+# 创建了一个名为replica的用户，可以从任意主机连接到MySQL服务器（因为@'%'表示任意主机）。用户的密码为2214380963Wx!!
 CREATE USER 'replica'@'%' IDENTIFIED BY '2214380963Wx!!';
+# 授予用户replica对所有数据库的复制权限。这是MySQL主从复制所必须的权限。
 GRANT REPLICATION SLAVE ON *.* TO 'replica'@'%';
+# 刷新权限
 FLUSH PRIVILEGES;
 
-# 给该用户设置权限
+# 修改用户replica的认证插件为mysql_native_password，并重新设置用户的密码为2214380963Wx!!
 ALTER USER 'replica'@'%' IDENTIFIED WITH mysql_native_password BY '2214380963Wx!!';
 
 # 查看主库的状态（获取主库的 MASTER_LOG_POS 和 MASTER_LOG_FILE 从库需要用到）
