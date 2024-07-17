@@ -19,7 +19,7 @@ type Claims struct {
 // CreateToken 创建 Token
 func CreateToken(userID string, userAccount string) (string, error) {
 	// 设置 Token 的过期时间
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(24 * 60 * time.Minute)
 
 	// 创建声明
 	claims := &Claims{
