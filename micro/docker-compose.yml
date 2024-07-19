@@ -93,7 +93,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]  # 健康检查命令
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]  # 健康检查命令
       interval: 10s
       retries: 10
       start_period: 30s
@@ -114,7 +114,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8083"]
       interval: 10s
       retries: 10
       start_period: 30s
@@ -135,7 +135,7 @@ services:
     networks:
       - microservices-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8082"]
       interval: 10s
       retries: 5
     restart: always
@@ -165,7 +165,7 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8888"]
     restart: always
 
   user-service:
@@ -192,7 +192,7 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8889/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8889"]
     restart: always
 
   nginx-proxy:
