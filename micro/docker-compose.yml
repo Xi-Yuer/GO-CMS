@@ -203,8 +203,10 @@ services:
     networks:
       - microservices-network
     depends_on:
-      - auth-service
-      - user-service
+      auth-service:
+        condition: service_started
+      user-service:
+        condition: service_started
     volumes:
       - type: bind
         source: ./nginx.conf
