@@ -10,18 +10,18 @@ WORKDIR /app
 COPY . .
 
 # 创建一个目录用于存放编译后的二进制文件和配置文件
-RUN mkdir -p /bin
+RUN mkdir -p ./bin
 
 # 安装依赖
 RUN go mod download
 
 # 编译 Go 程序
-RUN go build -o /bin/cmd ./rpc/role/role.go
+RUN go build -o ./bin/cmd ./rpc/captcha/captcha.go
 
-COPY ./rpc/role/etc /bin/etc
+COPY ./rpc/captcha/etc ./bin/etc
 
 # 暴露服务的端口
 EXPOSE 8888
 
 # 定义容器启动时运行的命令
-CMD ["/bin/cmd", "-f", "/bin/etc/role.yaml"]
+CMD ["./bin/cmd", "-f", "./bin/etc/captcha.yaml"]
