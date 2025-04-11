@@ -1,4 +1,6 @@
 # 基于RBAC的权限管理系统
+![image](https://github.com/user-attachments/assets/01e71378-2d39-4323-81eb-1a8ef185e8fd)
+
 
 简体中文 | [English](README_en.md)
 
